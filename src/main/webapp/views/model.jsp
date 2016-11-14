@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" isELIgnored="false"
+    pageEncoding="ISO-8859-1"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <html>
 <head>
   <meta charset="utf-8">
@@ -218,6 +218,7 @@ desired effect
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+  	<tiles:insertAttribute name="principal" />
   </div>
   <!-- /.content-wrapper -->
 

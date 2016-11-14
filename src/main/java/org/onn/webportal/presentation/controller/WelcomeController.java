@@ -24,7 +24,7 @@ public class WelcomeController {
 		this.helloWorldService = helloWorldService;
 	}
 
-	@RequestMapping(value = "index.do", method = RequestMethod.GET)
+	@RequestMapping(value = "map.do", method = RequestMethod.GET)
 	public String index(Map<String, Object> model) {
 
 		logger.debug("index() is executed!");
@@ -32,7 +32,7 @@ public class WelcomeController {
 		model.put("title", helloWorldService.getTitle(""));
 		model.put("msg", helloWorldService.getDesc());
 		
-		return "model";
+		return "mapview";
 	}
 
 	@RequestMapping(value = "/hello/{name:.+}", method = RequestMethod.GET)
