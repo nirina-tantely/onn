@@ -4,7 +4,7 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd"> 
        
 <tiles-definitions>
-    <definition name="mapview" template="/views/model.jsp">
-        <put-attribute name="principal"  value="/views/map.jsp" />
+    <definition name="mapview" template="/jsp/model.jsp">
+        <put-attribute name="principal"  value="/jsp/map.jsp" />
     </definition>
 </tiles-definitions>

@@ -24,7 +24,7 @@ public class WelcomeController {
 		this.helloWorldService = helloWorldService;
 	}
 
-	@RequestMapping(value = "map.do", method = RequestMethod.GET)
+	@RequestMapping(value = "hellomap.do", method = RequestMethod.GET)
 	public String index(Map<String, Object> model) {
 
 		logger.debug("index() is executed!");
