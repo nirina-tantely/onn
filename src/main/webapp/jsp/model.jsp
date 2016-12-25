@@ -15,7 +15,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="dist/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -167,6 +167,34 @@ desired effect
     
       <ul class="sidebar-menu">
         <li class="header">MENU DE NAVIGATION</li>
+        
+        <!-- Menu de filtrage du la carte -->
+        <li class="treeview">
+          <a href="#"><i class="fa fa-file-o"></i> <span>PARCOURIR LA CARTE</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+        	  <li>
+        	  <div class="form-group">
+        	  	  <a><i class="fa  fa-angle-double-right"></i> <span>Choir une région</span></a>
+                  <select class="form-control" id="selectRegion" onchange="onSelectRegion();">
+                  <option value="">Choisir...</option>
+                  	<c:forEach var="region" items="${regions}">
+                  		<option value="${region.idRegion}">${region.nomRegion}</option>
+                  	</c:forEach>
+                  </select>
+              </div>
+        	  </li>
+        	  <li>
+        	  <div class="form-group" id="divSelectCommune"></div>
+        	  </li>
+        	  <li>
+        	  <div class="form-group" id="divSelectFokontany"></div>
+        	  </li>
+          </ul>
+        </li>
 
          <!-- Menu public -->
         <li class="treeview">
@@ -320,6 +348,7 @@ desired effect
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+<script src="script/model.js"></script>
 
 
 

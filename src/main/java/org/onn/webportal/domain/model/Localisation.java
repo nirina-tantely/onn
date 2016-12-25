@@ -1,5 +1,7 @@
 package org.onn.webportal.domain.model;
 
+import org.onn.webportal.api.enumeration.TypeLocalisation;
+
 public class Localisation {
 
 	
@@ -10,7 +12,12 @@ public class Localisation {
 	private String nomFokontany;
 	private String nomcommune;
 	private String nomRegion;
+	
+	private TypeLocalisation type;
 
+	public Localisation(){
+		super();
+	}
 	public Localisation(String idFokontany, String idCommune, String idRegion) {
 		super();
 		this.idFokontany = idFokontany;
@@ -64,6 +71,12 @@ public class Localisation {
 
 	public void setNomRegion(String nomRegion) {
 		this.nomRegion = nomRegion;
+	}
+	public TypeLocalisation getType() {
+		return type;
+	}
+	public void setType(TypeLocalisation type) {
+		this.type = type;
 	}
 
 }

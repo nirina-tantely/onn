@@ -12,5 +12,13 @@
 	<context:component-scan base-package="org.onn.webportal.application" />
 	<context:component-scan base-package="org.onn.webportal.domain.service" />
 	<context:component-scan base-package="org.onn.webportal.infra.repository" />
+	
+	<bean id="app" class="org.onn.webportal.application.boot.App" />
+	<bean id="dataSourceONN" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/test" />
+		<property name="username" value="postgres" />
+		<property name="password" value="postgres" />
+	</bean>
 
 </beans>
