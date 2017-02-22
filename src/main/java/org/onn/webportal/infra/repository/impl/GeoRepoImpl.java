@@ -21,7 +21,7 @@ public class GeoRepoImpl implements GeoRepo {
 
 	public String getGeoRegionByCode(String codeRegion) {
 		StringBuilder requete = new StringBuilder().append(" SELECT row_to_json(fc)  FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features");
-		requete.append(" FROM (SELECT 'Feature' As type , ST_AsGeoJSON(ST_Simplify(lg.geom, 0.0006, false))::json As geometry, row_to_json((nom_commun, c_com, c_reg)) As properties");
+		requete.append(" FROM (SELECT 'Feature' As type , ST_AsGeoJSON(ST_Simplify(lg.geom, 0.0006, false))::json As geometry, row_to_json((nom_commun, c_com, c_reg, 'commune')) As properties");
 		requete.append(" FROM communes As lg where c_reg = ?   ) As f )  As fc;");
 		String result = jdbcTemplate.queryForObject(requete.toString(), new Object[] {Integer.valueOf(codeRegion)}, String.class);
 		return result;
@@ -29,7 +29,7 @@ public class GeoRepoImpl implements GeoRepo {
 	
 	public String getGeoCommuneByCode(String codeCommune) {
 		StringBuilder requete = new StringBuilder().append(" SELECT row_to_json(fc)  FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features");
-		requete.append(" FROM (SELECT 'Feature' As type , ST_AsGeoJSON(ST_Simplify(lg.geom, 0.0006, false))::json As geometry, row_to_json((nom_commun, c_com, c_reg)) As properties");
+		requete.append(" FROM (SELECT 'Feature' As type , ST_AsGeoJSON(ST_Simplify(lg.geom, 0.0006, false))::json As geometry, row_to_json((nom_commun, c_com, c_reg, 'commune')) As properties");
 		requete.append(" FROM communes As lg where c_com = ?   ) As f )  As fc;");
 		String result = jdbcTemplate.queryForObject(requete.toString(), new Object[] {Integer.valueOf(codeCommune)}, String.class);
 		return result;
@@ -37,9 +37,17 @@ public class GeoRepoImpl implements GeoRepo {
 	
 	public String getGeoFktByCommuneCode(String codeCommune) {
 		StringBuilder requete = new StringBuilder().append(" SELECT row_to_json(fc)  FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features");
-		requete.append(" FROM (SELECT 'Feature' As type , ST_AsGeoJSON(ST_Simplify(lg.geom, 0.0006, false))::json As geometry, row_to_json((nom_loca, c_lc, c_com)) As properties");
+		requete.append(" FROM (SELECT 'Feature' As type , ST_AsGeoJSON(ST_Simplify(lg.geom, 0.0006, false))::json As geometry, row_to_json((nom_loca, c_lc, c_com, 'fokontany')) As properties");
 		requete.append(" FROM fokontany As lg where c_com = ?   ) As f )  As fc;");
 		String result = jdbcTemplate.queryForObject(requete.toString(), new Object[] {Integer.valueOf(codeCommune)}, String.class);
+		return result;
+	}
+
+	public String getGeoAllFkt() {
+		StringBuilder requete = new StringBuilder().append(" SELECT row_to_json(fc)  FROM ( SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features");
+		requete.append(" FROM (SELECT 'Feature' As type , ST_AsGeoJSON(ST_Simplify(lg.geom, 0.0006, false))::json As geometry, row_to_json((nom_loca, c_lc, c_com, 'fokontany')) As properties");
+		requete.append(" FROM fokontany As lg ) As f )  As fc;");
+		String result = jdbcTemplate.queryForObject(requete.toString(), new Object[] {}, String.class);
 		return result;
 	}
 }

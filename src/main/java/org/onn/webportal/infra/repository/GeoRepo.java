@@ -8,4 +8,6 @@ public interface GeoRepo {
 
 	String getGeoFktByCommuneCode(String codeCommune);
 
+	String getGeoAllFkt();
+
 }

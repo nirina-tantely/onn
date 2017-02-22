@@ -52,7 +52,7 @@ function onSelectRegion(){
 			}
 		}
 	};
-	xhttp.open("GET", "/selectRegion.do?codeRegion="+codeRegion, true);
+	xhttp.open("GET", "selectRegion.do?codeRegion="+codeRegion, true);
 	xhttp.responseType = "text";
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send();
@@ -113,7 +113,7 @@ function onSelectCommune(){
 			document.getElementById("divSelectFokontany").innerHTML = selectFktContent;	
 		}
 	};
-	xhttp.open("GET", "/selectCommune.do?codeCommune="+codeCommune, true);
+	xhttp.open("GET", "selectCommune.do?codeCommune="+codeCommune, true);
 	xhttp.responseType = "text";
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send();
@@ -130,8 +130,75 @@ function onSelectFkt(){
 
 		}
 	};
-	xhttp.open("GET", "/selectFkt.do?codeFkt="+codeFkt, true);
+	xhttp.open("GET", "selectFkt.do?codeFkt="+codeFkt, true);
 	xhttp.responseType = "text";
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send();
+}
+
+function onCheckAfficherTout(checkbox){
+
+	if(checkbox.checked){
+		var xhttp;
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4 && xhttp.status == 200) { 
+				var selectFktContent;
+				var responseHttp = xhttp.responseText;
+				if(responseHttp == ''){
+					selectFktContent = '';
+				}else{
+					var jsonObj = JSON.parse(responseHttp);
+					var geoJson = JSON.parse(jsonObj.goeJson);
+					console.log(geoJson);
+
+					//TODO load geodata on the map
+					var divMapContainer = document.getElementById("map-container");
+					if(divMapContainer != null){
+
+						//var_map : variable globale dans la page map.jsp
+						var_map.data.addGeoJson(geoJson);
+					}
+				}
+			}
+		};
+		xhttp.open("GET", "selectAllFktn.do", true);
+		xhttp.responseType = "text";
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send();
+	}else{
+		//Clean the map
+		var_map.data.forEach(function (feature) {
+			//if (layer instanceof L.GeoJSON){
+			var_map.data.remove(feature);
+		});
+	}
+}
+
+function onMapSelect(code, typeLocalisation){
+	if(typeLocalisation == null) typeLocalisation='region';
+	if(code!=''){
+		var xhttp;
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4 && xhttp.status == 200) { 
+				var selectFktContent;
+				var responseHttp = xhttp.responseText;
+				if(responseHttp == ''){
+					selectFktContent = '';
+				}else{
+					var jsonObj = JSON.parse(responseHttp);
+					console.log(jsonObj);
+					//TODO load geodata on the map
+					var divMapContainer = document.getElementById("map-container");
+					if(divMapContainer != null){
+					}
+				}
+			}
+		};
+		xhttp.open("GET", "updateSynthese.do?code="+code+"&typeLocalisation="+typeLocalisation, true);
+		xhttp.responseType = "text";
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send();
+	}
 }

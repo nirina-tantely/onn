@@ -88,6 +88,24 @@ public class MainMapController {
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "selectAllFktn.do", method = RequestMethod.GET)
+	public ModelAndView selectAllFktn(HttpServletResponse response) {
+		JSONObject obj = new JSONObject();
+		String geoJson = geoService.getGeoAllFkt();
+		//System.out.println("==> "+codeCommune);
+		obj.put("goeJson", geoJson);
+		ServletOutputStream out;
+		try {
+			out = response.getOutputStream();
+			out.print(obj.toJSONString());
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	@RequestMapping(value = "selectFkt.do", method = RequestMethod.GET)
 	public ModelAndView selectFkt(@RequestParam("codeFkt") String codeFkt, HttpServletResponse response) {

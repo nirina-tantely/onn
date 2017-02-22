@@ -193,6 +193,12 @@ desired effect
         	  <li>
         	  <div class="form-group" id="divSelectFokontany"></div>
         	  </li>
+        	  <li>
+        	  <div class="form-group" id="divCheckAfficherTout">
+        	  <input type="checkbox" id="cbox" value="AfficherTout" onchange="onCheckAfficherTout(this);"/>
+        	  <a><label for="cbox">Afficher tout.</label></a>
+        	  </div>
+        	  </li>
           </ul>
         </li>
 
@@ -348,8 +354,13 @@ desired effect
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<!-- ONN model script -->
 <script src="script/model.js"></script>
-
+<!-- page script -->
 
 
  

@@ -47,6 +47,14 @@ public void setDataSource(DataSource dataSource) {
 		result = jdbcTemplate.query(requete.toString(), new LocalisationRowMapper(TypeLocalisation.FOKONTANY));
 		return result;
 	}
+	
+	public List<Localisation> getAllFokontany() {
+		StringBuilder requete = new StringBuilder().append("SELECT DISTINCT c_lc, nom_loca FROM fokontany ORDER BY nom_loca ASC");
+		logger.debug(requete.toString());
+		List<Localisation> result = new ArrayList<Localisation>();
+		result = jdbcTemplate.query(requete.toString(), new LocalisationRowMapper(TypeLocalisation.FOKONTANY));
+		return result;
+	}
 
 
 }

@@ -25,5 +25,10 @@ public class GeoServiceImpl implements GeoService {
 		obj.put("listeFkt", listeFkt);
 		return obj.toJSONString();
 	}
+	
+	public String getGeoAllFkt() {
+		String listeFkt = geoRepo.getGeoAllFkt();
+		return listeFkt;
+	}
 
 }
