@@ -6,6 +6,11 @@ public class Synthese {
 	private String nom;
 	private String description;
 
+	/**
+	 * Valeur pour la résultat d'une requete
+	 */
+	private int valeur;
+
 	public String getIdIndicateur() {
 		return this.idIndicateur;
 	}
@@ -28,6 +33,23 @@ public class Synthese {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public int getValeur() {
+		return valeur;
+	}
+
+	public void setValeur(int valeur) {
+		this.valeur = valeur;
+	}
+
+	public Synthese copy(){
+		Synthese copy = new Synthese();
+		copy.setDescription(description);
+		copy.setIdIndicateur(idIndicateur);
+		copy.setNom(nom);
+		copy.setValeur(0);
+		return copy;
 	}
 
 }

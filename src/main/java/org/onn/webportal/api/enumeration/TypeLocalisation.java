@@ -13,4 +13,11 @@ public enum TypeLocalisation {
 	public String getValeur() {
 		return valeur;
 	}
+	
+	public static TypeLocalisation getByValue(String valeur){
+		for(TypeLocalisation type:values()){
+			if(type.getValeur().equals(valeur)) return type;
+		}
+		return null;
+	}
 }

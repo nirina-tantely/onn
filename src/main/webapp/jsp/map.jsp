@@ -86,21 +86,6 @@
 							</tr>
 						</thead>
 						<tbody id="ongbase-tab-body">
-							<tr>
-								<td>Nb add bénéficiaires [0;5 mois[</td>
-								<td>123</td>
-								<td>3%</td>
-							</tr>
-							<tr>
-								<td>Nb add bénéficiaires [6;23 mois[</td>
-								<td>340</td>
-								<td>5%</td>
-							</tr>
-							<tr>
-								<td>Nb add bénéficiaires [24;59 mois[</td>
-								<td>340</td>
-								<td>5%</td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -143,7 +128,7 @@
             var_mapoptions);
 		
 		//Load GeoJSON
-		var_map.data.loadGeoJson("geojson/region.json");
+		var_map.data.loadGeoJson("geojson/regions.json");
 		//var_map.data.loadGeoJson("/localite_s.json");
 
 			/*

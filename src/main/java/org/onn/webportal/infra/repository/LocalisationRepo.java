@@ -1,9 +1,7 @@
 package org.onn.webportal.infra.repository;
 
 import java.util.List;
-
 import org.onn.webportal.domain.model.Localisation;
-import org.springframework.stereotype.Repository;
 
 public interface LocalisationRepo {
 

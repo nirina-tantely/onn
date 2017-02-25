@@ -190,9 +190,34 @@ function onMapSelect(code, typeLocalisation){
 					var jsonObj = JSON.parse(responseHttp);
 					console.log(jsonObj);
 					//TODO load geodata on the map
-					var divMapContainer = document.getElementById("map-container");
-					if(divMapContainer != null){
+					var intervenantTbody = document.getElementById("intervenant-tab-body");
+					if(intervenantTbody != null){
+						var intervenantBody = "";
+						var activites = jsonObj.activites;
+						for(var i in activites){
+							console.log(activites[i]);
+							intervenantBody += "<tr>";
+							intervenantBody += "<td>"+activites[i].indicateur+"</td>";
+							intervenantBody += "<td>"+activites[i].valeur+"</td>";
+							intervenantBody += "<td>"+activites[i].taux+"</td></tr>";
+						}
+						intervenantTbody.innerHTML = intervenantBody;	
 					}
+					
+					var ongTbody = document.getElementById("ongbase-tab-body");
+					if(ongTbody != null){
+						var ongbaseBody = "";
+						var ongbase = jsonObj.ongbase;
+						for(var i in ongbase){
+							console.log(ongbase[i]);
+							ongbaseBody += "<tr>";
+							ongbaseBody += "<td>"+ongbase[i].indicateur+"</td>";
+							ongbaseBody += "<td>"+ongbase[i].valeur+"</td>";
+							ongbaseBody += "<td>"+ongbase[i].taux+"</td></tr>";
+						}
+						ongTbody.innerHTML = ongbaseBody;	
+					}
+					
 				}
 			}
 		};
