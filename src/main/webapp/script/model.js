@@ -1,6 +1,7 @@
 function onSelectRegion(){
 	var codeRegion = document.getElementById("selectRegion").value;	
-	//alert('BOUBOU  '+codeRegion);
+	var nomRegion = document.getElementById(codeRegion).text;	
+	//alert('BOUBOU  '+nomRegion);
 	var xhttp;
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -14,13 +15,15 @@ function onSelectRegion(){
 				var jsonObj = JSON.parse(responseHttp);
 				var listeCommuneJson = JSON.parse(jsonObj.liste);
 				var geoJson = JSON.parse(jsonObj.goeJson);
+				var chemin = jsonObj.chemin;
+				setInfoboxHtml(chemin);
 				//console.log('===>'+geoJson);
 				//console.log(listeCommuneJson);
 				selectCommuneContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choir une commune</span></a>';
 				selectCommuneContent += '<select class="form-control" id="selectCommune" onchange="onSelectCommune();">';
 				selectCommuneContent += '<option value="">Choisir une commune...</option>';
 				for(var key in listeCommuneJson.communes){
-					selectCommuneContent += '<option value="'+listeCommuneJson.communes[key].codeCommune+'">'+listeCommuneJson.communes[key].nomCommune+'</option>';
+					selectCommuneContent += '<option id="'+listeCommuneJson.communes[key].codeCommune+'" value="'+listeCommuneJson.communes[key].codeCommune+'">'+listeCommuneJson.communes[key].nomCommune+'</option>';
 				}
 
 				document.getElementById("divSelectCommune").innerHTML = selectCommuneContent;	
@@ -52,7 +55,7 @@ function onSelectRegion(){
 			}
 		}
 	};
-	xhttp.open("GET", "selectRegion.do?codeRegion="+codeRegion, true);
+	xhttp.open("GET", "selectRegion.do?codeRegion="+codeRegion+"&nomRegion="+nomRegion, true);
 	xhttp.responseType = "text";
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send();
@@ -61,6 +64,7 @@ function onSelectRegion(){
 
 function onSelectCommune(){
 	var codeCommune = document.getElementById("selectCommune").value;	
+	var nomCommune = document.getElementById(codeCommune).text;	
 	var xhttp;
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -73,12 +77,14 @@ function onSelectCommune(){
 				var jsonObj = JSON.parse(responseHttp);
 				var listeFktJson = JSON.parse(jsonObj.liste);
 				var geoJson = JSON.parse(jsonObj.goeJson);
+				var chemin = jsonObj.chemin;
+				setInfoboxHtml(chemin);
 				console.log(listeFktJson);
 				selectFktContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choir un fokontany</span></a>';
 				selectFktContent += '<select class="form-control" id="selectFokontany" onChange="onSelectFkt();">';
 				selectFktContent += '<option value="">Choisir une fokontany...</option>';
 				for(var key in listeFktJson.fokontany){
-					selectFktContent += '<option value="'+listeFktJson.fokontany[key].codeFkt+'">'+listeFktJson.fokontany[key].nomFkt+'</option>';
+					selectFktContent += '<option id="'+listeFktJson.fokontany[key].codeFkt+'" value="'+listeFktJson.fokontany[key].codeFkt+'">'+listeFktJson.fokontany[key].nomFkt+'</option>';
 				}
 
 				//TODO load geodata on the map
@@ -113,7 +119,7 @@ function onSelectCommune(){
 			document.getElementById("divSelectFokontany").innerHTML = selectFktContent;	
 		}
 	};
-	xhttp.open("GET", "selectCommune.do?codeCommune="+codeCommune, true);
+	xhttp.open("GET", "selectCommune.do?codeCommune="+codeCommune+"&nomCommune="+nomCommune, true);
 	xhttp.responseType = "text";
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send();
@@ -123,6 +129,7 @@ function onSelectCommune(){
 
 function onSelectFkt(){
 	var codeFkt = document.getElementById("selectFokontany").value;	
+	var nomFkt = document.getElementById(codeFkt).value;	
 	var xhttp;
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -130,7 +137,7 @@ function onSelectFkt(){
 
 		}
 	};
-	xhttp.open("GET", "selectFkt.do?codeFkt="+codeFkt, true);
+	xhttp.open("GET", "selectFkt.do?codeFkt="+codeFkt+"&nomFkt="+nomFkt, true);
 	xhttp.responseType = "text";
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send();
@@ -227,4 +234,11 @@ function onMapSelect(code, typeLocalisation){
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.send();
 	}
+}
+
+function setInfoboxHtml(chemin){
+	var infoBox = document.getElementById("info-box");
+	var cheminBox = document.getElementById("chemin-box");
+	cheminBox.innerHTML = chemin;
+	infoBox.innerHTML = "";
 }

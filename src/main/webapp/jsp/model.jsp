@@ -185,7 +185,7 @@ desired effect
 										onchange="onSelectRegion();">
 										<option value="">Choisir...</option>
 										<c:forEach var="region" items="${regions}">
-											<option value="${region.idRegion}">${region.nomRegion}</option>
+											<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -195,6 +195,18 @@ desired effect
 							</li>
 							<li>
 								<div class="form-group" id="divSelectFokontany"></div>
+							</li>
+							<li>
+								<div class="form-group">
+									<a><i class="fa  fa-angle-double-right"></i> <span>Choir
+											un intervenant</span></a> <select class="form-control"
+										id="selectIntervenant" onchange="onSelectIntervenant();">
+										<option value="0">Tout</option>
+										<c:forEach var="intervenant" items="${intervenants}">
+											<option value="${intervenant.idIntervenant}">${intervenant.nom}</option>
+										</c:forEach>
+									</select>
+								</div>
 							</li>
 							<li>
 								<div class="form-group" id="divCheckAfficherTout">

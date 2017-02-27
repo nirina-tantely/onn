@@ -11,7 +11,7 @@
 			<div class="box box-success">
 				<div class="box-header with-border">
 					<h3 class="box-title">
-						Analamanga > Sabotsy-Namehana > <b id="info-box"></b>
+						<i id="chemin-box"></i> <b id="info-box"></b>
 					</h3>
 					<div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool"

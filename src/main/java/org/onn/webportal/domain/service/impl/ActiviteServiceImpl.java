@@ -108,6 +108,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 		}
 
 		JSONArray liste = new JSONArray();
+		if(mapT1.size()>0 || mapT2.size()>0 || mapT3.size()>0 || mapT4.size()>0)
 		for(IndicateurONG indc: metadataRepo.getIndicateurONGMetadata()){
 			JSONObject obj = new JSONObject();
 			obj.put("indicateur", indc.getNom());

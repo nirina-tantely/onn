@@ -6,10 +6,15 @@ import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
+import org.onn.webportal.api.enumeration.TypeLocalisation;
+import org.onn.webportal.domain.model.Etat;
+import org.onn.webportal.domain.model.Intervenant;
 import org.onn.webportal.domain.model.Localisation;
 import org.onn.webportal.domain.service.ActiviteService;
+import org.onn.webportal.domain.service.GeneralService;
 import org.onn.webportal.domain.service.GeoService;
 import org.onn.webportal.domain.service.LocalisationService;
 import org.slf4j.Logger;
@@ -20,9 +25,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@SessionAttributes("etat")
 public class MainMapController {
 
 	private final Logger logger = LoggerFactory.getLogger(MainMapController.class);
@@ -35,6 +42,9 @@ public class MainMapController {
 	
 	@Autowired
 	private GeoService geoService;
+	
+	@Autowired
+	private GeneralService generalService;
 
 
 	@RequestMapping(value = "map.do", method = RequestMethod.GET)
@@ -42,18 +52,34 @@ public class MainMapController {
 		logger.debug("home() is executed!");
 		List<Localisation> allRegions = localisationService.getAllRegions();
 		model.put("regions", allRegions);		
+		List<Intervenant> intervenants = generalService.getAllIntervenants();
+		model.put("intervenants", intervenants);
+		
+		Etat etat = new Etat();
+		etat.setNiveauLocalisation(TypeLocalisation.NATIONALE);
+		etat.setIntervenant(new Intervenant("0","Tout",""));
+		model.put("etat", etat);
+		
 		return "mapview";
 	}
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "selectRegion.do", method = RequestMethod.GET)
-	public ModelAndView selectRegion(@RequestParam("codeRegion") String codeRegion, HttpServletResponse response) {
+	public ModelAndView selectRegion(@RequestParam("codeRegion") String codeRegion, @RequestParam("nomRegion") String nomRegion, HttpServletResponse response, HttpSession session) {
+		Etat etat = (Etat)session.getAttribute("etat");
+		etat.getLocalisation().setIdRegion(codeRegion);
+		etat.getLocalisation().setNomRegion(nomRegion);
+		etat.setNiveauLocalisation(TypeLocalisation.REGION);
+		System.out.println("Session ==> "+nomRegion);
+		String chemin = genererChemin(etat);
+		
 		if(codeRegion.equals("")) return null;
 		JSONObject obj = new JSONObject();
 		String listeCommuneJson = localisationService.getCommuneListJson(codeRegion); 
 		String geoJson = geoService.getGeoRegionByCode(codeRegion);
 		obj.put("liste", listeCommuneJson);
 		obj.put("goeJson", geoJson);
+		obj.put("chemin", chemin);
 		ServletOutputStream out;
 		try {
 			out = response.getOutputStream();
@@ -68,7 +94,14 @@ public class MainMapController {
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "selectCommune.do", method = RequestMethod.GET)
-	public ModelAndView selectCommune(@RequestParam("codeCommune") String codeCommune, HttpServletResponse response) {
+	public ModelAndView selectCommune(@RequestParam("codeCommune") String codeCommune, @RequestParam("nomCommune") String nomCommune, HttpServletResponse response, HttpSession session) {
+		Etat etat = (Etat)session.getAttribute("etat");
+		etat.getLocalisation().setIdCommune(codeCommune);
+		etat.getLocalisation().setNomcommune(nomCommune);
+		etat.setNiveauLocalisation(TypeLocalisation.COMMUNE);
+		System.out.println("Session ==> "+nomCommune);
+		String chemin = genererChemin(etat);
+		
 		if(codeCommune.equals("")) return null;
 		JSONObject obj = new JSONObject();
 		String listeFktJson = localisationService.getFokontanyListJson(codeCommune); 
@@ -76,6 +109,7 @@ public class MainMapController {
 		//System.out.println("==> "+codeCommune);
 		obj.put("liste", listeFktJson);
 		obj.put("goeJson", geoJson);
+		obj.put("chemin", chemin);
 		ServletOutputStream out;
 		try {
 			out = response.getOutputStream();
@@ -112,6 +146,32 @@ public class MainMapController {
 		if(codeFkt.equals("")) return null;
 		
 		return null;
+	}
+	
+	private String genererChemin(Etat etat){
+		String chemin = "";
+		
+		switch (etat.getNiveauLocalisation()) {
+		case NATIONALE:
+			break;
+		case REGION:
+			if(etat.getLocalisation().getNomRegion()!=null) chemin += etat.getLocalisation().getNomRegion();
+			break;
+		case COMMUNE:
+			if(etat.getLocalisation().getNomRegion()!=null) chemin += etat.getLocalisation().getNomRegion();
+			chemin+=">";
+			if(etat.getLocalisation().getNomcommune()!=null) chemin += etat.getLocalisation().getNomcommune();
+			break;
+		case FOKONTANY:
+			if(etat.getLocalisation().getNomRegion()!=null) chemin += etat.getLocalisation().getNomRegion();
+			chemin+=">";
+			if(etat.getLocalisation().getNomcommune()!=null) chemin += etat.getLocalisation().getNomcommune();
+			chemin+=">";
+			if(etat.getLocalisation().getNomFokontany()!=null) chemin += etat.getLocalisation().getNomFokontany();
+			break;
+		}
+		chemin+=">";
+		return chemin;
 	}
 
 }
