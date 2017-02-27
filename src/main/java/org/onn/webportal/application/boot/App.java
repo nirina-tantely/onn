@@ -1,13 +1,20 @@
 package org.onn.webportal.application.boot;
 
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.json.simple.JSONArray;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
+import org.onn.webportal.domain.model.IndicateurONG;
 import org.onn.webportal.domain.model.Localisation;
 import org.onn.webportal.domain.model.Synthese;
 import org.onn.webportal.domain.service.ActiviteService;
 import org.onn.webportal.domain.service.GeoService;
+import org.onn.webportal.infra.repository.ActiviteRepo;
 import org.onn.webportal.infra.repository.LocalisationRepo;
+import org.onn.webportal.infra.repository.MetadataRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class App 
@@ -21,11 +28,19 @@ public class App
 
 	@Autowired
 	private GeoService geoService;
+	
+	@Autowired
+	private ActiviteRepo activiteRepo;
+
+	@Autowired
+	private MetadataRepo metadataRepo;
 
 	private void run(){
 		//testTaloha();
 
 		testActivieSertice();
+		
+		testONGbase();
 	}
 
 	private void testTaloha(){
@@ -38,10 +53,16 @@ public class App
 
 
 	private void testActivieSertice(){
-			List<Synthese> liste = activiteService.getActiviteSyntese("42", TypeLocalisation.REGION);
+			List<Synthese> liste = activiteService.getActiviteSyntese("0", TypeLocalisation.NATIONALE);
 			for(Synthese syn: liste){
 				System.out.println("==>"+syn.getIdIndicateur()+"  "+syn.getValeur());
 			}
+	}
+	
+	private void testONGbase(){
+		JSONArray s = activiteService.getONGBaseSyntese("0", TypeLocalisation.NATIONALE);
+		System.out.println("==> "+s);
+
 	}
 
 	public static void main( String[] args )

@@ -14,9 +14,9 @@ public interface ActiviteRepo {
 
 	public List<Activite> listeActivitesParLocalisation(Localisation localisation);
 
-	List<List<Synthese>> getSyntheses(String codeLocalisation, TypeLocalisation typeLocalisation);
+	List<List<Synthese>> getSyntheses(String codeLocalisation, TypeLocalisation typeLocalisation,  int annee);
 
-	List<List<IndicateurONG>> getOngBase(String codeLocalisation, TypeLocalisation typeLocalisation);
+	List<List<IndicateurONG>> getOngBase(String codeLocalisation, TypeLocalisation typeLocalisation,  int trimestre, int annee);
 
 	List<List<IndicateurSMS>> getIndicateurSMS(String codeLocalisation, TypeLocalisation typeLocalisation);
 }

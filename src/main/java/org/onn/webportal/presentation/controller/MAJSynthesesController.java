@@ -39,39 +39,29 @@ public class MAJSynthesesController {
 	private GeoService geoService;
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "updateSynthese.do", method = RequestMethod.GET)
+	@RequestMapping(value = "updateSynthese.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
 	public ModelAndView selectRegion(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, HttpServletResponse response) {
 		if(code.equals("")) return null;
 		List<Synthese> syntheses = activiteService.getActiviteSyntese(code, TypeLocalisation.getByValue(typeLocalisation));
-		int totalVal = 0;
-		for(Synthese syn:syntheses){totalVal+=syn.getValeur();}
 		JSONArray liste = new JSONArray();
 		for(Synthese syn:syntheses){
 			JSONObject obj = new JSONObject();
 			obj.put("indicateur", syn.getDescription());
 			obj.put("valeur", syn.getValeur());
-			obj.put("taux", ((syn.getValeur()/totalVal)*100)+"%");
 			liste.add(obj);
 		}
 		JSONObject res = new JSONObject();
 		res.put("activites", liste);
-		
-		
-		List<IndicateurONG> indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation));
-		totalVal = 0;
-		for(IndicateurONG indc:indicateurs){totalVal+=indc.getValeur();}
-		JSONArray listeONG = new JSONArray();
-		for(IndicateurONG indc:indicateurs){
-			JSONObject obj = new JSONObject();
-			obj.put("indicateur", indc.getNom());
-			obj.put("valeur", indc.getValeur());
-			obj.put("taux", ((indc.getValeur()/totalVal)*100)+"%");
-			listeONG.add(obj);
-		}
-		res.put("ongbase", listeONG);
 
+
+		JSONArray indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation));
+		System.out.println("=> "+indicateurs);
+		res.put("ongbase", indicateurs);
+		
 		ServletOutputStream out;
 		try {
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
 			out = response.getOutputStream();
 			out.print(res.toJSONString());
 			out.flush();

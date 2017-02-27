@@ -23,7 +23,7 @@ public class LocalisationRowMapper implements RowMapper<Localisation> {
 	public Localisation mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Localisation result = new Localisation();
 		result.setType(typeLoc);
-		if(typeLoc==null || typeLoc.equals(TypeLocalisation.COMPLET)){
+		if(typeLoc==null || typeLoc.equals(TypeLocalisation.NATIONALE)){
 			result.setIdRegion(rs.getString("c_reg"));
 			result.setNomRegion(rs.getString("nom_region"));
 			result.setIdRegion(rs.getString("c_com"));

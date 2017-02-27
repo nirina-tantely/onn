@@ -4,7 +4,7 @@ public enum TypeLocalisation {
 	REGION("region"),
 	COMMUNE("commune"),
 	FOKONTANY("fokontany"),
-	COMPLET("complet");
+	NATIONALE("nationale");
 
 	private String valeur;
 	TypeLocalisation(String valeur){

@@ -187,8 +187,8 @@ function onMapSelect(code, typeLocalisation){
 				if(responseHttp == ''){
 					selectFktContent = '';
 				}else{
+					console.log(responseHttp);
 					var jsonObj = JSON.parse(responseHttp);
-					console.log(jsonObj);
 					//TODO load geodata on the map
 					var intervenantTbody = document.getElementById("intervenant-tab-body");
 					if(intervenantTbody != null){
@@ -199,7 +199,6 @@ function onMapSelect(code, typeLocalisation){
 							intervenantBody += "<tr>";
 							intervenantBody += "<td>"+activites[i].indicateur+"</td>";
 							intervenantBody += "<td>"+activites[i].valeur+"</td>";
-							intervenantBody += "<td>"+activites[i].taux+"</td></tr>";
 						}
 						intervenantTbody.innerHTML = intervenantBody;	
 					}
@@ -212,8 +211,10 @@ function onMapSelect(code, typeLocalisation){
 							console.log(ongbase[i]);
 							ongbaseBody += "<tr>";
 							ongbaseBody += "<td>"+ongbase[i].indicateur+"</td>";
-							ongbaseBody += "<td>"+ongbase[i].valeur+"</td>";
-							ongbaseBody += "<td>"+ongbase[i].taux+"</td></tr>";
+							ongbaseBody += "<td>"+ongbase[i].T1+"</td>";
+							ongbaseBody += "<td>"+ongbase[i].T2+"</td>";
+							ongbaseBody += "<td>"+ongbase[i].T3+"</td>";
+							ongbaseBody += "<td>"+ongbase[i].T4+"</td>";
 						}
 						ongTbody.innerHTML = ongbaseBody;	
 					}

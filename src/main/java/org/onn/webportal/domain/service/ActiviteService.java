@@ -2,6 +2,7 @@ package org.onn.webportal.domain.service;
 
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
 import org.onn.webportal.domain.model.Activite;
 import org.onn.webportal.domain.model.IndicateurONG;
@@ -17,5 +18,5 @@ public interface ActiviteService {
 
 	List<IndicateurSMS> getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation);
 
-	List<IndicateurONG> getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation);
+	JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation);
 }

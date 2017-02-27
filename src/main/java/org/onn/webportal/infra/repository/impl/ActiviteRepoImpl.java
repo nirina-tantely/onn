@@ -47,41 +47,53 @@ public class ActiviteRepoImpl implements ActiviteRepo {
 		return liste;
 	}
 
-	public List<List<Synthese>> getSyntheses(String codeLocalisation, TypeLocalisation typeLocalisation) {
+	public List<List<Synthese>> getSyntheses(String codeLocalisation, TypeLocalisation typeLocalisation, int annee) {
 		StringBuilder requete = new StringBuilder().append("SELECT * FROM activite ");
+		Object[] params = new Object[] {Integer.valueOf(codeLocalisation), annee};
 		switch (typeLocalisation) {
 		case COMMUNE:	
-			requete.append(" WHERE code_commune = ?;");	
+			requete.append(" WHERE code_commune = ?");	
 			break;
 		case REGION:
-			requete.append(" WHERE code_region = ?;");
+			requete.append(" WHERE code_region = ?");
 			break;
 		case FOKONTANY:
-			requete.append(" WHERE code_fokontany = ?;");
+			requete.append(" WHERE code_fokontany = ?");
 			break;
-		default:
+		case NATIONALE:
+			requete.append(" WHERE TRUE");
+			params = new Object[] {annee};
+			break;
+		default :
 			break;
 		}
-		List<List<Synthese>> result = jdbcTemplate.query(requete.toString(), new Object[] {Integer.valueOf(codeLocalisation)}, new SyntheseRowMapper(metadataRepo.getActiviteMetadata()));
+		requete.append(" AND annee = ?");
+		List<List<Synthese>> result = jdbcTemplate.query(requete.toString(), params, new SyntheseRowMapper(metadataRepo.getActiviteMetadata()));
 		return result;
 	}
 
-	public List<List<IndicateurONG>> getOngBase(String codeLocalisation, TypeLocalisation typeLocalisation) {
+	public List<List<IndicateurONG>> getOngBase(String codeLocalisation, TypeLocalisation typeLocalisation, int trimestre, int annee) {
 		StringBuilder requete = new StringBuilder().append("SELECT * FROM ongbase ");
+		Object[] params  = new Object[] {Integer.valueOf(codeLocalisation), trimestre, annee};
 		switch (typeLocalisation) {
 		case COMMUNE:	
-			requete.append(" WHERE code_commune = ?;");	
+			requete.append(" WHERE code_commune = ?");	
 			break;
 		case REGION:
-			requete.append(" WHERE code_region = ?;");
+			requete.append(" WHERE code_region = ?");
 			break;
 		case FOKONTANY:
-			requete.append(" WHERE code_fokontany = ?;");
+			requete.append(" WHERE code_fokontany = ?");
+			break;
+		case NATIONALE:
+			requete.append(" WHERE TRUE");
+			params  = new Object[] {trimestre, annee};
 			break;
 		default:
 			break;
 		}
-		List<List<IndicateurONG>> result = jdbcTemplate.query(requete.toString(), new Object[] {Integer.valueOf(codeLocalisation)}, new ONGBaseSyntheseRowMapper(metadataRepo.getIndicateurONGMetadata()));
+		requete.append(" AND trimestre = ? AND annee = ?");
+		List<List<IndicateurONG>> result = jdbcTemplate.query(requete.toString(), params, new ONGBaseSyntheseRowMapper(metadataRepo.getIndicateurONGMetadata()));
 		return result;
 	}
 

@@ -16,18 +16,18 @@ public class ActiviteRowMapper implements RowMapper<ActiviteMetadata> {
 	public ActiviteMetadata mapRow(ResultSet rs, int rowNum) throws SQLException {
 		ActiviteMetadata result = new ActiviteMetadata();
 		result.setIdActivite(rs.getString("idactivite"));
-		result.setDescription(rs.getString("description"));
+		result.setDescription(rs.getString("amdesc"));
 		result.setNom(rs.getString("nomactivite"));
 		result.setRangColonne(rs.getInt("rangcolonne"));
 		Axe axe = new Axe();
 		axe.setIdAxe(rs.getString("idaxe"));
 		axe.setNom(rs.getString("nomaxe"));
-		axe.setDescription(rs.getString("description"));
+		axe.setDescription(rs.getString("axedesc"));
 		axe.setIntervention(rs.getString("intervention"));
 		result.setAxe(axe);
 		Synthese syn = new Synthese();
 		syn.setIdIndicateur(rs.getString("indicateur"));
-		syn.setDescription(rs.getString("description"));
+		syn.setDescription(rs.getString("syndesc"));
 		syn.setNom(rs.getString("nom"));
 		result.setSythese(syn);
 		return result;
