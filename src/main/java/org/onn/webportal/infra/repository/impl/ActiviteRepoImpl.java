@@ -11,11 +11,13 @@ import org.onn.webportal.api.enumeration.TypeLocalisation;
 import org.onn.webportal.domain.model.Activite;
 import org.onn.webportal.domain.model.IndicateurONG;
 import org.onn.webportal.domain.model.IndicateurSMS;
+import org.onn.webportal.domain.model.Intervenant;
 import org.onn.webportal.domain.model.Localisation;
 import org.onn.webportal.domain.model.Synthese;
 import org.onn.webportal.infra.repository.ActiviteRepo;
 import org.onn.webportal.infra.repository.MetadataRepo;
 import org.onn.webportal.infra.rowmapper.SyntheseRowMapper;
+import org.onn.webportal.infra.rowmapper.IntervenantRowMapper;
 import org.onn.webportal.infra.rowmapper.ONGBaseSyntheseRowMapper;
 import org.onn.webportal.infra.rowmapper.SMSBaseSyntheseRowMapper;
 import org.slf4j.Logger;
@@ -47,28 +49,35 @@ public class ActiviteRepoImpl implements ActiviteRepo {
 		return liste;
 	}
 
-	public List<List<Synthese>> getSyntheses(String codeLocalisation, TypeLocalisation typeLocalisation, int annee) {
+	public List<List<Synthese>> getSyntheses(String codeLocalisation, TypeLocalisation typeLocalisation, int annee, String codeIntervenant) {
 		StringBuilder requete = new StringBuilder().append("SELECT * FROM activite ");
-		Object[] params = new Object[] {Integer.valueOf(codeLocalisation), annee};
+		List<Object> params = new ArrayList<Object>();
 		switch (typeLocalisation) {
 		case COMMUNE:	
 			requete.append(" WHERE code_commune = ?");	
+			params.add(Integer.valueOf(codeLocalisation));
 			break;
 		case REGION:
 			requete.append(" WHERE code_region = ?");
+			params.add(Integer.valueOf(codeLocalisation));
 			break;
 		case FOKONTANY:
 			requete.append(" WHERE code_fokontany = ?");
+			params.add(Integer.valueOf(codeLocalisation));
 			break;
 		case NATIONALE:
 			requete.append(" WHERE TRUE");
-			params = new Object[] {annee};
 			break;
 		default :
 			break;
 		}
+		params.add(annee);
 		requete.append(" AND annee = ?");
-		List<List<Synthese>> result = jdbcTemplate.query(requete.toString(), params, new SyntheseRowMapper(metadataRepo.getActiviteMetadata()));
+		if(codeIntervenant.length()>0 && !codeIntervenant.equals("VIDE")){
+			requete.append(" AND code_intervenant = ?");
+			params.add(codeIntervenant);
+		}
+		List<List<Synthese>> result = jdbcTemplate.query(requete.toString(), params.toArray(), new SyntheseRowMapper(metadataRepo.getActiviteMetadata()));
 		return result;
 	}
 
@@ -114,6 +123,28 @@ public class ActiviteRepoImpl implements ActiviteRepo {
 			break;
 		}
 		List<List<IndicateurSMS>> result = jdbcTemplate.query(requete.toString(), new Object[] {Integer.valueOf(codeLocalisation)}, new SMSBaseSyntheseRowMapper(metadataRepo.getIndicateurSMSMetadata()));
+		return result;
+	}
+
+
+	public List<Integer> getCodesRegionByIntervenant(String codeIntervenant, int annee) {
+		StringBuilder requete = new StringBuilder().append("SELECT code_region FROM activite WHERE code_intervenant = ? AND annee = ? GROUP BY code_region");
+		List<Integer> result = new ArrayList<Integer>();
+		result = jdbcTemplate.queryForList(requete.toString(), new Object[] {codeIntervenant, annee}, Integer.class);
+		return result;
+	}
+
+	public List<Integer> getCodesCommuneByIntervenant(String codeIntervenant, int annee) {
+		StringBuilder requete = new StringBuilder().append("SELECT code_commune FROM activite WHERE code_intervenant = ? AND annee = ? GROUP BY code_commune");
+		List<Integer> result = new ArrayList<Integer>();
+		result = jdbcTemplate.queryForList(requete.toString(), new Object[] {codeIntervenant, annee}, Integer.class);
+		return result;
+	}
+
+	public List<Integer> getCodesFokontanyByIntervenant(String codeIntervenant, int annee) {
+		StringBuilder requete = new StringBuilder().append("SELECT code_fokontany FROM activite WHERE code_intervenant = ? AND annee = ? GROUP BY code_fokontany");
+		List<Integer> result = new ArrayList<Integer>();
+		result = jdbcTemplate.queryForList(requete.toString(), new Object[] {codeIntervenant, annee}, Integer.class);
 		return result;
 	}
 

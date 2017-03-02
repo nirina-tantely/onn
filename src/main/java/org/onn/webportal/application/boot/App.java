@@ -1,3 +1,4 @@
+
 package org.onn.webportal.application.boot;
 
 import java.util.Calendar;
@@ -46,7 +47,9 @@ public class App
 		//testActivieSertice();
 		
 		//testONGbase();
-		testGeneral();
+		//testGeneral();
+		
+		testIntervenantCode();
 	}
 
 	private void testTaloha(){
@@ -57,9 +60,15 @@ public class App
 		}
 	}
 
+	private void testIntervenantCode(){
+		String codeIntervenant = "intv1";
+			activiteService.getCodesRegionByIntervenant(codeIntervenant);
+			activiteService.getCodesCommuneByIntervenant(codeIntervenant);
+			activiteService.getCodesFokontanyByIntervenant(codeIntervenant);
+	}
 
 	private void testActivieSertice(){
-			List<Synthese> liste = activiteService.getActiviteSyntese("0", TypeLocalisation.NATIONALE);
+			List<Synthese> liste = activiteService.getActiviteSyntese("0", TypeLocalisation.NATIONALE, "intv2");
 			for(Synthese syn: liste){
 				System.out.println("==>"+syn.getIdIndicateur()+"  "+syn.getValeur());
 			}

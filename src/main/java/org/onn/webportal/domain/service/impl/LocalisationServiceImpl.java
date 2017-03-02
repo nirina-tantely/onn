@@ -53,7 +53,7 @@ private LocalisationRepo localisationRepo;
 		JSONObject ojbComm;
 		for(Localisation fkt:fokontany){
 			ojbComm = new JSONObject();
-			ojbComm.put("codeCFkt", fkt.getIdFokontany());
+			ojbComm.put("codeFkt", fkt.getIdFokontany());
 			ojbComm.put("nomFkt", fkt.getNomFokontany());
 			list.add(ojbComm);
 		}

@@ -1,5 +1,9 @@
 function onSelectRegion(){
 	var codeRegion = document.getElementById("selectRegion").value;	
+	if(codeRegion==''){
+		location.reload();
+		return;
+	}
 	var nomRegion = document.getElementById(codeRegion).text;	
 	//alert('BOUBOU  '+nomRegion);
 	var xhttp;
@@ -20,7 +24,7 @@ function onSelectRegion(){
 				//console.log('===>'+geoJson);
 				//console.log(listeCommuneJson);
 				selectCommuneContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choir une commune</span></a>';
-				selectCommuneContent += '<select class="form-control" id="selectCommune" onchange="onSelectCommune();">';
+				selectCommuneContent += '<select class="form-control" id="selectCommune" onchange="onSelectCommune();onMapSelect(this.value, \'commune\');">';
 				selectCommuneContent += '<option value="">Choisir une commune...</option>';
 				for(var key in listeCommuneJson.communes){
 					selectCommuneContent += '<option id="'+listeCommuneJson.communes[key].codeCommune+'" value="'+listeCommuneJson.communes[key].codeCommune+'">'+listeCommuneJson.communes[key].nomCommune+'</option>';
@@ -79,9 +83,9 @@ function onSelectCommune(){
 				var geoJson = JSON.parse(jsonObj.goeJson);
 				var chemin = jsonObj.chemin;
 				setInfoboxHtml(chemin);
-				console.log(listeFktJson);
+				//console.log(listeFktJson);
 				selectFktContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choir un fokontany</span></a>';
-				selectFktContent += '<select class="form-control" id="selectFokontany" onChange="onSelectFkt();">';
+				selectFktContent += '<select class="form-control" id="selectFokontany" onChange="onSelectFkt();onMapSelect(this.value, \'fokontany\');">';
 				selectFktContent += '<option value="">Choisir une fokontany...</option>';
 				for(var key in listeFktJson.fokontany){
 					selectFktContent += '<option id="'+listeFktJson.fokontany[key].codeFkt+'" value="'+listeFktJson.fokontany[key].codeFkt+'">'+listeFktJson.fokontany[key].nomFkt+'</option>';
@@ -157,7 +161,7 @@ function onCheckAfficherTout(checkbox){
 				}else{
 					var jsonObj = JSON.parse(responseHttp);
 					var geoJson = JSON.parse(jsonObj.goeJson);
-					console.log(geoJson);
+					//console.log(geoJson);
 
 					//TODO load geodata on the map
 					var divMapContainer = document.getElementById("map-container");
@@ -182,8 +186,57 @@ function onCheckAfficherTout(checkbox){
 	}
 }
 
+function onIntervenantSelect(){
+	var codeIntervenant = document.getElementById("selectIntervenant").value;
+		var xhttp;
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4 && xhttp.status == 200) { 
+				var selectFktContent;
+				var responseHttp = xhttp.responseText;
+				if(responseHttp != ''){
+					var jsonObj = JSON.parse(responseHttp);
+					var codes = jsonObj.codes;
+					console.log(codes);
+					var divMapContainer = document.getElementById("map-container");
+					if(divMapContainer != null){
+							/*
+							var_map.data.forEach(function (feature) {
+								console.log('====>'+feature.getProperty('f2'));			
+								var code = feature.getProperty('f2');
+								if ([21, 31, 41, 51].includes(code)){
+									feature.setProperty('isIn',true);
+								}else{
+									feature.setProperty('isIn',false);
+								};
+								console.log('IsIn ====>'+feature.getProperty('isIn'));		
+							});
+						 */
+						var_map.data.revertStyle();
+						var_map.data.setStyle(function(feature) {
+							var code = feature.getProperty('f2');
+							var color = 'green';
+							if (codes.includes(code)) {//FIXME Ajouter des conditions pour les points et retourner d'autres styles
+								color = 'red';
+							}
+							return /** @type {google.maps.Data.StyleOptions} */({
+								fillColor : color,
+								strokeWeight : 1.5
+							});
+						});
+					}
+				}
+			}
+		};
+		xhttp.open("GET", "surligner.do?codeIntervenant="+codeIntervenant, true);
+		xhttp.responseType = "text";
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send();
+}
+
 function onMapSelect(code, typeLocalisation){
 	if(typeLocalisation == null) typeLocalisation='region';
+	var codeIntervenant = document.getElementById("selectIntervenant").value;
 	if(code!=''){
 		var xhttp;
 		xhttp = new XMLHttpRequest();
@@ -194,7 +247,7 @@ function onMapSelect(code, typeLocalisation){
 				if(responseHttp == ''){
 					selectFktContent = '';
 				}else{
-					console.log(responseHttp);
+					//console.log(responseHttp);
 					var jsonObj = JSON.parse(responseHttp);
 					//TODO load geodata on the map
 					var intervenantTbody = document.getElementById("intervenant-tab-body");
@@ -202,20 +255,20 @@ function onMapSelect(code, typeLocalisation){
 						var intervenantBody = "";
 						var activites = jsonObj.activites;
 						for(var i in activites){
-							console.log(activites[i]);
+							//console.log(activites[i]);
 							intervenantBody += "<tr>";
 							intervenantBody += "<td>"+activites[i].indicateur+"</td>";
 							intervenantBody += "<td>"+activites[i].valeur+"</td>";
 						}
 						intervenantTbody.innerHTML = intervenantBody;	
 					}
-					
+
 					var ongTbody = document.getElementById("ongbase-tab-body");
 					if(ongTbody != null){
 						var ongbaseBody = "";
 						var ongbase = jsonObj.ongbase;
 						for(var i in ongbase){
-							console.log(ongbase[i]);
+							//console.log(ongbase[i]);
 							ongbaseBody += "<tr>";
 							ongbaseBody += "<td>"+ongbase[i].indicateur+"</td>";
 							ongbaseBody += "<td>"+ongbase[i].T1+"</td>";
@@ -225,11 +278,11 @@ function onMapSelect(code, typeLocalisation){
 						}
 						ongTbody.innerHTML = ongbaseBody;	
 					}
-					
+
 				}
 			}
 		};
-		xhttp.open("GET", "updateSynthese.do?code="+code+"&typeLocalisation="+typeLocalisation, true);
+		xhttp.open("GET", "updateSynthese.do?code="+code+"&typeLocalisation="+typeLocalisation+"&codeIntervenant="+codeIntervenant, true);
 		xhttp.responseType = "text";
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.send();

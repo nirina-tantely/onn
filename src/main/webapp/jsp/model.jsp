@@ -182,8 +182,8 @@ desired effect
 								<div class="form-group">
 									<a><i class="fa  fa-angle-double-right"></i> <span>Choir
 											une région</span></a> <select class="form-control" id="selectRegion"
-										onchange="onSelectRegion();">
-										<option value="">Choisir...</option>
+										onchange="onSelectRegion();onMapSelect(this.value, 'region')">
+										<option value="" onselect="location.reload();">Choisir...</option>
 										<c:forEach var="region" items="${regions}">
 											<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>
 										</c:forEach>
@@ -199,9 +199,9 @@ desired effect
 							<li>
 								<div class="form-group">
 									<a><i class="fa  fa-angle-double-right"></i> <span>Choir
-											un intervenant</span></a> <select class="form-control"
-										id="selectIntervenant" onchange="onSelectIntervenant();">
-										<option value="0">Tout</option>
+											un intervenant</span></a> 
+										<select class="form-control" id="selectIntervenant" onchange="onMapSelect('VIDE', 'VIDE'); onIntervenantSelect();">
+										<option value="VIDE">Tout</option>
 										<c:forEach var="intervenant" items="${intervenants}">
 											<option value="${intervenant.idIntervenant}">${intervenant.nom}</option>
 										</c:forEach>

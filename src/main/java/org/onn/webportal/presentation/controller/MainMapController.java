@@ -67,10 +67,10 @@ public class MainMapController {
 	@RequestMapping(value = "selectRegion.do", method = RequestMethod.GET)
 	public ModelAndView selectRegion(@RequestParam("codeRegion") String codeRegion, @RequestParam("nomRegion") String nomRegion, HttpServletResponse response, HttpSession session) {
 		Etat etat = (Etat)session.getAttribute("etat");
+		System.out.println("Niveau etat ==> "+etat.getNiveauLocalisation().getValeur());
 		etat.getLocalisation().setIdRegion(codeRegion);
 		etat.getLocalisation().setNomRegion(nomRegion);
 		etat.setNiveauLocalisation(TypeLocalisation.REGION);
-		System.out.println("Session ==> "+nomRegion);
 		String chemin = genererChemin(etat);
 		
 		if(codeRegion.equals("")) return null;
@@ -142,7 +142,11 @@ public class MainMapController {
 	}
 	
 	@RequestMapping(value = "selectFkt.do", method = RequestMethod.GET)
-	public ModelAndView selectFkt(@RequestParam("codeFkt") String codeFkt, HttpServletResponse response) {
+	public ModelAndView selectFkt(@RequestParam("codeFkt") String codeFkt, HttpServletResponse response, HttpSession session) {
+		Etat etat = (Etat)session.getAttribute("etat");
+		etat.setNiveauLocalisation(TypeLocalisation.FOKONTANY);
+		etat.getLocalisation().setIdFokontany(codeFkt);
+		String chemin = genererChemin(etat);
 		if(codeFkt.equals("")) return null;
 		
 		return null;

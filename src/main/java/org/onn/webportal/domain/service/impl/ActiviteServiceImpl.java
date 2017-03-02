@@ -33,9 +33,9 @@ public class ActiviteServiceImpl implements ActiviteService {
 		return activiteRepo.listeActivitesParLocalisation(localisation);
 	}
 
-	public List<Synthese> getActiviteSyntese(String codeLocalisation, TypeLocalisation typeLocalisation){
+	public List<Synthese> getActiviteSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, String codeIntervenant){
 		int annee = Calendar.getInstance().get(Calendar.YEAR);
-		List<List<Synthese>> res = activiteRepo.getSyntheses(codeLocalisation, typeLocalisation, annee);
+		List<List<Synthese>> res = activiteRepo.getSyntheses(codeLocalisation, typeLocalisation, annee, codeIntervenant);
 		Map<String, Synthese> map = new HashMap<String, Synthese>();
 		Synthese synthese;
 		for(List<Synthese> liste: res){
@@ -109,15 +109,15 @@ public class ActiviteServiceImpl implements ActiviteService {
 
 		JSONArray liste = new JSONArray();
 		if(mapT1.size()>0 || mapT2.size()>0 || mapT3.size()>0 || mapT4.size()>0)
-		for(IndicateurONG indc: metadataRepo.getIndicateurONGMetadata()){
-			JSONObject obj = new JSONObject();
-			obj.put("indicateur", indc.getNom());
-			if(mapT1.size()>0)	obj.put("T1", mapT1.get(indc.getIdIndicateur()).getValeur());else obj.put("T1", "");
-			if(mapT2.size()>0)	obj.put("T2", mapT2.get(indc.getIdIndicateur()).getValeur());else obj.put("T2", "");
-			if(mapT3.size()>0)	obj.put("T3", mapT3.get(indc.getIdIndicateur()).getValeur());else obj.put("T3", "");
-			if(mapT4.size()>0)	obj.put("T4", mapT4.get(indc.getIdIndicateur()).getValeur());else obj.put("T4", "");
-			liste.add(obj);
-		}
+			for(IndicateurONG indc: metadataRepo.getIndicateurONGMetadata()){
+				JSONObject obj = new JSONObject();
+				obj.put("indicateur", indc.getNom());
+				if(mapT1.size()>0)	obj.put("T1", mapT1.get(indc.getIdIndicateur()).getValeur());else obj.put("T1", "");
+				if(mapT2.size()>0)	obj.put("T2", mapT2.get(indc.getIdIndicateur()).getValeur());else obj.put("T2", "");
+				if(mapT3.size()>0)	obj.put("T3", mapT3.get(indc.getIdIndicateur()).getValeur());else obj.put("T3", "");
+				if(mapT4.size()>0)	obj.put("T4", mapT4.get(indc.getIdIndicateur()).getValeur());else obj.put("T4", "");
+				liste.add(obj);
+			}
 
 		return liste;
 	}
@@ -141,6 +141,39 @@ public class ActiviteServiceImpl implements ActiviteService {
 			}
 		}
 		return new ArrayList<IndicateurSMS>(map.values());
+	}
+
+	@SuppressWarnings("unchecked")
+	public JSONArray getCodesRegionByIntervenant(String codeIntervenant){
+		int annee = Calendar.getInstance().get(Calendar.YEAR);
+		JSONArray liste = new JSONArray();
+		List<Integer> codes = activiteRepo.getCodesRegionByIntervenant(codeIntervenant, annee);
+		for(int code : codes){
+			liste.add(code);
+		}
+		return liste;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONArray getCodesCommuneByIntervenant(String codeIntervenant){
+		int annee = Calendar.getInstance().get(Calendar.YEAR);
+		JSONArray liste = new JSONArray();
+		List<Integer> codes = activiteRepo.getCodesCommuneByIntervenant(codeIntervenant, annee);
+		for(int code : codes){
+			liste.add(code);
+		}
+		return liste;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONArray getCodesFokontanyByIntervenant(String codeIntervenant){
+		int annee = Calendar.getInstance().get(Calendar.YEAR);
+		JSONArray liste = new JSONArray();
+		List<Integer> codes = activiteRepo.getCodesFokontanyByIntervenant(codeIntervenant, annee);
+		for(int code : codes){
+			liste.add(code);
+		}
+		return liste;
 	}
 
 }
