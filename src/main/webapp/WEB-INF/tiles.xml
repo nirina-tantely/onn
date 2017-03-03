@@ -7,4 +7,7 @@
     <definition name="mapview" template="/jsp/model.jsp">
         <put-attribute name="principal"  value="/jsp/map.jsp" />
     </definition>
+    <definition name="smsview" template="/jsp/model.jsp">
+        <put-attribute name="principal"  value="/jsp/mapsms.jsp" />
+    </definition>
 </tiles-definitions>

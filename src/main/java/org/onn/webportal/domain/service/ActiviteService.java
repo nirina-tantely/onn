@@ -16,8 +16,6 @@ public interface ActiviteService {
 
 	List<Synthese> getActiviteSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, String codeIntervenant);
 
-	List<IndicateurSMS> getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation);
-
 	JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation);
 
 	JSONArray getCodesRegionByIntervenant(String codeIntervenant);
@@ -25,4 +23,6 @@ public interface ActiviteService {
 	JSONArray getCodesCommuneByIntervenant(String codeIntervenant);
 
 	JSONArray getCodesFokontanyByIntervenant(String codeIntervenant);
+	
+	JSONArray getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation);
 }

@@ -18,7 +18,7 @@ public interface ActiviteRepo {
 
 	List<List<IndicateurONG>> getOngBase(String codeLocalisation, TypeLocalisation typeLocalisation,  int trimestre, int annee);
 
-	List<List<IndicateurSMS>> getIndicateurSMS(String codeLocalisation, TypeLocalisation typeLocalisation);
+	List<List<IndicateurSMS>> getIndicateurSMS(String codeLocalisation, TypeLocalisation typeLocalisation, int annee);
 
 	List<Integer> getCodesRegionByIntervenant(String codeIntervenant, int annee);
 

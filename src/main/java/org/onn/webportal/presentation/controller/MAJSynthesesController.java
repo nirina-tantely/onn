@@ -110,4 +110,43 @@ public class MAJSynthesesController {
 		}
 		return null;
 	}
+
+
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "updateSMSSynthese.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
+	public ModelAndView updateSMSSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
+			HttpServletResponse response, HttpSession session) {
+		if(code.equals("")) return null;
+		Etat etat = (Etat)session.getAttribute("etat");
+		switch (TypeLocalisation.getByValue(typeLocalisation)) {
+		case COMMUNE:
+			etat.getLocalisation().setIdCommune(code);
+			break;
+		case REGION:
+			etat.getLocalisation().setIdRegion(code);
+			break;
+		case FOKONTANY:
+			etat.getLocalisation().setIdFokontany(code);
+			break;
+		case NATIONALE:
+			break;
+		}
+		etat.setNiveauLocalisation(TypeLocalisation.getByValue(typeLocalisation));
+		JSONArray indicateurs = activiteService.getSMSBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation));
+		JSONObject res = new JSONObject();
+		res.put("indicateurs", indicateurs);
+
+		ServletOutputStream out;
+		try {
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			out = response.getOutputStream();
+			out.print(res.toJSONString());
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

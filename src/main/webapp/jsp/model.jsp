@@ -153,100 +153,106 @@ desired effect
 					</div>
 				</div>
 
-				<!-- search form (Optional) -->
-				<form action="#" method="get" class="sidebar-form">
-					<div class="input-group">
-						<input type="text" name="q" class="form-control"
-							placeholder="Recherche..."> <span class="input-group-btn">
-							<button type="submit" name="search" id="search-btn"
-								class="btn btn-flat">
-								<i class="fa fa-search"></i>
-							</button>
-						</span>
-					</div>
-				</form>
-				<!-- /.search form -->
-
-
 				<ul class="sidebar-menu">
 					<li class="header">MENU DE NAVIGATION</li>
 
 					<!-- Menu de filtrage du la carte -->
-					<li class="treeview"><a href="#"><i class="fa fa-file-o"></i>
-							<span>PARCOURIR LA CARTE</span> <span
-							class="pull-right-container"> <i
-								class="fa fa-angle-left pull-right"></i>
-						</span> </a>
-						<ul class="treeview-menu">
-							<li>
-								<div class="form-group">
-									<a><i class="fa  fa-angle-double-right"></i> <span>Choir
-											une région</span></a> <select class="form-control" id="selectRegion"
-										onchange="onSelectRegion();onMapSelect(this.value, 'region')">
-										<option value="" onselect="location.reload();">Choisir...</option>
-										<c:forEach var="region" items="${regions}">
-											<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</li>
-							<li>
-								<div class="form-group" id="divSelectCommune"></div>
-							</li>
-							<li>
-								<div class="form-group" id="divSelectFokontany"></div>
-							</li>
-							<li>
-								<div class="form-group">
-									<a><i class="fa  fa-angle-double-right"></i> <span>Choir
-											un intervenant</span></a> 
-										<select class="form-control" id="selectIntervenant" onchange="onMapSelect('VIDE', 'VIDE'); onIntervenantSelect();">
-										<option value="VIDE">Tout</option>
-										<c:forEach var="intervenant" items="${intervenants}">
-											<option value="${intervenant.idIntervenant}">${intervenant.nom}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</li>
-							<li>
-								<div class="form-group" id="divCheckAfficherTout">
-									<input type="checkbox" id="cbox" value="AfficherTout"
-										onchange="onCheckAfficherTout(this);" /> <a><label
-										for="cbox">Afficher tout.</label></a>
-								</div>
-							</li>
-						</ul></li>
+					<c:choose>
+						<c:when test="${currentView == 'SMS'}">
+							<li class="treeview"><a href="map.do"><i
+									class="fa fa-file-o"></i> <span>PARCOURIR LA CARTE</span> <span
+									class="pull-right-container"> <i
+										class="fa fa-angle-left pull-right"></i>
+								</span> </a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="treeview"><a href="#"><i class="fa fa-file-o"></i>
+									<span>PARCOURIR LA CARTE</span> <span
+									class="pull-right-container"> <i
+										class="fa fa-angle-left pull-right"></i>
+								</span> </a>
+								<ul class="treeview-menu">
+									<li>
+										<div class="form-group">
+											<a><i class="fa  fa-angle-double-right"></i> <span>Choir
+													une région</span></a> <select class="form-control" id="selectRegion"
+												onchange="onSelectRegion();onMapSelect(this.value, 'region')">
+												<option value="" onselect="location.reload();">Choisir...</option>
+												<c:forEach var="region" items="${regions}">
+													<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</li>
+									<li>
+										<div class="form-group" id="divSelectCommune"></div>
+									</li>
+									<li>
+										<div class="form-group" id="divSelectFokontany"></div>
+									</li>
+									<li>
+										<div class="form-group">
+											<a><i class="fa  fa-angle-double-right"></i> <span>Choir
+													un intervenant</span></a> <select class="form-control"
+												id="selectIntervenant"
+												onchange="onMapSelect('VIDE', 'VIDE'); onIntervenantSelect();">
+												<option value="VIDE">Tout</option>
+												<c:forEach var="intervenant" items="${intervenants}">
+													<option value="${intervenant.idIntervenant}">${intervenant.nom}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</li>
+									<!-- 
+									<li>
+										<div class="form-group" id="divCheckAfficherTout">
+											<input type="checkbox" id="cbox" value="AfficherTout"
+												onchange="onCheckAfficherTout(this);" /> <a><label
+												for="cbox">Afficher tout.</label></a>
+										</div>
+									</li>
+									 -->
+								</ul></li>
+						</c:otherwise>
+					</c:choose>
 
 					<!-- Menu public -->
-					<li class="treeview"><a href="#"><i
-							class="fa fa-location-arrow"></i> <span>EXPLORATION DES
-								SITES</span> <span class="pull-right-container"> <i
-								class="fa fa-angle-left pull-right"></i>
-						</span> </a>
-						<ul class="treeview-menu">
-							<li class="active"><a href="#"><i
-									class="fa fa-location-arrow"></i> <span>Affichage sur
-										carte</span></a></li>
-							<li><a href="#"><i class="fa fa-search"></i> <span>Recherche
-										avancée</span></a></li>
-							<li><a href="#"><i class="fa fa-bars"></i> <span>Synthèse</span></a></li>
-						</ul></li>
-
-					<!-- Menu de suivi -->
-					<li class="treeview"><a href="#"><i class="fa fa-file-o"></i>
-							<span>FONCTION DE SUIVIS</span> <span
-							class="pull-right-container"> <i
-								class="fa fa-angle-left pull-right"></i>
-						</span> </a>
-						<ul class="treeview-menu">
-							<li><a href="#"><i class="fa  fa-angle-double-right"></i>
-									<span>Synthèse par région</span></a></li>
-							<li><a href="#"><i class="fa  fa-angle-double-right"></i>
-									<span>Synthèse par commune</span></a></li>
-							<li><a href="#"><i class="fa  fa-angle-double-right"></i>
-									<span>Synthèse par fonkotany</span></a></li>
-						</ul></li>
-
+					<c:choose>
+						<c:when test="${currentView == 'HOME'}">
+							<li class="treeview"><a href="smsmap.do"><i
+									class="fa fa-location-arrow"></i> <span>DONNEES SMS</span> <span
+									class="pull-right-container"> <i
+										class="fa fa-angle-left pull-right"></i>
+								</span> </a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="treeview"><a href="#"><i
+									class="fa fa-location-arrow"></i> <span>DONNEES SMS</span> <span
+									class="pull-right-container"> <i
+										class="fa fa-angle-left pull-right"></i>
+								</span> </a>
+								<ul class="treeview-menu">
+									<li>
+										<div class="form-group">
+											<a><i class="fa  fa-angle-double-right"></i> <span>Choir
+													une région</span></a> <select class="form-control" id="selectRegion"
+												onchange="onSelectRegion();onSMSMapSelect(this.value, 'region')">
+												<option value="" onselect="location.reload();">Choisir...</option>
+												<c:forEach var="region" items="${regions}">
+													<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</li>
+									<li>
+										<div class="form-group" id="divSelectCommune"></div>
+									</li>
+									<li>
+										<div class="form-group" id="divSelectFokontany"></div>
+									</li>
+								</ul></li>
+						</c:otherwise>
+					</c:choose>
 
 					<!-- Menu de administration -->
 					<li class="treeview"><a href="#"><i class="fa fa-link"></i>
@@ -255,7 +261,7 @@ desired effect
 								class="fa fa-angle-left pull-right"></i>
 						</span> </a>
 						<ul class="treeview-menu">
-							<li><a href="#"><i class="fa   fa-gear"></i> <span>Paramètrage</span></a></li>
+
 							<li><a href="#"><i class="fa  fa-hand-rock-o"></i> <span>Importation
 										manuelle</span></a></li>
 						</ul></li>
@@ -300,7 +306,7 @@ desired effect
 								class="menu-icon fa fa-birthday-cake bg-red"></i>
 
 								<div class="menu-info">
-									<h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+									<h4 class="control-sidebar-subheading">Tantely's Birthday</h4>
 
 									<p>Will be 23 on April 24th</p>
 								</div>

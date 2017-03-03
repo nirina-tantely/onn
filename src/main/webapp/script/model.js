@@ -289,6 +289,56 @@ function onMapSelect(code, typeLocalisation){
 	}
 }
 
+
+function onSMSMapSelect(code, typeLocalisation){
+	if(typeLocalisation == null) typeLocalisation='region';
+	if(code!=''){
+		var xhttp;
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4 && xhttp.status == 200) { 
+				var selectFktContent;
+				var responseHttp = xhttp.responseText;
+				if(responseHttp == ''){
+					selectFktContent = '';
+				}else{
+					//console.log(responseHttp);
+					var jsonObj = JSON.parse(responseHttp);
+					
+					var smsTbody = document.getElementById("sms-tab-body");
+					if(smsTbody != null){
+						var smsbaseBody = "";
+						var ongbase = jsonObj.indicateurs;
+						for(var i in ongbase){
+							//console.log(ongbase[i]);
+							smsbaseBody += "<tr>";
+							smsbaseBody += "<td>"+ongbase[i].indicateur+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m1+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m2+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m3+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m4+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m5+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m6+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m7+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m8+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m9+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m10+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m11+"</td>";
+							smsbaseBody += "<td>"+ongbase[i].m12+"</td>";
+						}
+						smsTbody.innerHTML = smsbaseBody;	
+					}
+
+				}
+			}
+		};
+		xhttp.open("GET", "updateSMSSynthese.do?code="+code+"&typeLocalisation="+typeLocalisation, true);
+		xhttp.responseType = "text";
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send();
+	}
+}
+
 function setInfoboxHtml(chemin){
 	var infoBox = document.getElementById("info-box");
 	var cheminBox = document.getElementById("chemin-box");

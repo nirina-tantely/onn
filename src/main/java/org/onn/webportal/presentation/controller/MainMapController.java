@@ -54,6 +54,7 @@ public class MainMapController {
 		model.put("regions", allRegions);		
 		List<Intervenant> intervenants = generalService.getAllIntervenants();
 		model.put("intervenants", intervenants);
+		model.put("currentView", "HOME");//si la page courante est sms et MAP si la page courante est l'acceuil
 		
 		Etat etat = new Etat();
 		etat.setNiveauLocalisation(TypeLocalisation.NATIONALE);

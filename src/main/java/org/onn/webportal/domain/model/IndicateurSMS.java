@@ -7,6 +7,7 @@ public class IndicateurSMS {
 	private int rang;
 	
 	private int valeur;
+	private int mois;
 	
 	public IndicateurSMS(String idIndicateur, String nom, String definition, int rang) {
 		super();
@@ -53,6 +54,14 @@ public class IndicateurSMS {
 
 	public void setValeur(int valeur) {
 		this.valeur = valeur;
+	}
+
+	public int getMois() {
+		return mois;
+	}
+
+	public void setMois(int mois) {
+		this.mois = mois;
 	}
 
 }

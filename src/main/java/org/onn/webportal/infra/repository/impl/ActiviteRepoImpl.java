@@ -107,22 +107,28 @@ public class ActiviteRepoImpl implements ActiviteRepo {
 	}
 
 
-	public List<List<IndicateurSMS>> getIndicateurSMS(String codeLocalisation, TypeLocalisation typeLocalisation) {
+	public List<List<IndicateurSMS>> getIndicateurSMS(String codeLocalisation, TypeLocalisation typeLocalisation, int annee) {
 		StringBuilder requete = new StringBuilder().append("SELECT * FROM donnees_sms ");
+		Object[] params  = new Object[] {Integer.valueOf(codeLocalisation), annee};
 		switch (typeLocalisation) {
 		case COMMUNE:	
-			requete.append(" WHERE code_commune = ?;");	
+			requete.append(" WHERE code_commune = ?");	
 			break;
 		case REGION:
-			requete.append(" WHERE code_region = ?;");
+			requete.append(" WHERE code_region = ?");
 			break;
 		case FOKONTANY:
-			requete.append(" WHERE code_fokontany = ?;");
+			requete.append(" WHERE code_fokontany = ?");
+			break;
+		case NATIONALE:
+			requete.append(" WHERE TRUE");
+			params  = new Object[] {annee};
 			break;
 		default:
 			break;
 		}
-		List<List<IndicateurSMS>> result = jdbcTemplate.query(requete.toString(), new Object[] {Integer.valueOf(codeLocalisation)}, new SMSBaseSyntheseRowMapper(metadataRepo.getIndicateurSMSMetadata()));
+		requete.append(" AND annee = ?");
+		List<List<IndicateurSMS>> result = jdbcTemplate.query(requete.toString(), params, new SMSBaseSyntheseRowMapper(metadataRepo.getIndicateurSMSMetadata()));
 		return result;
 	}
 

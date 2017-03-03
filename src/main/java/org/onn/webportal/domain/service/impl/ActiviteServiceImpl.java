@@ -108,8 +108,9 @@ public class ActiviteServiceImpl implements ActiviteService {
 		}
 
 		JSONArray liste = new JSONArray();
-		if(mapT1.size()>0 || mapT2.size()>0 || mapT3.size()>0 || mapT4.size()>0)
-			for(IndicateurONG indc: metadataRepo.getIndicateurONGMetadata()){
+		if(mapT1.size()>0 || mapT2.size()>0 || mapT3.size()>0 || mapT4.size()>0){
+			List<IndicateurONG> listIndc = metadataRepo.getIndicateurONGMetadata();
+			for(IndicateurONG indc: listIndc){
 				JSONObject obj = new JSONObject();
 				obj.put("indicateur", indc.getNom());
 				if(mapT1.size()>0)	obj.put("T1", mapT1.get(indc.getIdIndicateur()).getValeur());else obj.put("T1", "");
@@ -118,7 +119,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 				if(mapT4.size()>0)	obj.put("T4", mapT4.get(indc.getIdIndicateur()).getValeur());else obj.put("T4", "");
 				liste.add(obj);
 			}
-
+		}
 		return liste;
 	}
 
@@ -126,21 +127,53 @@ public class ActiviteServiceImpl implements ActiviteService {
 		return val1 + val2;
 	}
 
-	public List<IndicateurSMS> getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation){
-		List<List<IndicateurSMS>> res = activiteRepo.getIndicateurSMS(codeLocalisation, typeLocalisation);
-		Map<String, IndicateurSMS> map = new HashMap<String, IndicateurSMS>();
+	@SuppressWarnings("unchecked")
+	public JSONArray getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation){
+		int annee = Calendar.getInstance().get(Calendar.YEAR);
+		List<List<IndicateurSMS>> res = activiteRepo.getIndicateurSMS(codeLocalisation, typeLocalisation, annee);
+		Map<String, Map<Integer, IndicateurSMS>> mapmap = new HashMap<String, Map<Integer, IndicateurSMS>>();
 		IndicateurSMS indicateur;
+		Map<Integer, IndicateurSMS> map;
 		for(List<IndicateurSMS> liste: res){
 			for(IndicateurSMS indc :  liste){
-				indicateur = map.get(indc.getIdIndicateur());
-				if(indicateur!=null){
-					indicateur.setValeur(indicateur.getValeur()+indc.getValeur());
+				if(mapmap.containsKey(indc.getIdIndicateur())){
+					map = mapmap.get(indc.getIdIndicateur());
+					if(map.containsKey(indc.getMois())){
+						indicateur = map.get(indc.getMois());
+						indicateur.setValeur(indicateur.getValeur()+indc.getValeur());//mode de calcul
+					}else{
+						map.put(indc.getMois(), indc);
+					}
 				}else{
-					map.put(indc.getIdIndicateur(), indc);
+					map  = new HashMap<Integer, IndicateurSMS>();
+					map.put(indc.getMois(), indc);
+					mapmap.put(indc.getIdIndicateur(), map);
 				}
 			}
 		}
-		return new ArrayList<IndicateurSMS>(map.values());
+		JSONArray liste = new JSONArray();
+		List<IndicateurSMS> listIndc = metadataRepo.getIndicateurSMSMetadata();
+		for(IndicateurSMS indc: listIndc){
+			JSONObject obj = new JSONObject();
+			obj.put("indicateur", indc.getNom());
+			if(mapmap.containsKey(indc.getIdIndicateur())){
+				map = mapmap.get(indc.getIdIndicateur());
+				for(int mois = 1; mois<=12; mois++){
+					if(map.containsKey(mois)){
+						indicateur = map.get(mois);
+						obj.put("m"+mois, indicateur.getValeur());
+					}else{
+						obj.put("m"+mois, "");
+					}
+				}
+			}else{
+				for(int mois = 1; mois<=12; mois++){
+					obj.put("m"+mois, "");
+				}
+			}
+			liste.add(obj);
+		}
+		return liste;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -153,7 +186,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 		}
 		return liste;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public JSONArray getCodesCommuneByIntervenant(String codeIntervenant){
 		int annee = Calendar.getInstance().get(Calendar.YEAR);
@@ -164,7 +197,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 		}
 		return liste;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public JSONArray getCodesFokontanyByIntervenant(String codeIntervenant){
 		int annee = Calendar.getInstance().get(Calendar.YEAR);

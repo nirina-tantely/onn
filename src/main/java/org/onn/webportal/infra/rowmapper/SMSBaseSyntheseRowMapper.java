@@ -19,11 +19,13 @@ public class SMSBaseSyntheseRowMapper implements RowMapper<List<IndicateurSMS>> 
 		List<IndicateurSMS> result = new ArrayList<IndicateurSMS>();
 		int val;
 		IndicateurSMS indc;
+		int mois = rs.getInt("mois");
 		for(IndicateurSMS metadata: indicateurSMS){
 			val  = rs.getInt(metadata.getIdIndicateur());
 			indc = metadata.copy();
 			indc.setValeur(val);
 			result.add(indc);
+			indc.setMois(mois);
 		}
 		return result;
 	}
