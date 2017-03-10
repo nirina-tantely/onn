@@ -1,6 +1,7 @@
 package org.onn.webportal.presentation.controller;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @SessionAttributes("etat")
@@ -56,6 +55,7 @@ public class SMSMapController {
 		List<Integer> annees = generalService.getAllSMSAnnees();
 		model.put("intervenants", intervenants);
 		model.put("annees", annees);
+		model.put("anneeCourante", Calendar.getInstance().get(Calendar.YEAR));
 		model.put("currentView", "SMS");//si la page courante est sms et MAP si la page courante est l'acceuil
 		
 		Etat etat = new Etat();

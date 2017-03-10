@@ -1,6 +1,7 @@
 package org.onn.webportal.presentation.controller;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ public class MainMapController {
 		List<Integer> annees = generalService.getAllAnnees();
 		model.put("intervenants", intervenants);
 		model.put("annees", annees);
+		model.put("anneeCourante", Calendar.getInstance().get(Calendar.YEAR));
 		model.put("currentView", "HOME");//si la page courante est sms et MAP si la page courante est l'acceuil
 
 		return "mapview";
@@ -64,13 +66,6 @@ public class MainMapController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "selectRegion.do", method = RequestMethod.GET)
 	public ModelAndView selectRegion(@RequestParam("codeRegion") String codeRegion, @RequestParam("nomRegion") String nomRegion, HttpServletResponse response, HttpSession session) {
-		Etat etat = (Etat)session.getAttribute("etat");
-		System.out.println("Niveau etat ==> "+etat.getNiveauLocalisation().getValeur());
-		etat.getLocalisation().setIdRegion(codeRegion);
-		etat.getLocalisation().setNomRegion(nomRegion);
-		etat.setNiveauLocalisation(TypeLocalisation.REGION);
-		String chemin = genererChemin(etat);
-		//session.setAttribute("etat", etat);
 		
 		if(codeRegion.equals("")) return null;
 		JSONObject obj = new JSONObject();
@@ -78,7 +73,7 @@ public class MainMapController {
 		String geoJson = geoService.getGeoRegionByCode(codeRegion);
 		obj.put("liste", listeCommuneJson);
 		obj.put("goeJson", geoJson);
-		obj.put("chemin", chemin);
+		obj.put("chemin", "");
 		ServletOutputStream out;
 		try {
 			out = response.getOutputStream();
@@ -94,12 +89,6 @@ public class MainMapController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "selectCommune.do", method = RequestMethod.GET)
 	public ModelAndView selectCommune(@RequestParam("codeCommune") String codeCommune, @RequestParam("nomCommune") String nomCommune, HttpServletResponse response, HttpSession session) {
-		Etat etat = (Etat)session.getAttribute("etat");
-		etat.getLocalisation().setIdCommune(codeCommune);
-		etat.getLocalisation().setNomcommune(nomCommune);
-		etat.setNiveauLocalisation(TypeLocalisation.COMMUNE);
-		System.out.println("Session ==> "+nomCommune);
-		String chemin = genererChemin(etat);
 		
 		if(codeCommune.equals("")) return null;
 		JSONObject obj = new JSONObject();
@@ -108,7 +97,7 @@ public class MainMapController {
 		//System.out.println("==> "+codeCommune);
 		obj.put("liste", listeFktJson);
 		obj.put("goeJson", geoJson);
-		obj.put("chemin", chemin);
+		obj.put("chemin", "");
 		ServletOutputStream out;
 		try {
 			out = response.getOutputStream();
@@ -142,15 +131,12 @@ public class MainMapController {
 	
 	@RequestMapping(value = "selectFkt.do", method = RequestMethod.GET)
 	public ModelAndView selectFkt(@RequestParam("codeFkt") String codeFkt, HttpServletResponse response, HttpSession session) {
-		Etat etat = (Etat)session.getAttribute("etat");
-		etat.setNiveauLocalisation(TypeLocalisation.FOKONTANY);
-		etat.getLocalisation().setIdFokontany(codeFkt);
-		String chemin = genererChemin(etat);
 		if(codeFkt.equals("")) return null;
 		
 		return null;
 	}
 	
+	@SuppressWarnings("unused")
 	private String genererChemin(Etat etat){
 		String chemin = "";
 		

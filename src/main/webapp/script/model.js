@@ -254,7 +254,7 @@ function onMapSelect(code, typeLocalisation){
 
 	var codeIntervenant = document.getElementById("selectIntervenant").value;
 	var annee = document.getElementById("selectAnnee").value;
-	
+
 	if(code!=''){
 		var xhttp;
 		xhttp = new XMLHttpRequest();
@@ -318,7 +318,7 @@ function onSMSMapSelect(code, typeLocalisation){
 		code = obj.codeLoc;
 		typeLocalisation = obj.typeLoc;
 	}
-	
+
 	var annee = document.getElementById("selectAnnee").value;
 
 	if(code!=''){
@@ -457,4 +457,13 @@ function setInfoboxHtml(carte){
 
 	var titreONGBox = document.getElementById("titre-ongbase-box");
 	if(titreONGBox!=null) titreONGBox.innerHTML = titreONGBase;
+
+	if(document.getElementById("selectAnnee")){
+		var annee = document.getElementById("selectAnnee").value;
+		if(annee!="VIDE"){
+			var anneeBox = document.getElementById("annee-box");
+			if(anneeBox!=null) anneeBox.innerHTML = annee;
+		}
+	}
+
 }
