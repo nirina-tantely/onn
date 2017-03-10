@@ -11,7 +11,8 @@
 			<div class="box box-success">
 				<div class="box-header with-border">
 					<h3 class="box-title">
-						<i id="chemin-box"></i> <b id="info-box"></b>
+						<a href="" onclick="location.reload();">National</a>
+						<i><b id="info-box"></b></i>
 					</h3>
 					<div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool"
@@ -34,6 +35,7 @@
 			<div class="box">
 				<div class="box-header">
 					<h3 class="box-title">Synthèse Intervenants</h3>
+					<div style="color: green;font: 'italic bold';">National<span id="titre-activite-box" ></span></div>
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
@@ -59,6 +61,7 @@
 			<div class="box">
 				<div class="box-header">
 					<h3 class="box-title">Synthèse ONG Base</h3>
+					<div style="color: green;font: 'italic bold';">National<span id="titre-ongbase-box" ></span></div>
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
@@ -131,7 +134,7 @@
 		});*/
 		var_map.data.addListener('click', function(event) {
 			var_map.data.revertStyle();
-			$('#info-box').text(event.feature.getProperty('f1'));
+			setInfoboxHtml(event.feature.getProperty('f1'));
 			var_map.data.overrideStyle(event.feature, {
 				fillColor : 'red'
 			});
@@ -157,11 +160,15 @@
 	window.onload = onloadPage;
 </script>
 <!-- DataTables -->
+<!-- 
 <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../../plugins/datatables/dataTables.bootstrap.min.js"></script>
+ -->
+<!-- 
 <script>
 	$(function() {
 		$("#example1").DataTable();
 	});
 </script>
+ -->
 

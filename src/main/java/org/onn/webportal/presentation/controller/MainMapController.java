@@ -53,14 +53,11 @@ public class MainMapController {
 		List<Localisation> allRegions = localisationService.getAllRegions();
 		model.put("regions", allRegions);		
 		List<Intervenant> intervenants = generalService.getAllIntervenants();
+		List<Integer> annees = generalService.getAllAnnees();
 		model.put("intervenants", intervenants);
+		model.put("annees", annees);
 		model.put("currentView", "HOME");//si la page courante est sms et MAP si la page courante est l'acceuil
-		
-		Etat etat = new Etat();
-		etat.setNiveauLocalisation(TypeLocalisation.NATIONALE);
-		etat.setIntervenant(new Intervenant("0","Tout",""));
-		model.put("etat", etat);
-		
+
 		return "mapview";
 	}
 
@@ -73,6 +70,7 @@ public class MainMapController {
 		etat.getLocalisation().setNomRegion(nomRegion);
 		etat.setNiveauLocalisation(TypeLocalisation.REGION);
 		String chemin = genererChemin(etat);
+		//session.setAttribute("etat", etat);
 		
 		if(codeRegion.equals("")) return null;
 		JSONObject obj = new JSONObject();

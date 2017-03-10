@@ -1,6 +1,7 @@
 package org.onn.webportal.presentation.controller;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.onn.webportal.api.enumeration.TypeLocalisation;
 import org.onn.webportal.domain.model.Etat;
 import org.onn.webportal.domain.model.Localisation;
 import org.onn.webportal.domain.service.ActiviteService;
@@ -58,18 +60,26 @@ public class GeoController {
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "surligner.do", method = RequestMethod.GET)
-	public ModelAndView highlightIntervenant(@RequestParam("codeIntervenant") String codeIntervenant, HttpServletResponse response, HttpSession session) {
-		Etat etat = (Etat)session.getAttribute("etat");
+	public ModelAndView highlightIntervenant(@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("typeLocalisation") String typeLocalisation,
+			@RequestParam("annee") String annee, HttpServletResponse response, HttpSession session) {
+		
+		Integer anneeVal;
+		try{
+			anneeVal = Integer.valueOf(annee);
+		}catch (Exception e) {
+			anneeVal = Calendar.getInstance().get(Calendar.YEAR);
+		}
+		
 		JSONArray codes;
-		switch (etat.getNiveauLocalisation()) {
+		switch (TypeLocalisation.getByValue(typeLocalisation)) {
 		case NATIONALE:
-			codes = activiteService.getCodesRegionByIntervenant(codeIntervenant);
+			codes = activiteService.getCodesRegionByIntervenant(codeIntervenant, anneeVal);
 			break;
 		case REGION:
-			codes = activiteService.getCodesCommuneByIntervenant(codeIntervenant);
+			codes = activiteService.getCodesCommuneByIntervenant(codeIntervenant, anneeVal);
 			break;
 		case COMMUNE:
-			codes = activiteService.getCodesFokontanyByIntervenant(codeIntervenant);
+			codes = activiteService.getCodesFokontanyByIntervenant(codeIntervenant, anneeVal);
 			break;
 		default:
 			codes = new JSONArray();

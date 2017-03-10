@@ -33,8 +33,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 		return activiteRepo.listeActivitesParLocalisation(localisation);
 	}
 
-	public List<Synthese> getActiviteSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, String codeIntervenant){
-		int annee = Calendar.getInstance().get(Calendar.YEAR);
+	public List<Synthese> getActiviteSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, String codeIntervenant, int annee){
 		List<List<Synthese>> res = activiteRepo.getSyntheses(codeLocalisation, typeLocalisation, annee, codeIntervenant);
 		Map<String, Synthese> map = new HashMap<String, Synthese>();
 		Synthese synthese;
@@ -52,8 +51,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation){
-		int annee = Calendar.getInstance().get(Calendar.YEAR);
+	public JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, int annee){
 		List<List<IndicateurONG>> resT1 = activiteRepo.getOngBase(codeLocalisation, typeLocalisation, 1, annee);
 		Map<String, IndicateurONG> mapT1 = new HashMap<String, IndicateurONG>();
 		IndicateurONG indicateur;
@@ -128,8 +126,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public JSONArray getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation){
-		int annee = Calendar.getInstance().get(Calendar.YEAR);
+	public JSONArray getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, int annee){
 		List<List<IndicateurSMS>> res = activiteRepo.getIndicateurSMS(codeLocalisation, typeLocalisation, annee);
 		Map<String, Map<Integer, IndicateurSMS>> mapmap = new HashMap<String, Map<Integer, IndicateurSMS>>();
 		IndicateurSMS indicateur;
@@ -153,7 +150,9 @@ public class ActiviteServiceImpl implements ActiviteService {
 		}
 		JSONArray liste = new JSONArray();
 		List<IndicateurSMS> listIndc = metadataRepo.getIndicateurSMSMetadata();
+		boolean canAdd = true;
 		for(IndicateurSMS indc: listIndc){
+			canAdd = true;
 			JSONObject obj = new JSONObject();
 			obj.put("indicateur", indc.getNom());
 			if(mapmap.containsKey(indc.getIdIndicateur())){
@@ -167,18 +166,20 @@ public class ActiviteServiceImpl implements ActiviteService {
 					}
 				}
 			}else{
+				canAdd = false;
+				/*
 				for(int mois = 1; mois<=12; mois++){
 					obj.put("m"+mois, "");
 				}
+				*/
 			}
-			liste.add(obj);
+			if(canAdd) liste.add(obj);
 		}
 		return liste;
 	}
 
 	@SuppressWarnings("unchecked")
-	public JSONArray getCodesRegionByIntervenant(String codeIntervenant){
-		int annee = Calendar.getInstance().get(Calendar.YEAR);
+	public JSONArray getCodesRegionByIntervenant(String codeIntervenant, int annee){
 		JSONArray liste = new JSONArray();
 		List<Integer> codes = activiteRepo.getCodesRegionByIntervenant(codeIntervenant, annee);
 		for(int code : codes){
@@ -188,8 +189,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public JSONArray getCodesCommuneByIntervenant(String codeIntervenant){
-		int annee = Calendar.getInstance().get(Calendar.YEAR);
+	public JSONArray getCodesCommuneByIntervenant(String codeIntervenant, int annee){
 		JSONArray liste = new JSONArray();
 		List<Integer> codes = activiteRepo.getCodesCommuneByIntervenant(codeIntervenant, annee);
 		for(int code : codes){
@@ -199,8 +199,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public JSONArray getCodesFokontanyByIntervenant(String codeIntervenant){
-		int annee = Calendar.getInstance().get(Calendar.YEAR);
+	public JSONArray getCodesFokontanyByIntervenant(String codeIntervenant, int annee){
 		JSONArray liste = new JSONArray();
 		List<Integer> codes = activiteRepo.getCodesFokontanyByIntervenant(codeIntervenant, annee);
 		for(int code : codes){

@@ -27,6 +27,8 @@
   -->
 <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
 
+<link rel="stylesheet" href="css/model.css">
+
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -160,24 +162,24 @@ desired effect
 					<c:choose>
 						<c:when test="${currentView == 'SMS'}">
 							<li class="treeview"><a href="map.do"><i
-									class="fa fa-file-o"></i> <span>PARCOURIR LA CARTE</span> <span
+									class="fa fa-file-o"></i> <span>DONNEES PUBLIQUES</span> <span
 									class="pull-right-container"> <i
 										class="fa fa-angle-left pull-right"></i>
 								</span> </a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="treeview"><a href="#"><i class="fa fa-file-o"></i>
-									<span>PARCOURIR LA CARTE</span> <span
+							<li class="active treeview"><a href="#"><i
+									class="fa fa-file-o"></i> <span>DONNEES PUBLIQUES</span> <span
 									class="pull-right-container"> <i
 										class="fa fa-angle-left pull-right"></i>
 								</span> </a>
 								<ul class="treeview-menu">
 									<li>
 										<div class="form-group">
-											<a><i class="fa  fa-angle-double-right"></i> <span>Choir
+											<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
 													une région</span></a> <select class="form-control" id="selectRegion"
 												onchange="onSelectRegion();onMapSelect(this.value, 'region')">
-												<option value="" onselect="location.reload();">Choisir...</option>
+												<option value="VIDE" onselect="location.reload();">Choisir...</option>
 												<c:forEach var="region" items="${regions}">
 													<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>
 												</c:forEach>
@@ -192,13 +194,26 @@ desired effect
 									</li>
 									<li>
 										<div class="form-group">
-											<a><i class="fa  fa-angle-double-right"></i> <span>Choir
+											<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
 													un intervenant</span></a> <select class="form-control"
 												id="selectIntervenant"
 												onchange="onMapSelect('VIDE', 'VIDE'); onIntervenantSelect();">
 												<option value="VIDE">Tout</option>
 												<c:forEach var="intervenant" items="${intervenants}">
-													<option value="${intervenant.idIntervenant}">${intervenant.nom}</option>
+													<option id="${intervenant.idIntervenant}"
+														value="${intervenant.idIntervenant}">${intervenant.nom}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</li>
+									<li>
+										<div class="form-group">
+											<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
+													une année</span></a> <select class="form-control" id="selectAnnee"
+												onchange="onMapSelect('VIDE', 'VIDE'); onIntervenantSelect();">
+												<option value="VIDE">Annee courante</option>
+												<c:forEach var="annee" items="${annees}">
+													<option id="${annee}" value="${annee}">${annee}</option>
 												</c:forEach>
 											</select>
 										</div>
@@ -226,7 +241,7 @@ desired effect
 								</span> </a></li>
 						</c:when>
 						<c:otherwise>
-							<li class="treeview"><a href="#"><i
+							<li class="active treeview"><a href="#"><i
 									class="fa fa-location-arrow"></i> <span>DONNEES SMS</span> <span
 									class="pull-right-container"> <i
 										class="fa fa-angle-left pull-right"></i>
@@ -234,10 +249,10 @@ desired effect
 								<ul class="treeview-menu">
 									<li>
 										<div class="form-group">
-											<a><i class="fa  fa-angle-double-right"></i> <span>Choir
+											<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
 													une région</span></a> <select class="form-control" id="selectRegion"
 												onchange="onSelectRegion();onSMSMapSelect(this.value, 'region')">
-												<option value="" onselect="location.reload();">Choisir...</option>
+												<option value="VIDE" onselect="location.reload();">Choisir...</option>
 												<c:forEach var="region" items="${regions}">
 													<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>
 												</c:forEach>
@@ -250,13 +265,25 @@ desired effect
 									<li>
 										<div class="form-group" id="divSelectFokontany"></div>
 									</li>
+									<li>
+										<div class="form-group">
+											<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
+													une année</span></a> <select class="form-control" id="selectAnnee"
+												onchange="onSMSMapSelect('VIDE', 'VIDE');">
+												<option value="VIDE">Annee courante</option>
+												<c:forEach var="annee" items="${annees}">
+													<option id="${annee}" value="${annee}">${annee}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</li>
 								</ul></li>
 						</c:otherwise>
 					</c:choose>
 
 					<!-- Menu de administration -->
 					<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-							<span>GESTION DES DONNES</span> <span
+							<span>GESTION DES DONNEES</span> <span
 							class="pull-right-container"> <i
 								class="fa fa-angle-left pull-right"></i>
 						</span> </a>

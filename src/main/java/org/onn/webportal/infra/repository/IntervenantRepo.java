@@ -8,4 +8,10 @@ public interface IntervenantRepo {
 
 	List<Intervenant> getAllIntervenants();
 
+	List<Integer> getAllAnnees();
+
+	List<Integer> getAllSMSAnnees();
+
+	List<Integer> getAllONGAnnees();
+
 }

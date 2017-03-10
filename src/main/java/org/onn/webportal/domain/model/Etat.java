@@ -1,5 +1,6 @@
 package org.onn.webportal.domain.model;
 
+import org.json.simple.JSONObject;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
 
 public class Etat {
@@ -24,5 +25,10 @@ public class Etat {
 	}
 	public void setNiveauLocalisation(TypeLocalisation niveauLocalisation) {
 		this.niveauLocalisation = niveauLocalisation;
+	}
+	
+	public JSONObject getJson(){
+		JSONObject obj = new JSONObject();
+		return obj;		
 	}
 }

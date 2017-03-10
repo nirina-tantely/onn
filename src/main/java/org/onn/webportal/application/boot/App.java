@@ -62,13 +62,13 @@ public class App
 
 	private void testIntervenantCode(){
 		String codeIntervenant = "intv1";
-			activiteService.getCodesRegionByIntervenant(codeIntervenant);
-			activiteService.getCodesCommuneByIntervenant(codeIntervenant);
-			activiteService.getCodesFokontanyByIntervenant(codeIntervenant);
+			activiteService.getCodesRegionByIntervenant(codeIntervenant, 2017);
+			activiteService.getCodesCommuneByIntervenant(codeIntervenant, 2017);
+			activiteService.getCodesFokontanyByIntervenant(codeIntervenant, 2017);
 	}
 
 	private void testActivieSertice(){
-			List<Synthese> liste = activiteService.getActiviteSyntese("0", TypeLocalisation.NATIONALE, "intv2");
+			List<Synthese> liste = activiteService.getActiviteSyntese("0", TypeLocalisation.NATIONALE, "intv2", 2017);
 			for(Synthese syn: liste){
 				System.out.println("==>"+syn.getIdIndicateur()+"  "+syn.getValeur());
 			}
@@ -81,7 +81,7 @@ public class App
 		}
 	}
 	private void testONGbase(){
-		JSONArray s = activiteService.getONGBaseSyntese("0", TypeLocalisation.NATIONALE);
+		JSONArray s = activiteService.getONGBaseSyntese("0", TypeLocalisation.NATIONALE, 2017);
 		System.out.println("==> "+s);
 
 	}

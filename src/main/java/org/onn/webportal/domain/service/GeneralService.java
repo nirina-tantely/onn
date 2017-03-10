@@ -8,4 +8,8 @@ public interface GeneralService {
 
 	List<Intervenant> getAllIntervenants();
 
+	List<Integer> getAllAnnees();
+
+	List<Integer> getAllSMSAnnees();
+
 }

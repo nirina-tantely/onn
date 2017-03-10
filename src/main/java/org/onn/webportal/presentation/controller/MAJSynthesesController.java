@@ -1,6 +1,7 @@
 package org.onn.webportal.presentation.controller;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletOutputStream;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@SessionAttributes("etat")
+//@SessionAttributes("etat")
 public class MAJSynthesesController {
 
 	private final Logger logger = LoggerFactory.getLogger(MAJSynthesesController.class);
@@ -45,43 +46,17 @@ public class MAJSynthesesController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "updateSynthese.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
 	public ModelAndView updateSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
-			@RequestParam("codeIntervenant") String codeIntervenant, HttpServletResponse response, HttpSession session) {
+			@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("annee") String annee, HttpServletResponse response, HttpSession session) {
 		if(code.equals("")) return null;
-		Etat etat = (Etat)session.getAttribute("etat");
-		if(code.equals("VIDE") && typeLocalisation.equals("VIDE")){//Changement d'intervenant
-			System.out.println("Etat ===> "+etat.getNiveauLocalisation().getValeur());
-			switch (etat.getNiveauLocalisation()) {
-			case COMMUNE:
-				code = etat.getLocalisation().getIdCommune();
-				break;
-			case REGION:
-				code = etat.getLocalisation().getIdRegion();
-				break;
-			case FOKONTANY:
-				code = etat.getLocalisation().getIdFokontany();
-				break;
-			case NATIONALE:
-				code = "0";
-				break;
-			}
-			typeLocalisation = etat.getNiveauLocalisation().getValeur();
-		}else{
-			switch (TypeLocalisation.getByValue(typeLocalisation)) {
-			case COMMUNE:
-				etat.getLocalisation().setIdCommune(code);
-				break;
-			case REGION:
-				etat.getLocalisation().setIdRegion(code);
-				break;
-			case FOKONTANY:
-				etat.getLocalisation().setIdFokontany(code);
-				break;
-			case NATIONALE:
-				break;
-			}
-			etat.setNiveauLocalisation(TypeLocalisation.getByValue(typeLocalisation));
+		
+		Integer anneeVal;
+		try{
+			anneeVal = Integer.valueOf(annee);
+		}catch (Exception e) {
+			anneeVal = Calendar.getInstance().get(Calendar.YEAR);
 		}
-		List<Synthese> syntheses = activiteService.getActiviteSyntese(code, TypeLocalisation.getByValue(typeLocalisation), codeIntervenant);
+		
+		List<Synthese> syntheses = activiteService.getActiviteSyntese(code, TypeLocalisation.getByValue(typeLocalisation), codeIntervenant, anneeVal);
 		JSONArray liste = new JSONArray();
 		for(Synthese syn:syntheses){
 			JSONObject obj = new JSONObject();
@@ -93,7 +68,7 @@ public class MAJSynthesesController {
 		res.put("activites", liste);
 
 
-		JSONArray indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation));
+		JSONArray indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal);
 		System.out.println("=> "+indicateurs);
 		res.put("ongbase", indicateurs);
 
@@ -115,24 +90,16 @@ public class MAJSynthesesController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "updateSMSSynthese.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
 	public ModelAndView updateSMSSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
-			HttpServletResponse response, HttpSession session) {
+			@RequestParam("annee") String annee, HttpServletResponse response, HttpSession session) {
 		if(code.equals("")) return null;
-		Etat etat = (Etat)session.getAttribute("etat");
-		switch (TypeLocalisation.getByValue(typeLocalisation)) {
-		case COMMUNE:
-			etat.getLocalisation().setIdCommune(code);
-			break;
-		case REGION:
-			etat.getLocalisation().setIdRegion(code);
-			break;
-		case FOKONTANY:
-			etat.getLocalisation().setIdFokontany(code);
-			break;
-		case NATIONALE:
-			break;
+		Integer anneeVal;
+		try{
+			anneeVal = Integer.valueOf(annee);
+		}catch (Exception e) {
+			anneeVal = Calendar.getInstance().get(Calendar.YEAR);
 		}
-		etat.setNiveauLocalisation(TypeLocalisation.getByValue(typeLocalisation));
-		JSONArray indicateurs = activiteService.getSMSBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation));
+
+		JSONArray indicateurs = activiteService.getSMSBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal);
 		JSONObject res = new JSONObject();
 		res.put("indicateurs", indicateurs);
 

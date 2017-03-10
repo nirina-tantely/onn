@@ -14,15 +14,15 @@ public interface ActiviteService {
 
 	public List<Activite> listeActivitesParLocalisation(Localisation localisation);
 
-	List<Synthese> getActiviteSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, String codeIntervenant);
+	List<Synthese> getActiviteSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, String codeIntervenant, int annee);
 
-	JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation);
+	JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, int annee);
 
-	JSONArray getCodesRegionByIntervenant(String codeIntervenant);
+	JSONArray getCodesRegionByIntervenant(String codeIntervenant, int annee);
 
-	JSONArray getCodesCommuneByIntervenant(String codeIntervenant);
+	JSONArray getCodesCommuneByIntervenant(String codeIntervenant, int annee);
 
-	JSONArray getCodesFokontanyByIntervenant(String codeIntervenant);
+	JSONArray getCodesFokontanyByIntervenant(String codeIntervenant, int annee);
 	
-	JSONArray getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation);
+	JSONArray getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, int annee);
 }

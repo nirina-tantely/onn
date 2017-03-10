@@ -53,7 +53,9 @@ public class SMSMapController {
 		List<Localisation> allRegions = localisationService.getAllRegions();
 		model.put("regions", allRegions);		
 		List<Intervenant> intervenants = generalService.getAllIntervenants();
+		List<Integer> annees = generalService.getAllSMSAnnees();
 		model.put("intervenants", intervenants);
+		model.put("annees", annees);
 		model.put("currentView", "SMS");//si la page courante est sms et MAP si la page courante est l'acceuil
 		
 		Etat etat = new Etat();

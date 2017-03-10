@@ -7,11 +7,12 @@
 <!-- Main content -->
 <section class="content">
 	<div class="row">
-		<div class="col-md-5">
+		<div class="col-md-4">
 			<div class="box box-success">
 				<div class="box-header with-border">
 					<h3 class="box-title">
-						<i id="chemin-box"></i> <b id="info-box"></b>
+						<a href="" onclick="location.reload();">National</a>
+						<i><b id="info-box"></b></i>
 					</h3>
 					<div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool"
@@ -30,10 +31,11 @@
 		</div>
 		<!-- /.col -->
 
-		<div class="col-md-7">
+		<div class="col-md-8">
 			<div class="box">
 				<div class="box-header">
 					<h3 class="box-title">Synthèse SMS</h3>
+					<div style="color: green;font: 'italic bold';">National<span id="titre-ongbase-box" ></span></div>
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
@@ -41,19 +43,19 @@
 					<table id="example1" class="table table-bordered table-striped">
 						<thead>
 							<tr>
-								<th>Indicateurs</th>
-								<th>Janv</th>
-								<th>Fev</th>
-								<th>Mars</th>
-								<th>Avril</th>
-								<th>Mai</th>
-								<th>Juin</th>
-								<th>Juillet</th>
-								<th>Aout</th>
-								<th>Sept</th>
-								<th>Oct</th>
-								<th>Nov</th>
-								<th>Dec</th>
+								<th>Indicateurs/Mois</th>
+								<th>J</th>
+								<th>F</th>
+								<th>M</th>
+								<th>A</th>
+								<th>M</th>
+								<th>J</th>
+								<th>J</th>
+								<th>A</th>
+								<th>S</th>
+								<th>O</th>
+								<th>N</th>
+								<th>D</th>
 							</tr>
 						</thead>
 						<tbody id="sms-tab-body">
@@ -114,7 +116,7 @@
 		});*/
 		var_map.data.addListener('click', function(event) {
 			var_map.data.revertStyle();
-			$('#info-box').text(event.feature.getProperty('f1'));
+			setInfoboxHtml(event.feature.getProperty('f1'));
 			var_map.data.overrideStyle(event.feature, {
 				fillColor : 'red'
 			});
@@ -140,8 +142,10 @@
 	window.onload = onloadPage;
 </script>
 <!-- DataTables -->
+<!-- 
 <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../../plugins/datatables/dataTables.bootstrap.min.js"></script>
+ -->
 <!-- 
 <script>
 	$(function() {

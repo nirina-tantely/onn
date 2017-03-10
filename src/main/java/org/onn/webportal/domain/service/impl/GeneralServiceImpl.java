@@ -17,4 +17,19 @@ public class GeneralServiceImpl implements GeneralService {
 		return intervenantRepo.getAllIntervenants();
 	}
 
+	public List<Integer> getAllAnnees() {
+		List<Integer> anneeONG = intervenantRepo.getAllONGAnnees();
+		List<Integer> anneeAct = intervenantRepo.getAllAnnees();
+		for(Integer annee: anneeONG){
+			if(!anneeAct.contains(annee)){
+				anneeAct.add(annee);
+			}
+		}
+		return anneeAct;
+	}
+
+	public List<Integer> getAllSMSAnnees() {
+		return intervenantRepo.getAllSMSAnnees();
+	}
+
 }

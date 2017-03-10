@@ -30,4 +30,26 @@ public class IntervenantRepoImpl implements IntervenantRepo {
 		result = jdbcTemplate.query(requete.toString(), new IntervenantRowMapper());
 		return result;
 	}
+	
+	
+	public List<Integer> getAllAnnees() {
+		StringBuilder requete = new StringBuilder().append("SELECT  annee FROM activite GROUP BY annee ORDER BY annee asc;");
+		List<Integer> result = new ArrayList<Integer>();
+		result = jdbcTemplate.queryForList(requete.toString(), Integer.class);
+		return result;
+	}
+	
+	public List<Integer> getAllONGAnnees() {
+		StringBuilder requete = new StringBuilder().append("SELECT  annee FROM ongbase GROUP BY annee ORDER BY annee asc;");
+		List<Integer> result = new ArrayList<Integer>();
+		result = jdbcTemplate.queryForList(requete.toString(), Integer.class);
+		return result;
+	}
+	
+	public List<Integer> getAllSMSAnnees() {
+		StringBuilder requete = new StringBuilder().append("SELECT  annee FROM donnees_sms GROUP BY annee ORDER BY annee asc;");
+		List<Integer> result = new ArrayList<Integer>();
+		result = jdbcTemplate.queryForList(requete.toString(), Integer.class);
+		return result;
+	}
 }
