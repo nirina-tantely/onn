@@ -1,5 +1,6 @@
 package org.onn.webportal.domain.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -156,14 +157,15 @@ public class IndicateurONG {
 
 	public String valeurAfficher(){
 		String res = "";
+		DecimalFormat df = new DecimalFormat("#.##");
 		switch (ModeCalculEnum.getByValue(modeCalcule)) {
 		case MAX_MOYENNE:
 			float val = calculerMaxMoyen();
-			if(val>-1) res = String.valueOf(val);
+			if(val>-1) res = df.format(val);
 			break;
 		case SOMME:
 			float somme = calculerSomme();
-			if(somme>-1) res  =  String.valueOf(somme);
+			if(somme>-1) res = df.format(somme);
 			break;
 		default:
 			break;
