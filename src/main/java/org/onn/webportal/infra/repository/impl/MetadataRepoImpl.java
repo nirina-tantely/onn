@@ -42,7 +42,7 @@ public class MetadataRepoImpl implements MetadataRepo {
 	}
 
 	public List<IndicateurONG> loadIndicateurONG() {
-		StringBuilder requete = new StringBuilder().append("SELECT  id,  id_indicateur,  nom_court, definition, code_indicateur_cat, desagregation, modalite_calcul, categorie, indc_perfomance, info_comp, type_indc, code_complet, rang FROM  indicateur_ongbase ORDER BY id_indicateur ASC;");
+		StringBuilder requete = new StringBuilder().append("SELECT  id,  id_indicateur,  nom_court, definition, code_indicateur_cat, desagregation, modalite_calcul, categorie, indc_perfomance, info_comp, type_indc, code_complet, rang, mode_calcule FROM  indicateur_ongbase ORDER BY id_indicateur ASC;");
 		List<IndicateurONG> result = jdbcTemplate.query(requete.toString(), new IndicateurONGBaseRowMapper());
 		return result;
 	}

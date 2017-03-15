@@ -41,7 +41,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 			for(Synthese syn :  liste){
 				synthese = map.get(syn.getIdIndicateur());
 				if(synthese!=null){
-					synthese.setValeur(synthese.getValeur()+syn.getValeur()); //mode de calcule
+					synthese.setValeur((synthese.getValeur()+syn.getValeur())>0?1:0); //mode de calcule présence/abscence
 				}else{
 					map.put(syn.getIdIndicateur(), syn);
 				}
@@ -59,8 +59,18 @@ public class ActiviteServiceImpl implements ActiviteService {
 			for(IndicateurONG indc :  liste){
 				indicateur = mapT1.get(indc.getIdIndicateur());
 				if(indicateur!=null){
-					indicateur.setValeur(modeCalcule(indicateur.getValeur(),indc.getValeur()));//mode de calcul
+					if(indicateur.getVals().containsKey(indc.getMois())){
+						indicateur.getVals().get(indc.getMois()).add(indc.getValeur());
+					}else{
+						List<Float> valeurs = new ArrayList<Float>();
+						valeurs.add(indc.getValeur());
+						indicateur.getVals().put(indc.getMois(), valeurs);
+					}
 				}else{
+					List<Float> valeurs = new ArrayList<Float>();
+					valeurs.add(indc.getValeur());
+					indc.getVals().put(indc.getMois(), valeurs);
+					
 					mapT1.put(indc.getIdIndicateur(), indc);
 				}
 			}
@@ -72,8 +82,18 @@ public class ActiviteServiceImpl implements ActiviteService {
 			for(IndicateurONG indc :  liste){
 				indicateur = mapT2.get(indc.getIdIndicateur());
 				if(indicateur!=null){
-					indicateur.setValeur(modeCalcule(indicateur.getValeur(),indc.getValeur()));//mode de calcul
+					if(indicateur.getVals().containsKey(indc.getMois())){
+						indicateur.getVals().get(indc.getMois()).add(indc.getValeur());
+					}else{
+						List<Float> valeurs = new ArrayList<Float>();
+						valeurs.add(indc.getValeur());
+						indicateur.getVals().put(indc.getMois(), valeurs);
+					}
 				}else{
+					List<Float> valeurs = new ArrayList<Float>();
+					valeurs.add(indc.getValeur());
+					indc.getVals().put(indc.getMois(), valeurs);
+					
 					mapT2.put(indc.getIdIndicateur(), indc);
 				}
 			}
@@ -85,8 +105,18 @@ public class ActiviteServiceImpl implements ActiviteService {
 			for(IndicateurONG indc :  liste){
 				indicateur = mapT3.get(indc.getIdIndicateur());
 				if(indicateur!=null){
-					indicateur.setValeur(modeCalcule(indicateur.getValeur(),indc.getValeur()));//mode de calcul
+					if(indicateur.getVals().containsKey(indc.getMois())){
+						indicateur.getVals().get(indc.getMois()).add(indc.getValeur());
+					}else{
+						List<Float> valeurs = new ArrayList<Float>();
+						valeurs.add(indc.getValeur());
+						indicateur.getVals().put(indc.getMois(), valeurs);
+					}
 				}else{
+					List<Float> valeurs = new ArrayList<Float>();
+					valeurs.add(indc.getValeur());
+					indc.getVals().put(indc.getMois(), valeurs);
+					
 					mapT3.put(indc.getIdIndicateur(), indc);
 				}
 			}
@@ -98,8 +128,18 @@ public class ActiviteServiceImpl implements ActiviteService {
 			for(IndicateurONG indc :  liste){
 				indicateur = mapT4.get(indc.getIdIndicateur());
 				if(indicateur!=null){
-					indicateur.setValeur(modeCalcule(indicateur.getValeur(),indc.getValeur()));//mode de calcul
+					if(indicateur.getVals().containsKey(indc.getMois())){
+						indicateur.getVals().get(indc.getMois()).add(indc.getValeur());
+					}else{
+						List<Float> valeurs = new ArrayList<Float>();
+						valeurs.add(indc.getValeur());
+						indicateur.getVals().put(indc.getMois(), valeurs);
+					}
 				}else{
+					List<Float> valeurs = new ArrayList<Float>();
+					valeurs.add(indc.getValeur());
+					indc.getVals().put(indc.getMois(), valeurs);
+					
 					mapT4.put(indc.getIdIndicateur(), indc);
 				}
 			}
@@ -111,19 +151,16 @@ public class ActiviteServiceImpl implements ActiviteService {
 			for(IndicateurONG indc: listIndc){
 				JSONObject obj = new JSONObject();
 				obj.put("indicateur", indc.getNom());
-				if(mapT1.size()>0)	obj.put("T1", mapT1.get(indc.getIdIndicateur()).getValeur());else obj.put("T1", "");
-				if(mapT2.size()>0)	obj.put("T2", mapT2.get(indc.getIdIndicateur()).getValeur());else obj.put("T2", "");
-				if(mapT3.size()>0)	obj.put("T3", mapT3.get(indc.getIdIndicateur()).getValeur());else obj.put("T3", "");
-				if(mapT4.size()>0)	obj.put("T4", mapT4.get(indc.getIdIndicateur()).getValeur());else obj.put("T4", "");
+				if(mapT1.size()>0)	obj.put("T1", mapT1.get(indc.getIdIndicateur()).valeurAfficher());else obj.put("T1", "");
+				if(mapT2.size()>0)	obj.put("T2", mapT2.get(indc.getIdIndicateur()).valeurAfficher());else obj.put("T2", "");
+				if(mapT3.size()>0)	obj.put("T3", mapT3.get(indc.getIdIndicateur()).valeurAfficher());else obj.put("T3", "");
+				if(mapT4.size()>0)	obj.put("T4", mapT4.get(indc.getIdIndicateur()).valeurAfficher());else obj.put("T4", "");
 				liste.add(obj);
 			}
 		}
 		return liste;
 	}
 
-	private int modeCalcule(int val1, int val2){
-		return val1 + val2;
-	}
 
 	@SuppressWarnings("unchecked")
 	public JSONArray getSMSBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, int annee){
@@ -171,7 +208,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 				for(int mois = 1; mois<=12; mois++){
 					obj.put("m"+mois, "");
 				}
-				*/
+				 */
 			}
 			if(canAdd) liste.add(obj);
 		}

@@ -178,7 +178,7 @@ desired effect
 										<div class="form-group">
 											<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
 													une région</span></a> <select class="form-control" id="selectRegion"
-												onchange="onSelectRegion();onMapSelect(this.value, 'region')">
+												onchange="onSelectRegion();onMapSelect(this.value, 'region');onIntervenantSelect();">
 												<option value="VIDE" onselect="location.reload();">Choisir...</option>
 												<c:forEach var="region" items="${regions}">
 													<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>

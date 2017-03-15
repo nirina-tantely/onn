@@ -17,12 +17,15 @@ public class ONGBaseSyntheseRowMapper implements RowMapper<List<IndicateurONG>> 
 
 	public List<IndicateurONG> mapRow(ResultSet rs, int rowNum) throws SQLException {
 		List<IndicateurONG> result = new ArrayList<IndicateurONG>();
-		int val;
+		float val;
+		int mois;
 		IndicateurONG indc;
 		for(IndicateurONG metadata: indicateurONG){
-			val  = rs.getInt(metadata.getIdIndicateur());
+			val = rs.getObject(metadata.getIdIndicateur())!=null?rs.getFloat(metadata.getIdIndicateur()):-1; //-1 si la valeur dans la base est nulle
+			mois = rs.getInt("mois");
 			indc = metadata.copy();
 			indc.setValeur(val);
+			indc.setMois(mois);
 			result.add(indc);
 		}
 		return result;

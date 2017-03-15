@@ -46,10 +46,10 @@ public class App
 
 		//testActivieSertice();
 		
-		//testONGbase();
+		testONGbase();
 		//testGeneral();
 		
-		testIntervenantCode();
+		//testIntervenantCode();
 	}
 
 	private void testTaloha(){
@@ -68,7 +68,7 @@ public class App
 	}
 
 	private void testActivieSertice(){
-			List<Synthese> liste = activiteService.getActiviteSyntese("0", TypeLocalisation.NATIONALE, "intv2", 2017);
+			List<Synthese> liste = activiteService.getActiviteSyntese("0", TypeLocalisation.NATIONALE, "intv1", 2017);
 			for(Synthese syn: liste){
 				System.out.println("==>"+syn.getIdIndicateur()+"  "+syn.getValeur());
 			}

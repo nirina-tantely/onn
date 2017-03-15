@@ -4,6 +4,7 @@ function onSelectRegion(){
 		location.reload();
 		return;
 	}
+	document.getElementById("map-loading").className = "overlay";
 	var nomRegion = document.getElementById(codeRegion).text;	
 	//alert('BOUBOU  '+nomRegion);
 	var xhttp;
@@ -24,7 +25,7 @@ function onSelectRegion(){
 				//console.log('===>'+geoJson);
 				//console.log(listeCommuneJson);
 				selectCommuneContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choir une commune</span></a>';
-				selectCommuneContent += '<select class="form-control" id="selectCommune" onchange="onSelectCommune();onMapSelect(this.value, \'commune\');">';
+				selectCommuneContent += '<select class="form-control" id="selectCommune" onchange="onSelectCommune();onMapSelect(this.value, \'commune\');onIntervenantSelect();">';
 				selectCommuneContent += '<option value="VIDE">Choisir une commune...</option>';
 				for(var key in listeCommuneJson.communes){
 					selectCommuneContent += '<option id="'+listeCommuneJson.communes[key].codeCommune+'" value="'+listeCommuneJson.communes[key].codeCommune+'">'+listeCommuneJson.communes[key].nomCommune+'</option>';
@@ -55,6 +56,7 @@ function onSelectRegion(){
 						bounds.extend(point);
 					}
 					var_map.fitBounds(bounds);
+					document.getElementById("map-loading").className = "";
 				}
 			}
 		}
@@ -71,6 +73,7 @@ function onSelectCommune(){
 	var nomCommune = document.getElementById(codeCommune).text;	
 	var xhttp;
 	xhttp = new XMLHttpRequest();
+	document.getElementById("map-loading").className = "overlay";
 	xhttp.onreadystatechange = function() {
 		if (xhttp.readyState == 4 && xhttp.status == 200) { 
 			var selectFktContent;
@@ -85,7 +88,7 @@ function onSelectCommune(){
 				setInfoboxHtml();
 				//console.log(listeFktJson);
 				selectFktContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choir un fokontany</span></a>';
-				selectFktContent += '<select class="form-control" id="selectFokontany" onChange="onSelectFkt();onMapSelect(this.value, \'fokontany\');">';
+				selectFktContent += '<select class="form-control" id="selectFokontany" onChange="onSelectFkt();onMapSelect(this.value, \'fokontany\');onIntervenantSelect();">';
 				selectFktContent += '<option value="VIDE">Choisir une fokontany...</option>';
 				for(var key in listeFktJson.fokontany){
 					selectFktContent += '<option id="'+listeFktJson.fokontany[key].codeFkt+'" value="'+listeFktJson.fokontany[key].codeFkt+'">'+listeFktJson.fokontany[key].nomFkt+'</option>';
@@ -118,6 +121,7 @@ function onSelectCommune(){
 						}
 					}
 					var_map.fitBounds(bounds);
+					document.getElementById("map-loading").className = "";
 				}
 			}
 			document.getElementById("divSelectFokontany").innerHTML = selectFktContent;	
@@ -187,11 +191,15 @@ function onCheckAfficherTout(checkbox){
 }
 
 function onIntervenantSelect(){
+
+	if(document.getElementById("selectIntervenant")==null) return;
 	var codeIntervenant = document.getElementById("selectIntervenant").value;
+	//if(codeIntervenant=='VIDE') return;
+
 	var annee = document.getElementById("selectAnnee").value;
 	var obj = { codeLoc: "", typeLoc: "" };
 	getValeursCriteres(obj);
-	console.log('code:'+obj.codeLoc+' type'+obj.typeLoc);
+	//console.log('code:'+obj.codeLoc+' type: '+obj.typeLoc);
 	var code = obj.codeLoc;
 	var typeLocalisation = obj.typeLoc;
 	var xhttp;
@@ -204,7 +212,7 @@ function onIntervenantSelect(){
 				setInfoboxHtml();
 				var jsonObj = JSON.parse(responseHttp);
 				var codes = jsonObj.codes;
-				console.log(codes);
+				//console.log(codes);
 				var divMapContainer = document.getElementById("map-container");
 				if(divMapContainer != null){
 					/*
@@ -222,9 +230,21 @@ function onIntervenantSelect(){
 					var_map.data.revertStyle();
 					var_map.data.setStyle(function(feature) {
 						var code = feature.getProperty('f2');
+						var typeLoc = feature.getProperty('f4');
 						var color = 'green';
 						if (codes.includes(code)) {//FIXME Ajouter des conditions pour les points et retourner d'autres styles
-							color = 'blue';
+							if(typeLoc=='fokontany'){
+								return /** @type {google.maps.Data.StyleOptions} */({
+									icon : '../images/black_pointer.png'
+								});
+							}else{
+								color = 'blue';
+								return /** @type {google.maps.Data.StyleOptions} */({
+									fillColor : color,
+									strokeWeight : 1.5
+								});
+							}
+
 						}
 						return /** @type {google.maps.Data.StyleOptions} */({
 							fillColor : color,
@@ -247,7 +267,7 @@ function onMapSelect(code, typeLocalisation){
 	if(code=='VIDE' && typeLocalisation=='VIDE'){//changement au niveau des autres criteres non cartographiques ex: intervenant ou annee
 		var obj = { codeLoc: "", typeLoc: "" };
 		getValeursCriteres(obj);
-		console.log('code:'+obj.codeLoc+' type'+obj.typeLoc);
+		//console.log('code:'+obj.codeLoc+' type: '+obj.typeLoc);
 		code = obj.codeLoc;
 		typeLocalisation = obj.typeLoc;
 	}
@@ -255,7 +275,9 @@ function onMapSelect(code, typeLocalisation){
 	var codeIntervenant = document.getElementById("selectIntervenant").value;
 	var annee = document.getElementById("selectAnnee").value;
 
-	if(code!=''){
+	//console.log('==> code:'+code+' type: '+typeLocalisation);
+	if(code!=""){
+		//console.log('||||==> code:'+code+' type: '+typeLocalisation);
 		var xhttp;
 		xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
@@ -304,6 +326,8 @@ function onMapSelect(code, typeLocalisation){
 		xhttp.responseType = "text";
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.send();
+	}else{
+		//console.log('==> ny tay!');
 	}
 }
 
@@ -314,7 +338,7 @@ function onSMSMapSelect(code, typeLocalisation){
 	if(code=='VIDE' && typeLocalisation=='VIDE'){//changement au niveau des autres criteres non cartographiques ex: intervenant ou annee
 		var obj = { codeLoc: "", typeLoc: "" };
 		getValeursCriteres(obj);
-		console.log('code:'+obj.codeLoc+' type'+obj.typeLoc);
+		//console.log('code:'+obj.codeLoc+' type'+obj.typeLoc);
 		code = obj.codeLoc;
 		typeLocalisation = obj.typeLoc;
 	}
@@ -390,7 +414,7 @@ function getValeursCriteres(obj){
 		}
 	}
 
-	obj.codeLoc = 0;
+	obj.codeLoc = "0";
 	obj.typeLoc = "nationale";
 
 }
@@ -428,7 +452,7 @@ function setInfoboxHtml(carte){
 		if(codeFkt != "VIDE"){
 			var nomFkt = document.getElementById(codeFkt).text;
 			chemin+=">";
-			chemin+=codeFkt;
+			chemin+=nomFkt;
 		}
 	}
 

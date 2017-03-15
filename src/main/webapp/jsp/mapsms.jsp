@@ -13,7 +13,7 @@
 					<h3 class="box-title">
 					<b id="annee-box">${anneeCourante}</b>
 						<a href="" onclick="location.reload();">:National</a>
-						<i><b id="info-box"></b></i>
+						<i><b id="info-box" style="word-wrap: break-word;"></b></i>
 					</h3>
 					<div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool"
@@ -26,6 +26,9 @@
 				<div id="map-container" class="box-body" style="height: 700">
 					<!-- Mettre ici la carte -->
 				</div>
+				<div class="" id="map-loading">
+					<i class="fa fa-refresh fa-spin"></i>
+				</div>
 				<!-- /.box-body -->
 			</div>
 			<!-- /.box -->
@@ -36,7 +39,7 @@
 			<div class="box">
 				<div class="box-header">
 					<h3 class="box-title">Synthèse SMS</h3>
-					<div style="color: green;font: 'italic bold';">National<span id="titre-ongbase-box" ></span></div>
+					<div style="color: green;font: 'italic bold';">National<span id="titre-ongbase-box" style="word-wrap: break-word;"></span></div>
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">

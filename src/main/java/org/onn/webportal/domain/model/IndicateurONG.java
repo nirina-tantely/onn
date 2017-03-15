@@ -1,11 +1,21 @@
 package org.onn.webportal.domain.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.onn.webportal.api.enumeration.ModeCalculEnum;
+
 public class IndicateurONG {
 
 	private String idIndicateur;
+
 	private String nom;
 	private String definition;
 	private String codeCategorie;
+	private int modeCalcule;
 	/**
 	 * Désagrégation par tranche d'âge
 	 */
@@ -21,27 +31,35 @@ public class IndicateurONG {
 	private String typeIndc;
 	private boolean codeComplet;
 	private int rang;
-	
-	private int valeur;
-	
+
+	private float valeur;	
+	private int mois;
+
+
+	private Map<Integer, List<Float>> vals;
+
 	public IndicateurONG(){
-		
+
 	}
-	
-	public IndicateurONG(String idIndicateur, String nom, String definition, String codeCategorie, String desagregation,
-			String indcPerfomance, String infoComp, String typeIndc, boolean codeComplet, int rang) {
+
+	public IndicateurONG(String idIndicateur, String nom, String definition, String codeCategorie, int modeCalcule,
+			String desagregation, String indcPerfomance, String infoComp, String typeIndc, boolean codeComplet,
+			int rang, float valeur) {
 		super();
 		this.idIndicateur = idIndicateur;
 		this.nom = nom;
 		this.definition = definition;
 		this.codeCategorie = codeCategorie;
+		this.modeCalcule = modeCalcule;
 		this.desagregation = desagregation;
 		this.indcPerfomance = indcPerfomance;
 		this.infoComp = infoComp;
 		this.typeIndc = typeIndc;
 		this.codeComplet = codeComplet;
 		this.rang = rang;
+		this.valeur = valeur;
 	}
+
 	public String getIdIndicateur() {
 		return idIndicateur;
 	}
@@ -102,15 +120,90 @@ public class IndicateurONG {
 	public void setRang(int rang) {
 		this.rang = rang;
 	}
-	public int getValeur() {
+	public float getValeur() {
 		return valeur;
 	}
-	public void setValeur(int valeur) {
+	public void setValeur(float valeur) {
 		this.valeur = valeur;
 	}
-	
+
 	public IndicateurONG copy(){
-		return new IndicateurONG(idIndicateur, nom, definition, codeCategorie, desagregation, indcPerfomance, infoComp, typeIndc, codeComplet, rang);
+		return new IndicateurONG(idIndicateur, nom, definition, codeCategorie, modeCalcule, desagregation, indcPerfomance, infoComp, typeIndc, codeComplet, rang, valeur);
 	}
 
+	public int getModeCalcule() {	
+		return modeCalcule;
+	}
+
+	public void setModeCalcule(int modeCalcule) {
+		this.modeCalcule = modeCalcule;
+	}
+
+	public int getMois() {
+		return mois;
+	}
+
+	public void setMois(int mois) {
+		this.mois = mois;
+	}
+
+	public Map<Integer, List<Float>> getVals() {
+		if(vals==null) {
+			vals = new HashMap<Integer, List<Float>>();
+		}
+		return vals;
+	}
+
+	public String valeurAfficher(){
+		String res = "";
+		switch (ModeCalculEnum.getByValue(modeCalcule)) {
+		case MAX_MOYENNE:
+			float val = calculerMaxMoyen();
+			if(val>-1) res = String.valueOf(val);
+			break;
+		case SOMME:
+			float somme = calculerSomme();
+			if(somme>-1) res  =  String.valueOf(somme);
+			break;
+		default:
+			break;
+		}
+		return res;
+	}
+
+	/**
+	 * Calculer le maximal des mayennes pour chaque mois
+	 * @return
+	 */
+	private float calculerMaxMoyen(){
+		float maxMoyen = -1;
+		if(vals!=null)
+		for(Entry<Integer, List<Float>> val: vals.entrySet()){
+			int count = 0;
+			int total = 0;
+			float moyen = -1;
+			for(float v : val.getValue()){
+				if(v>=0){
+					count++;
+					total+=v;
+				}
+			}
+			if(count>0) moyen = (float) total/(float)count;
+			if(moyen>maxMoyen) maxMoyen = moyen;
+		}
+		return maxMoyen;
+	}
+
+	private float calculerSomme(){
+		float somme = 0;
+		if(vals!=null)
+		for(Entry<Integer, List<Float>> val: vals.entrySet()){
+			for(float v : val.getValue()){
+				if(v>=0){//valeur non nulle
+					somme+=v;
+				}
+			}
+		}
+		return somme;
+	}
 }

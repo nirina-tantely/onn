@@ -3,17 +3,12 @@ package org.onn.webportal.presentation.controller;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
-import org.onn.webportal.domain.model.Etat;
-import org.onn.webportal.domain.model.IndicateurONG;
-import org.onn.webportal.domain.model.Localisation;
 import org.onn.webportal.domain.model.Synthese;
 import org.onn.webportal.domain.service.ActiviteService;
 import org.onn.webportal.domain.service.GeoService;
@@ -25,7 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
