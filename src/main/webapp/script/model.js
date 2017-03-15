@@ -235,7 +235,7 @@ function onIntervenantSelect(){
 						if (codes.includes(code)) {//FIXME Ajouter des conditions pour les points et retourner d'autres styles
 							if(typeLoc=='fokontany'){
 								return /** @type {google.maps.Data.StyleOptions} */({
-									icon : '../images/black_pointer.png'
+									icon : 'images/black_pointer.png'
 								});
 							}else{
 								color = 'blue';
