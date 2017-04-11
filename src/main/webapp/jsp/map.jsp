@@ -22,8 +22,23 @@
 						</button>
 					</div>
 				</div>
+
+				<div>
+					<ul>
+						<li>Pays: Madagascar
+						<li>Region: Analamanga
+						<li>Commune: Tana
+						<li>Fokontany: Soaniadanana
+						<li>Année: 2017
+						<li>Communes d'intervention<div style="width:50px;height:8px;background-color:#AFA8F6;border:1px solid #000;"></div></li>
+						<li>Autres communes<div style="width:50px;height:8px;background-color:#A9CEA3;border:1px solid #000;"></div></li>
+					</ul>
+				</div>
+
 				<!-- /.box-header -->
-				<div id="map-container" class="box-body" style="height: 700">
+				<button class="map-print">Exporter la carte</button>
+				<div id="map-container" class="box-body map-container"
+					style="height: 700">
 					<!-- Mettre ici la carte -->
 				</div>
 				<div class="" id="map-loading">
@@ -40,20 +55,21 @@
 				<div class="box-header">
 					<h3 class="box-title">Synthèse Intervenants</h3>
 					<div style="color: green; font: 'italic bold';">
-						National<span id="titre-activite-box" style="word-wrap: break-word;"></span>
+						National<span id="titre-activite-box"
+							style="word-wrap: break-word;"></span>
 					</div>
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
 					<!-- Mette le tableau de synthèse -->
 					<table id="example1" class="table table-bordered table-striped">
-						<thead>
+						<thead style="font-size: 14px;">
 							<tr>
 								<th>Indicateurs</th>
 								<th>Valeurs</th>
 							</tr>
 						</thead>
-						<tbody id="intervenant-tab-body">
+						<tbody id="intervenant-tab-body" style="font-size: 13px;">
 						</tbody>
 					</table>
 				</div>
@@ -68,14 +84,15 @@
 				<div class="box-header">
 					<h3 class="box-title">Synthèse ONG Base</h3>
 					<div style="color: green; font: 'italic bold';">
-						National<span id="titre-ongbase-box" style="word-wrap: break-word;"></span>
+						National<span id="titre-ongbase-box"
+							style="word-wrap: break-word;"></span>
 					</div>
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
 					<!-- Mette le tableau de synthèse -->
 					<table id="example1" class="table table-bordered table-striped">
-						<thead>
+						<thead style="font-size: 14px;">
 							<tr>
 								<th>Indicateurs</th>
 								<th>T1</th>
@@ -84,7 +101,7 @@
 								<th>T4</th>
 							</tr>
 						</thead>
-						<tbody id="ongbase-tab-body">
+						<tbody id="ongbase-tab-body" style="font-size: 13px;">
 						</tbody>
 					</table>
 				</div>
@@ -111,6 +128,7 @@
 
 		var var_mapoptions = {
 			center : var_location,
+			scaleControl : true,
 			zoom : 6
 		//15
 		};
@@ -125,6 +143,10 @@
 
 		var_map = new google.maps.Map(document.getElementById("map-container"),
 				var_mapoptions);
+
+		var infoBox = document.createElement('div');
+		infoBox.innerHTML = "<div id='narrow-box'><img src='images/narrow.png'/></div>";
+		var_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(infoBox);
 
 		//Load GeoJSON
 		var_map.data.loadGeoJson("geojson/regions.json");
@@ -148,6 +170,23 @@
 			});
 			onMapSelect(event.feature.getProperty('f2'), event.feature
 					.getProperty('f4'));
+		});
+
+		var_map.data.addListener('dblclick', function(event) {
+			var typeLoc = event.feature.getProperty('f4');
+			if (event.feature.getProperty('f3') == "region") {
+				document.getElementById("selectRegion").value = event.feature
+						.getProperty('f2');
+				onSelectRegion();
+				onMapSelect(event.feature.getProperty('f2'), 'region');
+				onIntervenantSelect();
+			} else if (typeLoc == "commune") {
+				document.getElementById("selectCommune").value = event.feature
+						.getProperty('f2');
+				onSelectCommune();
+				onMapSelect(event.feature.getProperty('f2'), 'commune');
+				onIntervenantSelect();
+			}
 		});
 
 		var_map.data.setStyle(function(feature) {

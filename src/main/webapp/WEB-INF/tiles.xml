@@ -10,4 +10,7 @@
     <definition name="smsview" template="/jsp/model.jsp">
         <put-attribute name="principal"  value="/jsp/mapsms.jsp" />
     </definition>
+    	<definition name="gestionutilisateur" template="/jsp/model.jsp">
+		<put-attribute name="principal" value="/jsp/gestionutilisateur.jsp" />
+	</definition>
 </tiles-definitions>

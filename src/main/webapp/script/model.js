@@ -1,6 +1,6 @@
 function onSelectRegion(){
 	var codeRegion = document.getElementById("selectRegion").value;	
-	if(codeRegion==''){
+	if(codeRegion=='VIDE'){
 		location.reload();
 		return;
 	}
@@ -24,7 +24,7 @@ function onSelectRegion(){
 				setInfoboxHtml();
 				//console.log('===>'+geoJson);
 				//console.log(listeCommuneJson);
-				selectCommuneContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choir une commune</span></a>';
+				selectCommuneContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choisir une commune</span></a>';
 				selectCommuneContent += '<select class="form-control" id="selectCommune" onchange="onSelectCommune();onMapSelect(this.value, \'commune\');onIntervenantSelect();">';
 				selectCommuneContent += '<option value="VIDE">Choisir une commune...</option>';
 				for(var key in listeCommuneJson.communes){
@@ -87,7 +87,7 @@ function onSelectCommune(){
 				var chemin = jsonObj.chemin;
 				setInfoboxHtml();
 				//console.log(listeFktJson);
-				selectFktContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choir un fokontany</span></a>';
+				selectFktContent = '<a><i class="fa  fa-angle-double-right"></i> <span>Choisir un fokontany</span></a>';
 				selectFktContent += '<select class="form-control" id="selectFokontany" onChange="onSelectFkt();onMapSelect(this.value, \'fokontany\');onIntervenantSelect();">';
 				selectFktContent += '<option value="VIDE">Choisir une fokontany...</option>';
 				for(var key in listeFktJson.fokontany){
@@ -262,6 +262,9 @@ function onIntervenantSelect(){
 }
 
 function onMapSelect(code, typeLocalisation){
+	if(typeLocalisation == 'region' && code == 'VIDE') {
+		return;
+	}
 	if(typeLocalisation == null) typeLocalisation='region';
 
 	if(code=='VIDE' && typeLocalisation=='VIDE'){//changement au niveau des autres criteres non cartographiques ex: intervenant ou annee
@@ -489,5 +492,4 @@ function setInfoboxHtml(carte){
 			if(anneeBox!=null) anneeBox.innerHTML = annee;
 		}
 	}
-
 }

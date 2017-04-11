@@ -1,0 +1,270 @@
+/**
+ * Fonctions javascript d'administration
+ */
+
+function saveOrupdateUser(){
+	var valide = true;
+	var messError = "";
+	if (document.getElementById("nom").value=="" || 
+			document.getElementById("pseudo").value=="" ||
+			document.getElementById("role").value=="VIDE" ||
+			document.getElementById("password").value=="" ||
+			document.getElementById("rePassword").value=="" ){
+		valide = false;
+		messError = "Un ou plusieurs des champs sont vides!";
+	} ;
+
+	if(valide){
+		if ( document.getElementById("rePassword").value != document.getElementById("password").value ){
+			valide = false;
+			messError = "Les mots de passes sont différents!";
+		} ;
+	}
+
+	if(valide && document.getElementById("id").value>0){
+		document.getElementById("userForm").submit();
+		return;
+	}
+
+	if(valide){
+		var pseudo = document.getElementById("pseudo").value;
+		var xhttp;
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4 && xhttp.status == 200) { 
+				var selectFktContent;
+				var responseHttp = xhttp.responseText;
+				var jsonObj = JSON.parse(responseHttp);
+				var error = jsonObj.Error;
+				if(error=="OUI"){
+					var message = jsonObj.Message;
+					alert(message);
+				}else{
+					document.getElementById("userForm").submit();
+				}
+			}
+		};
+		xhttp.open("GET", "checkUser.do?pseudo="+pseudo, true);
+		xhttp.responseType = "text";
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send();
+	}else{
+		alert(messError);
+	}	
+}
+
+function onDeleteUser(){
+	var idUser = document.getElementById("id").value;
+	if(idUser==""){
+		alert('Selectionez un utilisateur!');
+		return;
+	}
+
+	var r = confirm("Voulez vous vraiment supprimer cet utilisateur?");
+	if(r==false) return;
+
+	var xhttp;
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (xhttp.readyState == 4 && xhttp.status == 200) { 
+			document.location.href="gestion_acces.do";
+		}
+	};
+	xhttp.open("GET", "deleteUser.do?id="+idUser, true);
+	xhttp.responseType = "text";
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send();
+}
+
+function onselectUser(){
+	var pseudo = document.getElementById("selectUser").value;
+	if(pseudo=="VIDE"){
+		document.getElementById("userForm").reset();
+		return;
+	}
+	var xhttp;
+	xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (xhttp.readyState == 4 && xhttp.status == 200) { 
+			var selectFktContent;
+			var responseHttp = xhttp.responseText;
+			var jsonObj = JSON.parse(responseHttp);
+			console.log(jsonObj.utilisateur);
+			var user = jsonObj.utilisateur;
+			if(user){
+				document.getElementById("nom").value = user.nom;
+				document.getElementById("pseudo").value = user.pseudo;
+				document.getElementById("password").value = user.password;
+				document.getElementById("role").value = user.role;
+				document.getElementById("id").value = user.id;
+				document.getElementById("msgbox").innerHTML = "Edition de l'utilisateur "+user.nom;
+			}else{
+				document.getElementById("userForm").reset();
+				alert('Utilisateur non identifié!');
+			}
+		}
+	};
+	xhttp.open("GET", "getUserDetail.do?pseudo="+pseudo, true);
+	xhttp.responseType = "text";
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send();
+}
+
+function nouvelUtilisateur(){
+	document.getElementById("userForm").reset();
+	document.getElementById("id").value = "";
+	document.getElementById("selectUser").value = "VIDE";
+	document.getElementById("msgbox").innerHTML = "Ajout d'un nouvel utilisateur";
+}
+
+
+$('.map-print').on('click',
+
+		/*
+		 * Print dat maps!
+		 */
+		function printMaps() {
+
+	var legende = getCritereLegende();
+	console.log(legende.pays+" - "+legende.region+" - "+legende.commune+" - "+legende.fokontany+" - "+legende.annee);
+	var legendeContent = makeLegende(legende);
+	console.log(legendeContent);
+
+	var body               = $('body');
+	var legende               = $(''+legendeContent);
+	var mapContainer       = $('.map-container');
+	var mapContainerParent = mapContainer.parent();
+	var printContainer     = $('<div>');
+	var styltyle = $('<style>')
+	.text('a[href$="google.com/maps"], .gmnoprint:not(.gm-bundled-control) {display: none !important}');
+
+	printContainer
+	.addClass('print-container')
+	.css('position', 'relative')
+	.height(mapContainer.height())
+	.append(styltyle)
+	.append(mapContainer)
+	.append(legende)
+	.prependTo(body);
+
+	var content = body
+	.children()
+	.not('script')
+	.not(printContainer)
+	.detach();
+
+	// Patch for some Bootstrap 3.3.x `@media print` styles. :|
+	var patchedStyle = $('<style>')
+	.attr('media', 'print')
+	.text('img { max-width: none !important; }' +
+	'a[href]:after { content: ""; }')
+	.appendTo('head');
+
+
+
+	window.print();
+
+	body.prepend(content);
+	mapContainerParent.prepend(mapContainer);
+
+	printContainer.remove();
+	patchedStyle.remove();
+});
+
+
+function getCritereLegende(){
+
+	var legende = {};
+
+	legende.pays = "Madagascar";
+
+	var selectRegion = document.getElementById("selectRegion");
+	if(selectRegion!=null){
+		var codeRegion = selectRegion.value;	
+		if(codeRegion != "VIDE"){
+			var nomRegion = document.getElementById(codeRegion).text;
+			legende.region = nomRegion;
+		}
+	}
+
+	var selectCommune = document.getElementById("selectCommune");
+	if(selectCommune!=null){
+		var codeCommune = selectCommune.value;	
+		if(codeCommune != "VIDE"){
+			var nomCommune = document.getElementById(codeCommune).text;
+			legende.commune = nomCommune;
+		}
+	}
+
+
+	var selectFkt = document.getElementById("selectFokontany");
+	if(selectFkt!=null){
+		var codeFkt = selectFkt.value;	
+		if(codeFkt != "VIDE"){
+			var nomFkt = document.getElementById(codeFkt).text;
+			legende.fokontany = nomFkt;
+		}
+	}
+
+	if(document.getElementById("selectIntervenant")){
+		var codeIntervenant = document.getElementById("selectIntervenant").value;
+		if(codeIntervenant!="VIDE"){
+			var nomInterv = document.getElementById(codeIntervenant).text;
+			legende.intervenant = nomInterv;
+		}
+	}
+
+	if(document.getElementById("selectAnnee")){
+		var annee = document.getElementById("selectAnnee").value;
+		if(annee!="VIDE"){
+			legende.annee = annee;
+		}else{
+			var anneeBox = document.getElementById("annee-box").innerHTML;
+			if(anneeBox!=null) legende.annee = anneeBox;
+		}
+	}
+
+	return legende;
+}
+
+function makeLegende(legende){
+	var interv;
+	var autres;
+	var contenu = '<div><h3>LEGENDE</h3><ul>';
+
+	if(legende.pays){
+		contenu+='<li>Pays: '+legende.pays;
+		interv = "Regions d'intervention";
+		autre = "Regions communes";
+	}
+
+	if(legende.region){
+		contenu+='<li>Region: '+legende.region;
+		interv = "Communes d'intervention";
+		autre = "Autres communes";
+	}
+
+	if(legende.commune){
+		contenu+='<li>Commune: '+legende.commune;
+		interv = "Fokontany d'intervention";
+		autre = "Fokontany communes";
+	}
+
+	if(legende.fokontany){
+		contenu+='<li>Fokontany: '+legende.fokontany;
+	}
+
+	if(legende.annee){
+		contenu+='<li>Année: '+legende.annee;
+	}
+
+	if(legende.intervenant){
+		contenu+='<li>Intervenant: '+legende.intervenant;
+		contenu+='<li>'+interv+'<div style="width:50px;height:8px;background-color:#AFA8F6;border:1px solid #000;"></div></li>';
+		contenu+='<li>'+autre+'<div style="width:50px;height:8px;background-color:#A9CEA3;border:1px solid #000;"></div></li>';
+	}
+	
+	contenu += '</ul></div>';
+	
+	return contenu;
+}

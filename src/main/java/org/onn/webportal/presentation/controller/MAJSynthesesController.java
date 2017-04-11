@@ -63,7 +63,6 @@ public class MAJSynthesesController {
 
 
 		JSONArray indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal);
-		System.out.println("=> "+indicateurs);
 		res.put("ongbase", indicateurs);
 
 		ServletOutputStream out;

@@ -160,7 +160,7 @@ desired effect
 
 					<!-- Menu de filtrage du la carte -->
 					<c:choose>
-						<c:when test="${currentView == 'SMS'}">
+						<c:when test="${currentView != 'HOME'}">
 							<li class="treeview"><a href="map.do"><i
 									class="fa fa-file-o"></i> <span>DONNEES PUBLIQUES</span> <span
 									class="pull-right-container"> <i
@@ -233,7 +233,7 @@ desired effect
 
 					<!-- Menu public -->
 					<c:choose>
-						<c:when test="${currentView == 'HOME'}">
+						<c:when test="${currentView != 'SMS'}">
 							<li class="treeview"><a href="smsmap.do"><i
 									class="fa fa-location-arrow"></i> <span>DONNEES SMS</span> <span
 									class="pull-right-container"> <i
@@ -282,8 +282,8 @@ desired effect
 					</c:choose>
 
 					<!-- Menu de administration -->
-					<li class="treeview"><a href="#"><i class="fa fa-link"></i>
-							<span>GESTION DES DONNEES</span> <span
+					<li class="active treeview"><a href="#"><i class="fa fa-link"></i>
+							<span>ADMINISTRATION</span> <span
 							class="pull-right-container"> <i
 								class="fa fa-angle-left pull-right"></i>
 						</span> </a>
@@ -291,6 +291,7 @@ desired effect
 
 							<li><a href="#"><i class="fa  fa-hand-rock-o"></i> <span>Importation
 										manuelle</span></a></li>
+							<li><a href="gestion_acces.do"><i class="fa  fa-ban"></i> <span>Gestion d'accès</span></a></li>
 						</ul></li>
 
 				</ul>
@@ -404,6 +405,7 @@ desired effect
 	<script src="../../plugins/fastclick/fastclick.js"></script>
 	<!-- ONN model script -->
 	<script src="script/model.js"></script>
+	<script src="script/administration.js"></script>
 	<!-- page script -->
 
 

@@ -45,7 +45,7 @@
 				<div class="box-body">
 					<!-- Mette le tableau de synthèse -->
 					<table id="example1" class="table table-bordered table-striped">
-						<thead>
+						<thead style="font-size: 14px;">
 							<tr>
 								<th>Indicateurs/Mois</th>
 								<th>J</th>
@@ -62,7 +62,7 @@
 								<th>D</th>
 							</tr>
 						</thead>
-						<tbody id="sms-tab-body">
+						<tbody id="sms-tab-body" style="font-size: 13px;">
 						</tbody>
 					</table>
 				</div>
@@ -127,6 +127,24 @@
 			onSMSMapSelect(event.feature.getProperty('f2'), event.feature
 					.getProperty('f4'));
 		});
+
+		var_map.data.addListener('dblclick', function(event) {
+			var typeLoc = event.feature.getProperty('f4');
+			if (event.feature.getProperty('f3') == "region") {
+				document.getElementById("selectRegion").value = event.feature
+						.getProperty('f2');
+				onSelectRegion();
+				onMapSelect(event.feature.getProperty('f2'), 'region');
+				onIntervenantSelect();
+			} else if (typeLoc == "commune") {
+				document.getElementById("selectCommune").value = event.feature
+						.getProperty('f2');
+				onSelectCommune();
+				onMapSelect(event.feature.getProperty('f2'), 'commune');
+				onIntervenantSelect();
+			}
+		});
+		
 
 		var_map.data.setStyle(function(feature) {
 			return {
