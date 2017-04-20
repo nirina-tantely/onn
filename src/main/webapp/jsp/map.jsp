@@ -2,6 +2,7 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>Carte de localisation des sites</h1>
+	<button class="map-print">Exporter la carte</button>
 </section>
 
 <!-- Main content -->
@@ -23,26 +24,7 @@
 					</div>
 				</div>
 
-				<div>
-					<ul>
-						<li>Pays: Madagascar
-						<li>Region: Analamanga
-						<li>Commune: Tana
-						<li>Fokontany: Soaniadanana
-						<li>Année: 2017
-						<li>Communes d'intervention
-							<div
-								style="width: 50px; height: 8px; background-color: #AFA8F6; border: 1px solid #000;"></div>
-						</li>
-						<li>Autres communes
-							<div
-								style="width: 50px; height: 8px; background-color: #A9CEA3; border: 1px solid #000;"></div>
-						</li>
-					</ul>
-				</div>
-
 				<!-- /.box-header -->
-				<button class="map-print">Exporter la carte</button>
 				<div id="map-container" class="box-body map-container"
 					style="height: 700">
 					<!-- Mettre ici la carte -->
@@ -59,7 +41,7 @@
 		<div class="col-md-3">
 			<div class="box">
 				<div class="box-header">
-					<button class="synthese-print" >Exporter la carte</button>
+					<button class="synthese-print">Export PDF</button>
 					<h3 class="box-title">Synthèse Intervenants</h3>
 					<div style="color: green; font: 'italic bold';">
 						National<span id="titre-activite-box"
@@ -89,6 +71,8 @@
 		<div class="col-md-4">
 			<div class="box">
 				<div class="box-header">
+					<button class="ongbase-print" onclick="exportONGBase();">Export
+						PDF</button>
 					<h3 class="box-title">Synthèse ONG Base</h3>
 					<div style="color: green; font: 'italic bold';">
 						National<span id="titre-ongbase-box"

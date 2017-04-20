@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -26,7 +27,11 @@ import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
+import org.onn.webportal.domain.model.ExportONGBase;
+import org.onn.webportal.domain.model.ExportONGBaseList;
 import org.onn.webportal.domain.model.Synthese;
 import org.onn.webportal.domain.model.Syntheses;
 import org.onn.webportal.domain.service.ActiviteService;
@@ -67,7 +72,7 @@ public class ExportServiceImpl implements ExportService {
 			jaxbMarshaller.marshal(syntheses, baos);
 			//create input stream from baos
 			InputStream isFromFirstData = new ByteArrayInputStream(baos.toByteArray()); 
-			convertToPDF(isFromFirstData, response, request);
+			convertToPDF("export_synthese", "synthese_export.xsl", isFromFirstData, response, request);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,11 +88,70 @@ public class ExportServiceImpl implements ExportService {
 		}
 		return null;
 	}
+	
+	
+	public void exportONGBase(String code, String typeLocalisation, String annee, String legende, HttpServletResponse response, HttpServletRequest request) {
+		if(code.equals("")) return ;
 
-	public void convertToPDF(InputStream inputStreamData, HttpServletResponse response, HttpServletRequest request)  throws IOException, FOPException, TransformerException {
+		Integer anneeVal;
+		try{
+			anneeVal = Integer.valueOf(annee);
+		}catch (Exception e) {
+			anneeVal = Calendar.getInstance().get(Calendar.YEAR);
+		}
+
+		
+		JSONArray indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal);
+		List<ExportONGBase> exportList = new ArrayList<ExportONGBase>();
+		for (int i = 0; i < indicateurs.size(); i++) {
+		    JSONObject jsonobject = (JSONObject) indicateurs.get(i);
+		    String indicateur = (String) jsonobject.get("indicateur");
+		    String t1 = (String) jsonobject.get("T1");
+		    String t2 = (String) jsonobject.get("T2");
+		    String t3 = (String) jsonobject.get("T3");
+		    String t4 = (String) jsonobject.get("T4");
+		    ExportONGBase export = new ExportONGBase();
+		    export.setIndicateur(indicateur);
+		    export.setT1(t1);
+		    export.setT2(t2);
+		    export.setT3(t3);
+		    export.setT4(t4);
+		    exportList.add(export);
+		}
+		
+		JAXBContext jaxbContext;
+		try {
+			jaxbContext = JAXBContext.newInstance(ExportONGBaseList.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			// output pretty printed
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			ExportONGBaseList liste = new ExportONGBaseList();
+			liste.setExportONGBase(exportList);
+			liste.setLegende(legende);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			jaxbMarshaller.marshal(liste, baos);
+			//create input stream from baos
+			InputStream isFromFirstData = new ByteArrayInputStream(baos.toByteArray()); 
+			convertToPDF("export_ongbase", "ongbase_export.xsl", isFromFirstData, response, request);
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FOPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void convertToPDF(String filename, String xslFile, InputStream inputStreamData, HttpServletResponse response, HttpServletRequest request)  throws IOException, FOPException, TransformerException {
 		// the XSL FO file
 		//File xsltFile = new File("/Users/tantely/Documents/ETUDES/SOA/workspace/onn/src/main/webapp/export/synthese_export.xsl");
-		File xsltFile = new File(request.getRealPath("export/synthese_export.xsl"));
+		File xsltFile = new File(request.getRealPath("export/"+xslFile));
 		// the XML file which provides the input
 		StreamSource xmlSource = new StreamSource(inputStreamData);
 		// create an instance of fop factory
@@ -117,7 +181,7 @@ public class ExportServiceImpl implements ExportService {
 			
 			//Prepare response
 			response.setContentType("application/pdf");
-			String name = "export_synthese";
+			String name = filename;
 			response.setHeader("Content-disposition", "inline;filename=" + name + ".pdf");
 			response.setContentLength(out.size());
 

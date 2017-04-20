@@ -9,4 +9,7 @@ public interface ExportService {
 
 	ModelAndView exportSynthese(String code, String typeLocalisation, String codeIntervenant, String annee, String legende, HttpServletResponse response, HttpServletRequest request);
 
+	void exportONGBase(String code, String typeLocalisation, String annee, String legende, HttpServletResponse response,
+			HttpServletRequest request);
+
 }

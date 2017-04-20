@@ -24,12 +24,22 @@ public class ExportController {
 	private ExportService exportService;
 
 	@RequestMapping(value = "exportSynthese.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
-	public ModelAndView updateSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
+	public ModelAndView exportSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
 			@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("annee") String annee, @RequestParam("legende") String legende, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
 
-		System.out.println(request.getRealPath("export/synthese_export.xsl"));
 		exportService.exportSynthese(code, typeLocalisation, codeIntervenant, annee, legende, response, request);
 		
 		return null;
 	}
+	
+	
+	@RequestMapping(value = "exportONGBase.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
+	public ModelAndView exportONGBase(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
+			@RequestParam("annee") String annee, @RequestParam("legende") String legende, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
+
+		exportService.exportONGBase(code, typeLocalisation, annee, legende, response, request);
+		
+		return null;
+	}
+	
 }
