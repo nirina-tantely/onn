@@ -1,5 +1,9 @@
 package org.onn.webportal.domain.model;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Synthese {
 
 	private String idIndicateur;
@@ -31,6 +35,7 @@ public class Synthese {
 		return this.description;
 	}
 
+	@XmlElement
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -39,6 +44,7 @@ public class Synthese {
 		return valeur;
 	}
 
+	@XmlElement
 	public void setValeur(int valeur) {
 		this.valeur = valeur;
 	}

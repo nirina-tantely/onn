@@ -1,18 +1,14 @@
 
 package org.onn.webportal.application.boot;
 
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.json.simple.JSONArray;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
-import org.onn.webportal.domain.model.IndicateurONG;
 import org.onn.webportal.domain.model.Intervenant;
 import org.onn.webportal.domain.model.Localisation;
 import org.onn.webportal.domain.model.Synthese;
 import org.onn.webportal.domain.service.ActiviteService;
+import org.onn.webportal.domain.service.ExportService;
 import org.onn.webportal.domain.service.GeneralService;
 import org.onn.webportal.domain.service.GeoService;
 import org.onn.webportal.infra.repository.ActiviteRepo;
@@ -40,16 +36,25 @@ public class App
 	
 	@Autowired
 	private GeneralService generalService;
+	
+	@Autowired
+	private ExportService exportService;
 
 	private void run(){
 		//testTaloha();
 
 		//testActivieSertice();
 		
-		testONGbase();
+		//testONGbase();
 		//testGeneral();
 		
 		//testIntervenantCode();
+		
+		testSynthese();
+	}
+	
+	private void testSynthese(){
+		//exportService.updateSynthese("0", "nationale", "unicef", "2017");
 	}
 
 	private void testTaloha(){

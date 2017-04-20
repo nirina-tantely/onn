@@ -30,8 +30,14 @@
 						<li>Commune: Tana
 						<li>Fokontany: Soaniadanana
 						<li>Année: 2017
-						<li>Communes d'intervention<div style="width:50px;height:8px;background-color:#AFA8F6;border:1px solid #000;"></div></li>
-						<li>Autres communes<div style="width:50px;height:8px;background-color:#A9CEA3;border:1px solid #000;"></div></li>
+						<li>Communes d'intervention
+							<div
+								style="width: 50px; height: 8px; background-color: #AFA8F6; border: 1px solid #000;"></div>
+						</li>
+						<li>Autres communes
+							<div
+								style="width: 50px; height: 8px; background-color: #A9CEA3; border: 1px solid #000;"></div>
+						</li>
 					</ul>
 				</div>
 
@@ -53,6 +59,7 @@
 		<div class="col-md-3">
 			<div class="box">
 				<div class="box-header">
+					<button class="synthese-print" >Exporter la carte</button>
 					<h3 class="box-title">Synthèse Intervenants</h3>
 					<div style="color: green; font: 'italic bold';">
 						National<span id="titre-activite-box"

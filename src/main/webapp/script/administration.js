@@ -263,8 +263,122 @@ function makeLegende(legende){
 		contenu+='<li>'+interv+'<div style="width:50px;height:8px;background-color:#AFA8F6;border:1px solid #000;"></div></li>';
 		contenu+='<li>'+autre+'<div style="width:50px;height:8px;background-color:#A9CEA3;border:1px solid #000;"></div></li>';
 	}
-	
+
 	contenu += '</ul></div>';
-	
+
 	return contenu;
 }
+
+function makeLegendeTableau(legende){
+	var contenu = '';
+
+	if(legende.annee){
+		contenu+=' - Année: '+legende.annee;
+	}
+	
+	if(legende.pays){
+		contenu+='Pays: '+legende.pays;
+	}
+
+	if(legende.region){
+		contenu+=' - Region: '+legende.region;
+	}
+
+	if(legende.commune){
+		contenu+=' - Commune: '+legende.commune;
+	}
+
+	if(legende.fokontany){
+		contenu+=' - Fokontany: '+legende.fokontany;
+	}
+
+	if(legende.intervenant){
+		contenu+=' - Intervenant: '+legende.intervenant;
+	}
+
+	return contenu;
+}
+
+
+function getCritere(){
+
+	var critere = {};
+
+	critere.typeLocalisation = "nationale";
+	critere.code = "0";
+
+	var selectRegion = document.getElementById("selectRegion");
+	if(selectRegion!=null){
+		var codeRegion = selectRegion.value;	
+		if(codeRegion != "VIDE"){
+			critere.code = codeRegion;
+			critere.typeLocalisation = "region";
+		}
+	}
+
+	var selectCommune = document.getElementById("selectCommune");
+	if(selectCommune!=null){
+		var codeCommune = selectCommune.value;	
+		if(codeCommune != "VIDE"){
+			critere.code = codeCommune;
+			critere.typeLocalisation = "commune";
+		}
+	}
+
+
+	var selectFkt = document.getElementById("selectFokontany");
+	if(selectFkt!=null){
+		var codeFkt = selectFkt.value;	
+		if(codeFkt != "VIDE"){
+			critere.code = codeFkt;
+			critere.typeLocalisation = "fokontany";
+		}
+	}
+
+	if(document.getElementById("selectIntervenant")){
+		var codeIntervenant = document.getElementById("selectIntervenant").value;
+		critere.codeIntervenant = codeIntervenant;
+	}
+
+	if(document.getElementById("selectAnnee")){
+		var annee = document.getElementById("selectAnnee").value;
+		if(annee!="VIDE"){
+			critere.annee = annee;
+		}else{
+			var anneeBox = document.getElementById("annee-box").innerHTML;
+			if(anneeBox!=null) critere.annee = anneeBox;
+		}
+	}
+
+	return critere;
+}
+
+
+$('.synthese-print').on('click',
+		function exportSynthese(){
+
+	var critere = getCritere();
+	var code = critere.code;
+	var typeLocalisation = critere.typeLocalisation;
+	var codeIntervenant = critere.codeIntervenant;
+	var annee = critere.annee;
+	
+	var legende = getCritereLegende();
+	console.log(legende.pays+" - "+legende.region+" - "+legende.commune+" - "+legende.fokontany+" - "+legende.annee);
+	var legendeContent = makeLegendeTableau(legende);
+
+	console.log('==> code:'+code+' type: '+typeLocalisation);
+	if(code!=""){
+		var filePath = "exportSynthese.do?code="+code+"&typeLocalisation="+typeLocalisation+"&codeIntervenant="+codeIntervenant+"&annee="+annee+"&legende="+legendeContent;
+		
+		var link=document.createElement('a');
+		document.body.appendChild(link);
+		link.href=filePath ;
+		link.target="_blank";
+		link.click();
+		
+	}else{
+		//console.log('==> ny tay!');
+	}
+}
+);
