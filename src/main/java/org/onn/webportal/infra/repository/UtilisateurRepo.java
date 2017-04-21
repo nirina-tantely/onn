@@ -2,15 +2,15 @@ package org.onn.webportal.infra.repository;
 
 import java.util.List;
 
-import org.onn.webportal.domain.model.Utilisateur;
+import org.onn.webportal.domain.model.User;
 
 public interface UtilisateurRepo {
 
-	List<Utilisateur> getAllUsers();
+	List<User> getAllUsers();
 
-	int saveOrUpdate(Utilisateur user);
+	int saveOrUpdate(User user);
 
-	Utilisateur getUserByLogin(String pseudo);
+	User getUserByLogin(String pseudo);
 
 	void deleteUser(int idUser);
 

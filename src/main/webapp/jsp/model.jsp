@@ -289,7 +289,7 @@ desired effect
 						</span> </a>
 						<ul class="treeview-menu">
 
-							<li><a href="#"><i class="fa  fa-hand-rock-o"></i> <span>Importation
+							<li><a href="gestion_donnes.do"><i class="fa  fa-hand-rock-o"></i> <span>Importation
 										manuelle</span></a></li>
 							<li><a href="gestion_acces.do"><i class="fa  fa-ban"></i> <span>Gestion d'accès</span></a></li>
 						</ul></li>

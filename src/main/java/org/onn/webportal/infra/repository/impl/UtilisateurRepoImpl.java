@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import org.onn.webportal.domain.model.Utilisateur;
+import org.onn.webportal.domain.model.User;
 import org.onn.webportal.infra.repository.UtilisateurRepo;
 import org.onn.webportal.infra.rowmapper.UtilisateurRowMapper;
 import org.slf4j.Logger;
@@ -24,14 +24,14 @@ public class UtilisateurRepoImpl implements UtilisateurRepo {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public List<Utilisateur> getAllUsers(){
+	public List<User> getAllUsers(){
 		StringBuilder requete = new StringBuilder().append("SELECT * FROM public.utilisateur;");
-		List<Utilisateur> result = new ArrayList<Utilisateur>();
+		List<User> result = new ArrayList<User>();
 		result = jdbcTemplate.query(requete.toString(), new UtilisateurRowMapper());
 		return result;
 	}
 
-	public int saveOrUpdate(Utilisateur user) {
+	public int saveOrUpdate(User user) {
 		if(user.getIdUtilisateur()>0){
 			logger.info("Modification de l'utilisateur "+user.getPseudo());
 			StringBuilder requete = new StringBuilder().append("UPDATE utilisateur  SET nom=?, pseudo=?, password=?, idrole=? WHERE id = ?;");
@@ -45,9 +45,9 @@ public class UtilisateurRepoImpl implements UtilisateurRepo {
 		}
 	}
 
-	public Utilisateur getUserByLogin(String pseudo) {
+	public User getUserByLogin(String pseudo) {
 		StringBuilder requete = new StringBuilder().append("SELECT * FROM public.utilisateur WHERE pseudo = ?;");
-		List<Utilisateur> result = new ArrayList<Utilisateur>();
+		List<User> result = new ArrayList<User>();
 		result = jdbcTemplate.query(requete.toString(), new Object[] {pseudo}, new UtilisateurRowMapper());
 		if(result.size()>0) return result.get(0);
 		return null;

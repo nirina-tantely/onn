@@ -4,17 +4,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.onn.webportal.api.enumeration.EnumRole;
-import org.onn.webportal.domain.model.Utilisateur;
+import org.onn.webportal.domain.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
-public class UtilisateurRowMapper implements RowMapper<Utilisateur> {
+public class UtilisateurRowMapper implements RowMapper<User> {
 
 
 	public UtilisateurRowMapper() {
 	}
 
-	public Utilisateur mapRow(ResultSet rs, int rowNum) throws SQLException {
-		Utilisateur result = new Utilisateur();
+	public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+		User result = new User();
 		result.setIdUtilisateur(rs.getInt("id"));
 		result.setNom(rs.getString("nom"));
 		result.setPassword(rs.getString("password"));

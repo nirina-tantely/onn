@@ -2,15 +2,15 @@ package org.onn.webportal.domain.service;
 
 import java.util.List;
 
-import org.onn.webportal.domain.model.Utilisateur;
+import org.onn.webportal.domain.model.User;
 
 public interface AdministrationService {
 
-	List<Utilisateur> getAllUsers();
+	List<User> getAllUsers();
 
-	int saveOrUpdate(Utilisateur user);
+	int saveOrUpdate(User user);
 
-	Utilisateur getUserByLogin(String pseudo);
+	User getUserByLogin(String pseudo);
 
 	void deleteUser(int idUser);
 

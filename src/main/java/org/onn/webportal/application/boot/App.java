@@ -4,6 +4,7 @@ package org.onn.webportal.application.boot;
 import java.util.List;
 import org.json.simple.JSONArray;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
+import org.onn.webportal.application.utils.Config;
 import org.onn.webportal.domain.model.Intervenant;
 import org.onn.webportal.domain.model.Localisation;
 import org.onn.webportal.domain.model.Synthese;
@@ -11,6 +12,7 @@ import org.onn.webportal.domain.service.ActiviteService;
 import org.onn.webportal.domain.service.ExportService;
 import org.onn.webportal.domain.service.GeneralService;
 import org.onn.webportal.domain.service.GeoService;
+import org.onn.webportal.domain.service.ImportService;
 import org.onn.webportal.infra.repository.ActiviteRepo;
 import org.onn.webportal.infra.repository.LocalisationRepo;
 import org.onn.webportal.infra.repository.MetadataRepo;
@@ -39,6 +41,9 @@ public class App
 	
 	@Autowired
 	private ExportService exportService;
+	
+	@Autowired
+	private ImportService importService;
 
 	private void run(){
 		//testTaloha();
@@ -50,9 +55,19 @@ public class App
 		
 		//testIntervenantCode();
 		
-		testSynthese();
+		System.out.println(Config.getInstance().getProperty("import.directory"));
+		
+		testImport();
 	}
 	
+	private void testImport(){
+		try {
+			importService.importInterventionData("/Users/tantely/Documents/ETUDES/SOA/workspace/onn/src/main/webapp/import/import_activite_test.csv");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private void testSynthese(){
 		//exportService.updateSynthese("0", "nationale", "unicef", "2017");
 	}

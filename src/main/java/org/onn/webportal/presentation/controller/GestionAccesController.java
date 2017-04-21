@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.onn.webportal.api.enumeration.EnumRole;
-import org.onn.webportal.domain.model.Utilisateur;
+import org.onn.webportal.domain.model.User;
 import org.onn.webportal.domain.service.ActiviteService;
 import org.onn.webportal.domain.service.AdministrationService;
 import org.onn.webportal.domain.service.GeneralService;
@@ -54,10 +54,9 @@ public class GestionAccesController {
 	@RequestMapping(value = "gestion_acces.do", method = RequestMethod.GET)
 	public String gestionAcces(Map<String, Object> model) {
 		logger.debug("Gestion d'acces is executed!");
-		List<Utilisateur> allUsers = administrationService.getAllUsers();
+		List<User> allUsers = administrationService.getAllUsers();
 		model.put("users", allUsers);
 		model.put("roles", EnumRole.values());
-		model.put("taynako", "Maimbo be!");
 		return "gestionutilisateur";
 	}
 
@@ -65,7 +64,7 @@ public class GestionAccesController {
 	@RequestMapping(value = "addUser.do", method = RequestMethod.POST)
 	public String addUser(@RequestBody MultiValueMap<String,String> formData,Map<String, Object> model, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		logger.debug("Ajout d'un utilisateur");
-		Utilisateur utilisateur = new Utilisateur();
+		User utilisateur = new User();
 		if(!formData.get("id").get(0).isEmpty()) utilisateur.setIdUtilisateur(Integer.valueOf(formData.get("id").get(0)));
 		if(!formData.get("nom").get(0).isEmpty()) utilisateur.setNom(formData.get("nom").get(0));
 		if(!formData.get("pseudo").get(0).isEmpty()) utilisateur.setPseudo(formData.get("pseudo").get(0));
@@ -78,7 +77,7 @@ public class GestionAccesController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "checkUser.do", method = RequestMethod.GET)
 	public void checkUser(@RequestParam("pseudo") String pseudo, Map<String, Object> model, HttpServletResponse response, HttpSession session) {
-		Utilisateur user = administrationService.getUserByLogin(pseudo);
+		User user = administrationService.getUserByLogin(pseudo);
 		JSONObject obj = new JSONObject();
 		if(user!=null){//l'utilisateur existe déjà
 			obj.put("Error", "OUI");
@@ -100,7 +99,7 @@ public class GestionAccesController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "getUserDetail.do", method = RequestMethod.GET)
 	public void getUserDetail(@RequestParam("pseudo") String pseudo, Map<String, Object> model, HttpServletResponse response, HttpSession session) {
-		Utilisateur user = administrationService.getUserByLogin(pseudo);
+		User user = administrationService.getUserByLogin(pseudo);
 		JSONObject obj = new JSONObject();
 		if(user!=null){//l'utilisateur existe déjà
 			JSONObject userJson = new JSONObject();

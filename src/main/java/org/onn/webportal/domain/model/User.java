@@ -2,7 +2,7 @@ package org.onn.webportal.domain.model;
 
 import org.onn.webportal.api.enumeration.EnumRole;
 
-public class Utilisateur {
+public class User {
 
 	private int idUtilisateur;
 	private String pseudo;
@@ -11,11 +11,10 @@ public class Utilisateur {
 	private String password;
 
 
-
-	public Utilisateur(){
+	public User(){
 	}
 	
-	public Utilisateur(int idUtilisateur, String pseudo, String nom, EnumRole role, String password) {
+	public User(int idUtilisateur, String pseudo, String nom, EnumRole role, String password) {
 		super();
 		this.idUtilisateur = idUtilisateur;
 		this.pseudo = pseudo;

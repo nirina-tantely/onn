@@ -1,7 +1,7 @@
 package org.onn.webportal.domain.service.impl;
 
 import java.util.List;
-import org.onn.webportal.domain.model.Utilisateur;
+import org.onn.webportal.domain.model.User;
 import org.onn.webportal.domain.service.AdministrationService;
 import org.onn.webportal.infra.repository.MetadataRepo;
 import org.onn.webportal.infra.repository.UtilisateurRepo;
@@ -17,15 +17,15 @@ public class AdministrationServiceImpl implements AdministrationService  {
 	@Autowired
 	private MetadataRepo metadataRepo;
 
-	public List<Utilisateur> getAllUsers(){
+	public List<User> getAllUsers(){
 		return utilisateurRepo.getAllUsers();
 	}
 
-	public int saveOrUpdate(Utilisateur user){
+	public int saveOrUpdate(User user){
 		return utilisateurRepo.saveOrUpdate(user);
 	}
 	
-	public Utilisateur getUserByLogin(String pseudo){
+	public User getUserByLogin(String pseudo){
 		return utilisateurRepo.getUserByLogin(pseudo);
 	}
 
