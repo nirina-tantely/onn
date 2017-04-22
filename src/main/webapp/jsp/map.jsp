@@ -159,8 +159,8 @@
 		var_map.controls[google.maps.ControlPosition.TOP_RIGHT].push(infoBox);
 
 		//Load GeoJSON
+		//var_map.data.loadGeoJson("geojson/districts.json");
 		var_map.data.loadGeoJson("geojson/regions.json");
-		//var_map.data.loadGeoJson("/localite_s.json");
 
 		/*
 		var_map.data.addListener('mouseover', function(event) {

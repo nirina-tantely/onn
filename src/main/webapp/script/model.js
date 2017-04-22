@@ -46,6 +46,7 @@ function onSelectRegion(){
 					});
 
 					//var_map : variable globale dans la page map.jsp
+					//var_map.data.loadGeoJson("geojson/districts.json");
 					var_map.data.addGeoJson(geoJson);
 					var bounds = new google.maps.LatLngBounds();
 					for (var i = 0; i < geoJson.features.length; i++) {
@@ -108,6 +109,7 @@ function onSelectCommune(){
 					var limCommune = JSON.parse(geoJson.limCommune);
 
 					//var_map : variable globale dans la page map.jsp
+					//var_map.data.loadGeoJson("geojson/districts.json");
 					var_map.data.addGeoJson(limCommune);
 					var_map.data.addGeoJson(listeGeoFkt);
 					var bounds = new google.maps.LatLngBounds();
