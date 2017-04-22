@@ -1,9 +1,10 @@
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
-	<h1>Carte de localisation des sites</h1>
-	<button class="map-print">Exporter la carte</button>
+	<button class="btn btn-primary btn-flat map-print"
+		style="font-weight: bold;">Exporter la carte</button>
 </section>
+
 
 <!-- Main content -->
 <section class="content">

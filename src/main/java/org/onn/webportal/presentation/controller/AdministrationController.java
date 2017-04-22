@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.onn.webportal.api.enumeration.EnumRole;
 import org.onn.webportal.application.utils.Config;
+import org.onn.webportal.domain.model.User;
 import org.onn.webportal.domain.service.AdministrationService;
 import org.onn.webportal.domain.service.GeneralService;
 import org.onn.webportal.domain.service.GeoService;
@@ -34,6 +37,9 @@ public class AdministrationController {
 
 	@Autowired
 	private ImportService importService;
+	
+	@Autowired
+	private MainMapController mainMapController;
 
 	@Autowired
 	private GeoService geoService;
@@ -43,15 +49,23 @@ public class AdministrationController {
 
 
 	@RequestMapping(value = "gestion_donnes.do", method = RequestMethod.GET)
-	public String gestionAcces(Map<String, Object> model) {
+	public String gestionAcces(Map<String, Object> model, HttpSession session) {
 		logger.debug("Gestion des donnees is executed!");
+		User currentuser = (User) session.getAttribute("currentuser");
+		if(currentuser!=null && currentuser.getIdUtilisateur()>0){
+			if(!(currentuser.getRole().equals(EnumRole.ADMIN) || currentuser.getRole().equals(EnumRole.PTF_USER))){
+				return mainMapController.home(model);
+			}
+		}else{
+			return "/login";
+		}
 		return "gestiondonnees";
 	}
 
 	@RequestMapping(value = "importIntervention.do", headers=("content-type=multipart/*"), method = RequestMethod.POST)
-	public String importerIntervention(Map<String, Object> model, @RequestParam("interventionFile") MultipartFile fichier, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+	public String importerIntervention(Map<String, Object> model, @RequestParam("interventionFile") MultipartFile fichier, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpSession session) {
 
-		if(fichier==null) return gestionAcces(model);
+		if(fichier==null) return gestionAcces(model, session);
 		
 		String result = "Import terminé avec succés";
 		
@@ -80,14 +94,14 @@ public class AdministrationController {
 	    
 	    model.put("importResult", result);
 	    
-		return gestionAcces(model);
+		return gestionAcces(model, session);
 	}
 	
 	
 	@RequestMapping(value = "importONGBase.do", headers=("content-type=multipart/*"), method = RequestMethod.POST)
-	public String importerONGBase(Map<String, Object> model, @RequestParam("ongbaseFile") MultipartFile fichier, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+	public String importerONGBase(Map<String, Object> model, @RequestParam("ongbaseFile") MultipartFile fichier, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpSession session) {
 
-		if(fichier==null) return gestionAcces(model);
+		if(fichier==null) return gestionAcces(model, session);
 		
 		String result = "Import terminé avec succés";
 		
@@ -116,13 +130,13 @@ public class AdministrationController {
 	    
 	    model.put("importResult", result);
 	    
-		return gestionAcces(model);
+		return gestionAcces(model, session);
 	}
 	
 	@RequestMapping(value = "importSMS.do", headers=("content-type=multipart/*"), method = RequestMethod.POST)
-	public String importerSMS(Map<String, Object> model, @RequestParam("smsFile") MultipartFile fichier, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+	public String importerSMS(Map<String, Object> model, @RequestParam("smsFile") MultipartFile fichier, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpSession session) {
 
-		if(fichier==null) return gestionAcces(model);
+		if(fichier==null) return gestionAcces(model, session);
 		
 		String result = "Import terminé avec succés";
 		
@@ -151,7 +165,7 @@ public class AdministrationController {
 	    
 	    model.put("importResult", result);
 	    
-		return gestionAcces(model);
+		return gestionAcces(model, session);
 	}
 	
 }

@@ -3,6 +3,14 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+
+
+<c:if test="${empty currentuser}">
+	<SCRIPT LANGUAGE="JavaScript">
+		document.location.href = "login.do"
+	</SCRIPT>
+</c:if>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -70,9 +78,14 @@ desired effect
 		<header class="main-header">
 
 			<!-- Logo -->
-			<a href="index2.html" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
-				<span class="logo-mini"><b>PRT</b></span> <!-- logo for regular state and mobile devices -->
-				<span class="logo-lg"><b>PORTAIL</b></span>
+			<a href="" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
+				<span class="logo-mini"> <img src="images/mini_logo_onn.png"
+					alt="ONN" style="height: 50px; width: 50px;">
+			</span> <!-- logo for regular state and mobile devices --> <span
+				class="logo-lg"> <img src="images/mini_logo_onn.png"
+					alt="ONN" style="height: 50px; width: 50px;"> <b>PORTAIL
+						ONN</b>
+			</span>
 			</a>
 
 			<!-- Header Navbar -->
@@ -83,19 +96,8 @@ desired effect
 						role="button"> <span class="sr-only">Toggle navigation</span>
 					</a>
 
-
 					<!-- Navbar Right Menu -->
 					<div class="navbar-custom-menu">
-
-						<ul class="nav navbar-nav">
-							<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown">Gestion d'accès <span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">Gestion des utilisateurs</a></li>
-									<li class="divider"></li>
-									<li><a href="#">Gestion des rôles</a></li>
-								</ul></li>
-						</ul>
 
 						<ul class="nav navbar-nav">
 
@@ -103,34 +105,28 @@ desired effect
 							<li class="dropdown user user-menu">
 								<!-- Menu Toggle Button --> <a href="#" class="dropdown-toggle"
 								data-toggle="dropdown"> <!-- The user image in the navbar-->
-									<img src="dist/img/user2-160x160.jpg" class="user-image"
-									alt="User Image"> <!-- hidden-xs hides the username on small devices so only the image appears. -->
-									<span class="hidden-xs">Tantely Nirina</span>
+									<img src="images/user_${currentuser.role.id}.png"
+									class="user-image" alt="User Image"> <!-- hidden-xs hides the username on small devices so only the image appears. -->
+									<span class="hidden-xs">${currentuser.nom}</span>
 							</a>
 								<ul class="dropdown-menu">
 									<!-- The user image in the menu -->
 									<li class="user-header"><img
-										src="dist/img/user2-160x160.jpg" class="img-circle"
-										alt="User Image">
+										src="images/user_${currentuser.role.id}.png"
+										class="img-circle" alt="User Image">
 
-										<p>
-											Tantely Nirina - Web Developer <small>Membre depuis
-												Août. 2016</small>
-										</p></li>
+										<p>${currentuser.nom}</p></li>
 									<!-- Menu Footer-->
 									<li class="user-footer">
-										<div class="pull-left">
-											<a href="#" class="btn btn-default btn-flat">Profil</a>
-										</div>
 										<div class="pull-right">
-											<a href="#" class="btn btn-default btn-flat">Deconnexion</a>
+											<a href="deconnecter.do" class="btn btn-primary btn-flat">Deconnexion</a>
 										</div>
 									</li>
 								</ul>
 							</li>
 							<!-- Control Sidebar Toggle Button -->
 							<li><a href="#" data-toggle="control-sidebar"><i
-									class="fa fa-gears"></i></a></li>
+									class="fa fa-question-circle"></i></a></li>
 						</ul>
 					</div>
 				</div>
@@ -141,19 +137,6 @@ desired effect
 
 			<!-- sidebar: style can be found in sidebar.less -->
 			<section class="sidebar">
-
-				<!-- Sidebar user panel (optional) -->
-				<div class="user-panel">
-					<div class="pull-left image">
-						<img src="dist/img/user2-160x160.jpg" class="img-circle"
-							alt="User Image">
-					</div>
-					<div class="pull-left info">
-						<p>Tantely Nirina</p>
-						<!-- Status -->
-						<a href="#"><i class="fa fa-circle text-success"></i> En ligne</a>
-					</div>
-				</div>
 
 				<ul class="sidebar-menu">
 					<li class="header">MENU DE NAVIGATION</li>
@@ -231,70 +214,90 @@ desired effect
 						</c:otherwise>
 					</c:choose>
 
-					<!-- Menu public -->
-					<c:choose>
-						<c:when test="${currentView != 'SMS'}">
-							<li class="treeview"><a href="smsmap.do"><i
-									class="fa fa-location-arrow"></i> <span>DONNEES SMS</span> <span
-									class="pull-right-container"> <i
-										class="fa fa-angle-left pull-right"></i>
-								</span> </a></li>
-						</c:when>
-						<c:otherwise>
-							<li class="active treeview"><a href="#"><i
-									class="fa fa-location-arrow"></i> <span>DONNEES SMS</span> <span
-									class="pull-right-container"> <i
-										class="fa fa-angle-left pull-right"></i>
-								</span> </a>
-								<ul class="treeview-menu">
-									<li>
-										<div class="form-group">
-											<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
-													une région</span></a> <select class="form-control" id="selectRegion"
-												onchange="onSelectRegion();onSMSMapSelect(this.value, 'region')">
-												<option value="VIDE" onselect="location.reload();">Choisir...</option>
-												<c:forEach var="region" items="${regions}">
-													<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>
-												</c:forEach>
-											</select>
-										</div>
-									</li>
-									<li>
-										<div class="form-group" id="divSelectCommune"></div>
-									</li>
-									<li>
-										<div class="form-group" id="divSelectFokontany"></div>
-									</li>
-									<li>
-										<div class="form-group">
-											<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
-													une année</span></a> <select class="form-control" id="selectAnnee"
-												onchange="onSMSMapSelect('VIDE', 'VIDE');">
-												<option value="VIDE">Annee courante</option>
-												<c:forEach var="annee" items="${annees}">
-													<option id="${annee}" value="${annee}">${annee}</option>
-												</c:forEach>
-											</select>
-										</div>
-									</li>
-								</ul></li>
-						</c:otherwise>
-					</c:choose>
 
-					<!-- Menu de administration -->
-					<li class="active treeview"><a href="#"><i class="fa fa-link"></i>
-							<span>ADMINISTRATION</span> <span
-							class="pull-right-container"> <i
-								class="fa fa-angle-left pull-right"></i>
-						</span> </a>
-						<ul class="treeview-menu">
+					<c:if
+						test="${currentuser.role.id == 1 or currentuser.role.id == 2 }">
+						<!-- Menu public -->
+						<c:choose>
+							<c:when test="${currentView != 'SMS'}">
+								<li class="treeview"><a href="smsmap.do"><i
+										class="fa fa-location-arrow"></i> <span>DONNEES SMS </span> <span
+										class="pull-right-container"> <i
+											class="fa fa-angle-left pull-right"></i>
+									</span> </a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="active treeview"><a href="#"><i
+										class="fa fa-location-arrow"></i> <span>DONNEES SMS</span> <span
+										class="pull-right-container"> <i
+											class="fa fa-angle-left pull-right"></i>
+									</span> </a>
+									<ul class="treeview-menu">
+										<li>
+											<div class="form-group">
+												<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
+														une région</span></a> <select class="form-control" id="selectRegion"
+													onchange="onSelectRegion();onSMSMapSelect(this.value, 'region')">
+													<option value="VIDE" onselect="location.reload();">Choisir...</option>
+													<c:forEach var="region" items="${regions}">
+														<option id="${region.idRegion}" value="${region.idRegion}">${region.nomRegion}</option>
+													</c:forEach>
+												</select>
+											</div>
+										</li>
+										<li>
+											<div class="form-group" id="divSelectCommune"></div>
+										</li>
+										<li>
+											<div class="form-group" id="divSelectFokontany"></div>
+										</li>
+										<li>
+											<div class="form-group">
+												<a><i class="fa  fa-angle-double-right"></i> <span>Choisir
+														une année</span></a> <select class="form-control" id="selectAnnee"
+													onchange="onSMSMapSelect('VIDE', 'VIDE');">
+													<option value="VIDE">Annee courante</option>
+													<c:forEach var="annee" items="${annees}">
+														<option id="${annee}" value="${annee}">${annee}</option>
+													</c:forEach>
+												</select>
+											</div>
+										</li>
+									</ul></li>
+							</c:otherwise>
+						</c:choose>
+					</c:if>
 
-							<li><a href="gestion_donnes.do"><i class="fa  fa-hand-rock-o"></i> <span>Importation
-										manuelle</span></a></li>
-							<li><a href="gestion_acces.do"><i class="fa  fa-ban"></i> <span>Gestion d'accès</span></a></li>
-						</ul></li>
 
+					<c:if test="${currentuser.role.id == 1}">
+						<!-- Menu de administration -->
+						<li class="active treeview"><a href="#"><i
+								class="fa fa-link"></i> <span>ADMINISTRATION</span> <span
+								class="pull-right-container"> <i
+									class="fa fa-angle-left pull-right"></i>
+							</span> </a>
+							<ul class="treeview-menu">
+
+								<li><a href="gestion_donnes.do"><i
+										class="fa  fa-hand-rock-o"></i> <span>Importation
+											manuelle</span></a></li>
+								<li><a href="gestion_acces.do"><i class="fa  fa-ban"></i>
+										<span>Gestion d'accès</span></a></li>
+							</ul></li>
+
+					</c:if>
 				</ul>
+
+				<div class="user-panel" align="center">
+					<p>
+						<img src="images/logo_onn.jpg" alt="ONN"
+							style="height: 175px; width: 150px;">
+					</p>
+					<p>
+						<img src="images/logo_secaline.png" alt="SECALINE"
+							style="height: 175px; width: 150px;">
+					</p>
+				</div>
 
 			</section>
 			<!-- /.sidebar -->
@@ -311,7 +314,7 @@ desired effect
 			<!-- To the right -->
 			<div class="pull-right hidden-xs">Ver 0.0.1</div>
 			<!-- Default to the left -->
-			<strong>Copyright &copy; 2016 <a href="#">Rd Consulting</a>.
+			<strong>Copyright &copy; 2017 <a href="#">Rd Consulting</a>.
 			</strong> Tous droits réservés.
 		</footer>
 
@@ -321,64 +324,18 @@ desired effect
 			<ul class="nav nav-tabs nav-justified control-sidebar-tabs">
 				<li class="active"><a href="#control-sidebar-home-tab"
 					data-toggle="tab"><i class="fa fa-home"></i></a></li>
-				<li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i
-						class="fa fa-gears"></i></a></li>
 			</ul>
 			<!-- Tab panes -->
 			<div class="tab-content">
 				<!-- Home tab content -->
-				<div class="tab-pane active" id="control-sidebar-home-tab">
-					<h3 class="control-sidebar-heading">Recent Activity</h3>
+				<div class="tab-pane active" id="control-sidebar-home-tab"
+					align="center">
+					<h3 class="control-sidebar-heading">Portail de données ONN</h3>
 					<ul class="control-sidebar-menu">
-						<li><a href="javascript::;"> <i
-								class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-								<div class="menu-info">
-									<h4 class="control-sidebar-subheading">Tantely's Birthday</h4>
-
-									<p>Will be 23 on April 24th</p>
-								</div>
-						</a></li>
+						<li><img alt="ONN" src="images/logo_onn.jpg"
+							style="width: 75px; height: 100px;"></li>
 					</ul>
 					<!-- /.control-sidebar-menu -->
-
-					<h3 class="control-sidebar-heading">Tasks Progress</h3>
-					<ul class="control-sidebar-menu">
-						<li><a href="javascript::;">
-								<h4 class="control-sidebar-subheading">
-									Custom Template Design <span class="pull-right-container">
-										<span class="label label-danger pull-right">70%</span>
-									</span>
-								</h4>
-
-								<div class="progress progress-xxs">
-									<div class="progress-bar progress-bar-danger"
-										style="width: 70%"></div>
-								</div>
-						</a></li>
-					</ul>
-					<!-- /.control-sidebar-menu -->
-
-				</div>
-				<!-- /.tab-pane -->
-				<!-- Stats tab content -->
-				<div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab
-					Content</div>
-				<!-- /.tab-pane -->
-				<!-- Settings tab content -->
-				<div class="tab-pane" id="control-sidebar-settings-tab">
-					<form method="post">
-						<h3 class="control-sidebar-heading">General Settings</h3>
-
-						<div class="form-group">
-							<label class="control-sidebar-subheading"> Report panel
-								usage <input type="checkbox" class="pull-right" checked>
-							</label>
-
-							<p>Some information about this general settings option</p>
-						</div>
-						<!-- /.form-group -->
-					</form>
 				</div>
 				<!-- /.tab-pane -->
 			</div>

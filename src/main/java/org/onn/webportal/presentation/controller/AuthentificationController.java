@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @SessionAttributes("currentuser")
@@ -63,6 +64,13 @@ public class AuthentificationController {
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 		}
+	}
+
+	@RequestMapping(value = "deconnecter.do", method = RequestMethod.GET)
+	public String deconnexion(HttpSession session, SessionStatus status) {
+		status.setComplete();
+		session.removeAttribute("currentuser");
+		return "/login";
 	}
 
 }

@@ -49,11 +49,24 @@ public class GestionAccesController {
 
 	@Autowired
 	private GeneralService generalService;
+	
+	@Autowired
+	private MainMapController mainMapController;
 
 
 	@RequestMapping(value = "gestion_acces.do", method = RequestMethod.GET)
-	public String gestionAcces(Map<String, Object> model) {
+	public String gestionAcces(Map<String, Object> model, HttpSession session) {
 		logger.debug("Gestion d'acces is executed!");
+		
+		User currentuser = (User) session.getAttribute("currentuser");
+		if(currentuser!=null && currentuser.getIdUtilisateur()>0){
+			if(!(currentuser.getRole().equals(EnumRole.ADMIN) || currentuser.getRole().equals(EnumRole.PTF_USER))){
+				return mainMapController.home(model);
+			}
+		}else{
+			return "/login";
+		}
+		
 		List<User> allUsers = administrationService.getAllUsers();
 		model.put("users", allUsers);
 		model.put("roles", EnumRole.values());
@@ -71,7 +84,7 @@ public class GestionAccesController {
 		if(!formData.get("password").get(0).isEmpty()) utilisateur.setPassword(formData.get("password").get(0));
 		if(!formData.get("role").get(0).isEmpty() && !formData.get("role").get(0).equals("VIDE")) utilisateur.setRole(EnumRole.getById(Integer.valueOf(formData.get("role").get(0))));
 		administrationService.saveOrUpdate(utilisateur);
-		return gestionAcces(model);
+		return gestionAcces(model, session);
 	}
 
 	@SuppressWarnings("unchecked")
