@@ -3,6 +3,8 @@ package org.onn.webportal.presentation.controller;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,8 +43,11 @@ public class MAJSynthesesController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "updateSynthese.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
 	public ModelAndView updateSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
-			@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("annee") String annee, HttpServletResponse response, HttpSession session) {
+			@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("annee") String annee, @RequestParam("afficherTousIndicateurs") String afficherTousIndicateurs,
+			Model model, HttpServletResponse response, HttpSession session) {
 		if(code.equals("")) return null;
+		
+		boolean tousIndicarteurs = Boolean.valueOf(afficherTousIndicateurs);
 		
 		Integer anneeVal;
 		try{
@@ -62,8 +68,10 @@ public class MAJSynthesesController {
 		res.put("activites", liste);
 
 
-		JSONArray indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal);
+		JSONArray indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal, tousIndicarteurs);
 		res.put("ongbase", indicateurs);
+		
+		res.put("afficherTousIndicateurs", tousIndicarteurs);
 
 		ServletOutputStream out;
 		try {

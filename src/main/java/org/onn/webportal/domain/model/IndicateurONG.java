@@ -17,6 +17,7 @@ public class IndicateurONG {
 	private String definition;
 	private String codeCategorie;
 	private int modeCalcule;
+	private boolean principale;
 	/**
 	 * Désagrégation par tranche d'âge
 	 */
@@ -45,7 +46,7 @@ public class IndicateurONG {
 
 	public IndicateurONG(String idIndicateur, String nom, String definition, String codeCategorie, int modeCalcule,
 			String desagregation, String indcPerfomance, String infoComp, String typeIndc, boolean codeComplet,
-			int rang, float valeur) {
+			int rang, float valeur, boolean principale) {
 		super();
 		this.idIndicateur = idIndicateur;
 		this.nom = nom;
@@ -59,6 +60,7 @@ public class IndicateurONG {
 		this.codeComplet = codeComplet;
 		this.rang = rang;
 		this.valeur = valeur;
+		this.principale = principale;
 	}
 
 	public String getIdIndicateur() {
@@ -129,7 +131,7 @@ public class IndicateurONG {
 	}
 
 	public IndicateurONG copy(){
-		return new IndicateurONG(idIndicateur, nom, definition, codeCategorie, modeCalcule, desagregation, indcPerfomance, infoComp, typeIndc, codeComplet, rang, valeur);
+		return new IndicateurONG(idIndicateur, nom, definition, codeCategorie, modeCalcule, desagregation, indcPerfomance, infoComp, typeIndc, codeComplet, rang, valeur, principale);
 	}
 
 	public int getModeCalcule() {	
@@ -207,5 +209,13 @@ public class IndicateurONG {
 			}
 		}
 		return somme;
+	}
+
+	public boolean isPrincipale() {
+		return principale;
+	}
+
+	public void setPrincipale(boolean principale) {
+		this.principale = principale;
 	}
 }

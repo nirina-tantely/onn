@@ -1,9 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	isELIgnored="false" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <!-- Content Header (Page header) -->
-<section class="content-header">
-	<button class="btn btn-primary btn-flat map-print"
-		style="font-weight: bold;">Exporter la carte</button>
-</section>
+<section class="content-header"></section>
 
 
 <!-- Main content -->
@@ -35,6 +36,8 @@
 				</div>
 				<!-- /.box-body -->
 			</div>
+			<button class="btn btn-primary btn-flat map-print"
+				style="font-weight: bold;">Exporter la carte</button>
 			<!-- /.box -->
 		</div>
 		<!-- /.col -->
@@ -43,7 +46,7 @@
 			<div class="box">
 				<div class="box-header">
 					<button class="synthese-print">Export PDF</button>
-					<h3 class="box-title">Synthèse Intervenants</h3>
+					<h3 class="box-title">SynthÃ¨se Intervenants</h3>
 					<div style="color: green; font: 'italic bold';">
 						National<span id="titre-activite-box"
 							style="word-wrap: break-word;"></span>
@@ -51,7 +54,7 @@
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
-					<!-- Mette le tableau de synthèse -->
+					<!-- Mette le tableau de synthÃ¨se -->
 					<table id="example1" class="table table-bordered table-striped">
 						<thead style="font-size: 14px;">
 							<tr>
@@ -74,7 +77,7 @@
 				<div class="box-header">
 					<button class="ongbase-print" onclick="exportONGBase();">Export
 						PDF</button>
-					<h3 class="box-title">Synthèse ONG Base</h3>
+					<h3 class="box-title">SynthÃ¨se ONG Base</h3>
 					<div style="color: green; font: 'italic bold';">
 						National<span id="titre-ongbase-box"
 							style="word-wrap: break-word;"></span>
@@ -82,7 +85,7 @@
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
-					<!-- Mette le tableau de synthèse -->
+					<!-- Mette le tableau de synthÃ¨se -->
 					<table id="example1" class="table table-bordered table-striped">
 						<thead style="font-size: 14px;">
 							<tr>
@@ -95,6 +98,15 @@
 						</thead>
 						<tbody id="ongbase-tab-body" style="font-size: 13px;">
 						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="1">
+								<c:if test="${currentuser.role.id == 1 or currentuser.role.id == 2 }">
+									<div id="bouton-affiche-principale"></div>
+								</c:if>
+								</td>
+							</tr>
+						</tfoot>
 					</table>
 				</div>
 				<!-- /.box-body -->

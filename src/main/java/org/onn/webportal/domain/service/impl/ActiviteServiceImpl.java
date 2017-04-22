@@ -51,7 +51,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, int annee){
+	public JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, int annee, boolean tousIndicarteurs){
 		List<List<IndicateurONG>> resT1 = activiteRepo.getOngBase(codeLocalisation, typeLocalisation, 1, annee);
 		Map<String, IndicateurONG> mapT1 = new HashMap<String, IndicateurONG>();
 		IndicateurONG indicateur;
@@ -70,7 +70,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 					List<Float> valeurs = new ArrayList<Float>();
 					valeurs.add(indc.getValeur());
 					indc.getVals().put(indc.getMois(), valeurs);
-					
+
 					mapT1.put(indc.getIdIndicateur(), indc);
 				}
 			}
@@ -93,7 +93,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 					List<Float> valeurs = new ArrayList<Float>();
 					valeurs.add(indc.getValeur());
 					indc.getVals().put(indc.getMois(), valeurs);
-					
+
 					mapT2.put(indc.getIdIndicateur(), indc);
 				}
 			}
@@ -116,7 +116,7 @@ public class ActiviteServiceImpl implements ActiviteService {
 					List<Float> valeurs = new ArrayList<Float>();
 					valeurs.add(indc.getValeur());
 					indc.getVals().put(indc.getMois(), valeurs);
-					
+
 					mapT3.put(indc.getIdIndicateur(), indc);
 				}
 			}
@@ -139,13 +139,14 @@ public class ActiviteServiceImpl implements ActiviteService {
 					List<Float> valeurs = new ArrayList<Float>();
 					valeurs.add(indc.getValeur());
 					indc.getVals().put(indc.getMois(), valeurs);
-					
+
 					mapT4.put(indc.getIdIndicateur(), indc);
 				}
 			}
 		}
 
 		JSONArray liste = new JSONArray();
+		JSONArray listeIncPrincipale = new JSONArray();
 		if(mapT1.size()>0 || mapT2.size()>0 || mapT3.size()>0 || mapT4.size()>0){
 			List<IndicateurONG> listIndc = metadataRepo.getIndicateurONGMetadata();
 			for(IndicateurONG indc: listIndc){
@@ -155,10 +156,23 @@ public class ActiviteServiceImpl implements ActiviteService {
 				if(mapT2.size()>0)	obj.put("T2", mapT2.get(indc.getIdIndicateur()).valeurAfficher());else obj.put("T2", "");
 				if(mapT3.size()>0)	obj.put("T3", mapT3.get(indc.getIdIndicateur()).valeurAfficher());else obj.put("T3", "");
 				if(mapT4.size()>0)	obj.put("T4", mapT4.get(indc.getIdIndicateur()).valeurAfficher());else obj.put("T4", "");
-				liste.add(obj);
+
+				if(indc.isPrincipale()){
+					listeIncPrincipale.add(obj);
+				}else{
+					liste.add(obj);
+				}
 			}
 		}
-		return liste;
+		
+		if(tousIndicarteurs){
+			for (Object object : liste) {
+				listeIncPrincipale.add(object);
+			}
+		}
+		
+		
+		return listeIncPrincipale;
 	}
 
 
@@ -244,5 +258,4 @@ public class ActiviteServiceImpl implements ActiviteService {
 		}
 		return liste;
 	}
-
 }

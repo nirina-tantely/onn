@@ -215,8 +215,7 @@ desired effect
 					</c:choose>
 
 
-					<c:if
-						test="${currentuser.role.id == 1 or currentuser.role.id == 2 }">
+					<c:if test="${currentuser.role.id == 1 or currentuser.role.id == 2 }">
 						<!-- Menu public -->
 						<c:choose>
 							<c:when test="${currentView != 'SMS'}">
@@ -271,7 +270,7 @@ desired effect
 
 					<c:if test="${currentuser.role.id == 1}">
 						<!-- Menu de administration -->
-						<li class="active treeview"><a href="#"><i
+						<li class="treeview"><a href="#"><i
 								class="fa fa-link"></i> <span>ADMINISTRATION</span> <span
 								class="pull-right-container"> <i
 									class="fa fa-angle-left pull-right"></i>
@@ -312,7 +311,7 @@ desired effect
 		<!-- Main Footer -->
 		<footer class="main-footer">
 			<!-- To the right -->
-			<div class="pull-right hidden-xs">Ver 0.0.1</div>
+			<div class="pull-right hidden-xs">Ver 1.0</div>
 			<!-- Default to the left -->
 			<strong>Copyright &copy; 2017 <a href="#">Rd Consulting</a>.
 			</strong> Tous droits réservés.

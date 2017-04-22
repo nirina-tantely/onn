@@ -16,7 +16,7 @@ public interface ActiviteService {
 
 	List<Synthese> getActiviteSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, String codeIntervenant, int annee);
 
-	JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, int annee);
+	JSONArray getONGBaseSyntese(String codeLocalisation, TypeLocalisation typeLocalisation, int annee, boolean tousIndicarteurs);
 
 	JSONArray getCodesRegionByIntervenant(String codeIntervenant, int annee);
 

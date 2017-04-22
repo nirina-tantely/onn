@@ -24,6 +24,7 @@ public class IndicateurONGBaseRowMapper implements RowMapper<IndicateurONG> {
 		result.setRang(rs.getInt("rang"));
 		result.setTypeIndc(rs.getString("type_indc"));
 		result.setModeCalcule(rs.getInt("mode_calcule"));
+		result.setPrincipale(rs.getBoolean("principale"));
 		return result;
 	}
 

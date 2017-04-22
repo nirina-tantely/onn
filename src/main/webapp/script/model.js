@@ -261,11 +261,19 @@ function onIntervenantSelect(){
 	xhttp.send();
 }
 
-function onMapSelect(code, typeLocalisation){
+function onMapSelect(code, typeLocalisation, afficherTousIndc){
 	if(typeLocalisation == 'region' && code == 'VIDE') {
 		return;
 	}
 	if(typeLocalisation == null) typeLocalisation='region';
+	
+	var afficherTousIndicateurs = true;
+	if(afficherTousIndc == null){
+		afficherTousIndicateurs = false;
+	}else{
+		afficherTousIndicateurs = afficherTousIndc;
+	}
+	
 
 	if(code=='VIDE' && typeLocalisation=='VIDE'){//changement au niveau des autres criteres non cartographiques ex: intervenant ou annee
 		var obj = { codeLoc: "", typeLoc: "" };
@@ -321,11 +329,24 @@ function onMapSelect(code, typeLocalisation){
 						}
 						ongTbody.innerHTML = ongbaseBody;	
 					}
+					
+					var btnBody = document.getElementById("bouton-affiche-principale");
+					if(btnBody != null){
+						var tousIndicateur = jsonObj.afficherTousIndicateurs;
+						if(tousIndicateur){
+							btnBody.innerHTML = "<button class=\"btn btn-primary btn-flat\" onclick=\"onMapSelect('0', 'nationale', false);\" style=\"font-weight: bold;\">"
+											+"<b>Cacher les détails</b></button>";	
+						}else{
+							btnBody.innerHTML = "<button class=\"btn btn-primary btn-flat\" onclick=\"onMapSelect('0', 'nationale', true);\" style=\"font-weight: bold;\">"
+								+"<b>Afficher tous les indicateurs</b></button>";
+						}
+					}
+					
 
 				}
 			}
 		};
-		xhttp.open("GET", "updateSynthese.do?code="+code+"&typeLocalisation="+typeLocalisation+"&codeIntervenant="+codeIntervenant+"&annee="+annee, true);
+		xhttp.open("GET", "updateSynthese.do?code="+code+"&typeLocalisation="+typeLocalisation+"&codeIntervenant="+codeIntervenant+"&annee="+annee+"&afficherTousIndicateurs="+afficherTousIndicateurs, true);
 		xhttp.responseType = "text";
 		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhttp.send();
