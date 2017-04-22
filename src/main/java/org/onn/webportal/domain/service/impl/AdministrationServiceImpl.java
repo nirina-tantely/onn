@@ -24,9 +24,17 @@ public class AdministrationServiceImpl implements AdministrationService  {
 	public int saveOrUpdate(User user){
 		return utilisateurRepo.saveOrUpdate(user);
 	}
-	
+
 	public User getUserByLogin(String pseudo){
 		return utilisateurRepo.getUserByLogin(pseudo);
+	}
+
+	public User checkAuthenfication(String pseudo, String password){
+		User user = utilisateurRepo.getUserByLogin(pseudo);
+		if(user!=null){
+			if(!user.getPassword().equals(password)) user = null;
+		}
+		return user;
 	}
 
 	public void deleteUser(int idUser) {

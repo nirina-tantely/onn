@@ -14,4 +14,6 @@ public interface AdministrationService {
 
 	void deleteUser(int idUser);
 
+	User checkAuthenfication(String pseudo, String password);
+
 }

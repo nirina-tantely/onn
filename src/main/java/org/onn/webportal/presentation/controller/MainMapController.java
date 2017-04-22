@@ -46,8 +46,7 @@ public class MainMapController {
 	
 	@Autowired
 	private GeneralService generalService;
-
-
+	
 	@RequestMapping(value = "map.do", method = RequestMethod.GET)
 	public String home(Map<String, Object> model) {
 		logger.debug("home() is executed!");
