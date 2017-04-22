@@ -62,6 +62,7 @@ public class GeoRepoImpl implements GeoRepo {
 
 	public String getGeoRegionByIntervenant(String codeIntervenant, int annee) {
 		List<Integer> codes = activiteRepo.getCodesRegionByIntervenant(codeIntervenant, annee);
+		if(codes.size()<=0) return "";
 		String listeCode = "(";
 		boolean first = true;
 		for (Integer integer : codes) {
@@ -84,6 +85,7 @@ public class GeoRepoImpl implements GeoRepo {
 
 	public String getGeoCommuneByIntervenant(String codeIntervenant, int annee) {
 		List<Integer> codes = activiteRepo.getCodesCommuneByIntervenant(codeIntervenant, annee);
+		if(codes.size()<=0) return "";
 		String listeCode = "(";
 		boolean first = true;
 		for (Integer integer : codes) {
@@ -107,6 +109,7 @@ public class GeoRepoImpl implements GeoRepo {
 	
 	public String getGeoFktByIntervenant(String codeIntervenant, int annee) {
 		List<Integer> codes = activiteRepo.getCodesFokontanyByIntervenant(codeIntervenant, annee);
+		if(codes.size()<=0) return "";
 		String listeCode = "(";
 		boolean first = true;
 		for (Integer integer : codes) {
