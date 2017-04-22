@@ -27,6 +27,7 @@ public class Config extends  Properties{
 			try {
 				load(inputStream);
 			} catch (IOException e) {
+				e.printStackTrace();
 				logger.error(e.getMessage());
 			}
 		} else {

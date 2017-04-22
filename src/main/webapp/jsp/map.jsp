@@ -38,6 +38,8 @@
 			</div>
 			<button class="btn btn-primary btn-flat map-print"
 				style="font-weight: bold;">Exporter la carte</button>
+			<button class="btn btn-primary btn-flat json-download" onclick="downloadGeoJson();"
+				style="font-weight: bold;">Exporter en GEOJSON</button>
 			<!-- /.box -->
 		</div>
 		<!-- /.col -->
@@ -45,8 +47,10 @@
 		<div class="col-md-3">
 			<div class="box">
 				<div class="box-header">
-					<img src="images/pdf.png" onclick="exportSynthese();" alt="Exporter en PDF" style="cursor:pointer;" />
-					<img src="images/csv.png" onclick="exportSyntheseCSV();" alt="Exporter en CSV" style="cursor:pointer;" />
+					<img src="images/pdf.png" onclick="exportSynthese();"
+						alt="Exporter en PDF" style="cursor: pointer;" /> <img
+						src="images/csv.png" onclick="exportSyntheseCSV();"
+						alt="Exporter en CSV" style="cursor: pointer;" />
 					<h3 class="box-title">Synthèse Intervenants</h3>
 					<div style="color: green; font: 'italic bold';">
 						National<span id="titre-activite-box"
@@ -76,8 +80,10 @@
 		<div class="col-md-4">
 			<div class="box">
 				<div class="box-header">
-					<img src="images/pdf.png" onclick="exportONGBase();" alt="Exporter en PDF" style="cursor:pointer;" />
-					<img src="images/csv.png" onclick="exportONGBaseCSV();" alt="Exporter en CSV" style="cursor:pointer;" />
+					<img src="images/pdf.png" onclick="exportONGBase();"
+						alt="Exporter en PDF" style="cursor: pointer;" /> <img
+						src="images/csv.png" onclick="exportONGBaseCSV();"
+						alt="Exporter en CSV" style="cursor: pointer;" />
 					<h3 class="box-title">Synthèse ONG Base</h3>
 					<div style="color: green; font: 'italic bold';">
 						National<span id="titre-ongbase-box"
@@ -101,11 +107,10 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="1">
-								<c:if test="${currentuser.role.id == 1 or currentuser.role.id == 2 }">
-									<div id="bouton-affiche-principale"></div>
-								</c:if>
-								</td>
+								<td colspan="1"><c:if
+										test="${currentuser.role.id == 1 or currentuser.role.id == 2 }">
+										<div id="bouton-affiche-principale"></div>
+									</c:if></td>
 							</tr>
 						</tfoot>
 					</table>

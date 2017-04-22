@@ -14,6 +14,7 @@ import org.onn.webportal.domain.service.GeneralService;
 import org.onn.webportal.domain.service.GeoService;
 import org.onn.webportal.domain.service.ImportService;
 import org.onn.webportal.infra.repository.ActiviteRepo;
+import org.onn.webportal.infra.repository.GeoRepo;
 import org.onn.webportal.infra.repository.LocalisationRepo;
 import org.onn.webportal.infra.repository.MetadataRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class App
 	
 	@Autowired
 	private ActiviteRepo activiteRepo;
+	
+	@Autowired
+	private GeoRepo geoRepo;
 
 	@Autowired
 	private MetadataRepo metadataRepo;
@@ -55,9 +59,20 @@ public class App
 		
 		//testIntervenantCode();
 		
-		System.out.println(Config.getInstance().getProperty("import.directory"));
+		//System.out.println(Config.getInstance().getProperty("import.directory"));
 		
-		testImport();
+		//testImport();
+		
+		testGeoInterv();
+	}
+	
+	private void testGeoInterv(){
+		String res = geoRepo.getGeoRegionByIntervenant("unicef", 2017);
+		System.out.println(res);
+		String res2 = geoRepo.getGeoCommuneByIntervenant("unicef", 2017);
+		System.out.println(res2);
+		String res3 = geoRepo.getGeoFktByIntervenant("unicef", 2017);
+		System.out.println(res3);
 	}
 	
 	private void testImport(){

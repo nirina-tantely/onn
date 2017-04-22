@@ -465,3 +465,26 @@ function exportONGBaseCSV(){
 		//console.log('==> ny tay!');
 	}
 }
+
+
+function downloadGeoJson(){
+	var critere = getCritere();
+	var typeLocalisation = critere.typeLocalisation;
+	var annee = critere.annee;
+	var codeIntervenant = critere.codeIntervenant;
+	
+	if(codeIntervenant == null || codeIntervenant == "" || codeIntervenant == "VIDE"){
+		alert('Choisir un intervenant!');
+		return;
+	}
+	
+	var filePath = "downloadGeoJson.do?codeIntervenant="+codeIntervenant+"&typeLocalisation="+typeLocalisation+"&annee="+annee;
+
+	var link=document.createElement('a');
+	document.body.appendChild(link);
+	link.href=filePath ;
+	link.target="_self";
+	link.click();
+
+	
+}

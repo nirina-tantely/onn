@@ -10,4 +10,10 @@ public interface GeoRepo {
 
 	String getGeoAllFkt();
 
+	String getGeoRegionByIntervenant(String codeIntervenant, int annee);
+
+	String getGeoCommuneByIntervenant(String codeIntervenant, int annee);
+
+	String getGeoFktByIntervenant(String codeIntervenant, int annee);
+
 }

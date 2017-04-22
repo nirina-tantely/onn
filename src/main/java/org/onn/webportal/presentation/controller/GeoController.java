@@ -1,6 +1,11 @@
 package org.onn.webportal.presentation.controller;
 
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
+import org.onn.webportal.application.utils.CSVUtils;
 import org.onn.webportal.domain.model.Etat;
 import org.onn.webportal.domain.model.Localisation;
 import org.onn.webportal.domain.service.ActiviteService;
@@ -95,6 +101,47 @@ public class GeoController {
 			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@RequestMapping(value = "downloadGeoJson.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
+	public ModelAndView downloadGeoJsonIntervenant(@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("typeLocalisation") String typeLocalisation,
+			@RequestParam("annee") String annee, HttpServletResponse response, HttpSession session) {
+		
+		Integer anneeVal;
+		try{
+			anneeVal = Integer.valueOf(annee);
+		}catch (Exception e) {
+			anneeVal = Calendar.getInstance().get(Calendar.YEAR);
+		}
+		
+		String jsonStr = geoService.getGeoJsonByIntervenant(codeIntervenant, anneeVal, typeLocalisation);
+		
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+		try {
+			out.write(jsonStr.getBytes(Charset.forName("UTF-8")));
+			
+			//Prepare response
+			response.setContentType("application/json");
+			String name = "jsono_"+typeLocalisation;
+			response.setHeader("Content-disposition", "attachment;filename=" + name + ".json");
+			response.setHeader("Content-Type", "application/json; charset=UTF-8");
+			response.setContentLength(out.size());
+
+			//Send content to Browser
+			response.getOutputStream().write(out.toByteArray());
+			response.getOutputStream().flush();
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+		}finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

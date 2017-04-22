@@ -191,7 +191,7 @@ public class ExportServiceImpl implements ExportService {
 			//Prepare response
 			response.setContentType("application/pdf");
 			String name = filename;
-			response.setHeader("Content-disposition", "inline;filename=" + name + ".pdf");
+			response.setHeader("Content-disposition", "attachment;filename=" + name + ".pdf");
 			response.setContentLength(out.size());
 
 			//Send content to Browser
@@ -237,7 +237,7 @@ public class ExportServiceImpl implements ExportService {
 			//Prepare response
 			response.setContentType("text/csv");
 			String name = "Synthese_activite";
-			response.setHeader("Content-disposition", "inline;filename=" + name + ".csv");
+			response.setHeader("Content-disposition", "attachment;filename=" + name + ".csv");
 			response.setHeader("Content-Type", "text/csv; charset=UTF-8");
 			response.setContentLength(out.size());
 
@@ -313,7 +313,7 @@ public class ExportServiceImpl implements ExportService {
 			//Prepare response
 			response.setContentType("text/csv");
 			String name = "ONGBASE_export";
-			response.setHeader("Content-disposition", "inline;filename=" + name + ".csv");
+			response.setHeader("Content-disposition", "attachment;filename=" + name + ".csv");
 			response.setHeader("Content-Type", "text/csv; charset=UTF-8");
 			response.setContentLength(out.size());
 

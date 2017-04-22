@@ -19,7 +19,7 @@
 				<form role="form" action="importIntervention.do" method="post" enctype="multipart/form-data">
 					<div class="box-body">
 						<div class="form-group">
-							<label for="exampleInputFile">Choir un fichier</label> <input
+							<label for="exampleInputFile">Choisir un fichier</label> <input
 								type="file" id="interventionFile" name="interventionFile" accept=".csv">
 
 							<p class="help-block">Choisir un le fichier CSV contenant les
@@ -49,7 +49,7 @@
 				<form role="form" action="importONGBase.do" method="post" enctype="multipart/form-data">
 					<div class="box-body">
 						<div class="form-group">
-							<label for="exampleInputFile">Choir un fichier</label> <input
+							<label for="exampleInputFile">Choisir un fichier</label> <input
 								type="file" name="ongbaseFile" accept=".csv">
 
 							<p class="help-block">Choisir un le fichier CSV contenant les
@@ -79,7 +79,7 @@
 				<form role="form" action="importSMS.do" method="post" enctype="multipart/form-data">
 					<div class="box-body">
 						<div class="form-group">
-							<label for="exampleInputFile">Choir un fichier</label> <input
+							<label for="exampleInputFile">Choisir un fichier</label> <input
 								type="file" name="smsFile" accept=".csv">
 
 							<p class="help-block">Choisir un le fichier CSV contenant les

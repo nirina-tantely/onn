@@ -7,4 +7,6 @@ public interface GeoService {
 	String getGeoCommuneAndFktByCode(String codeCommune);
 
 	String getGeoAllFkt();
+
+	String getGeoJsonByIntervenant(String codeIntervenant, int annee, String typeLocalisation);
 }
