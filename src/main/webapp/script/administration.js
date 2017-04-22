@@ -275,7 +275,7 @@ function makeLegendeTableau(legende){
 	if(legende.annee){
 		contenu+='Année: '+legende.annee;
 	}
-	
+
 	if(legende.pays){
 		contenu+=' - Pays: '+legende.pays;
 	}
@@ -354,15 +354,13 @@ function getCritere(){
 }
 
 
-$('.synthese-print').on('click',
-		function exportSynthese(){
-
+function exportSynthese(){
 	var critere = getCritere();
 	var code = critere.code;
 	var typeLocalisation = critere.typeLocalisation;
 	var codeIntervenant = critere.codeIntervenant;
 	var annee = critere.annee;
-	
+
 	var legende = getCritereLegende();
 	console.log(legende.pays+" - "+legende.region+" - "+legende.commune+" - "+legende.fokontany+" - "+legende.annee);
 	var legendeContent = makeLegendeTableau(legende);
@@ -370,18 +368,40 @@ $('.synthese-print').on('click',
 	console.log('==> code:'+code+' type: '+typeLocalisation);
 	if(code!=""){
 		var filePath = "exportSynthese.do?code="+code+"&typeLocalisation="+typeLocalisation+"&codeIntervenant="+codeIntervenant+"&annee="+annee+"&legende="+legendeContent;
-		
+
 		var link=document.createElement('a');
 		document.body.appendChild(link);
 		link.href=filePath ;
 		link.target="_blank";
 		link.click();
-		
+
 	}else{
 		//console.log('==> ny tay!');
 	}
 }
-);
+
+
+function exportSyntheseCSV(){
+	var critere = getCritere();
+	var code = critere.code;
+	var typeLocalisation = critere.typeLocalisation;
+	var codeIntervenant = critere.codeIntervenant;
+	var annee = critere.annee;
+
+	console.log('==> code:'+code+' type: '+typeLocalisation);
+	if(code!=""){
+		var filePath = "exportSyntheseCSV.do?code="+code+"&typeLocalisation="+typeLocalisation+"&codeIntervenant="+codeIntervenant+"&annee="+annee;
+
+		var link=document.createElement('a');
+		document.body.appendChild(link);
+		link.href=filePath ;
+		link.target="_blank";
+		link.click();
+
+	}else{
+		//console.log('==> ny tay!');
+	}
+}
 
 
 function exportONGBase(){
@@ -390,22 +410,57 @@ function exportONGBase(){
 	var code = critere.code;
 	var typeLocalisation = critere.typeLocalisation;
 	var annee = critere.annee;
-	
+
 	var legende = getCritereLegende();
 	legende.intervenant = null;
 	console.log(legende.pays+" - "+legende.region+" - "+legende.commune+" - "+legende.fokontany+" - "+legende.annee);
 	var legendeContent = makeLegendeTableau(legende);
 
+	var tousIndicateurs = false;
+	var btnBody = document.getElementById("bouton-affiche-principale");
+	if(btnBody != null){
+		tousIndicateurs = true;
+	}
+
 	console.log('==> code:'+code+' type: '+typeLocalisation);
 	if(code!=""){
-		var filePath = "exportONGBase.do?code="+code+"&typeLocalisation="+typeLocalisation+"&annee="+annee+"&legende="+legendeContent;
-		
+		var filePath = "exportONGBase.do?code="+code+"&typeLocalisation="+typeLocalisation+"&annee="+annee+"&legende="+legendeContent+"&tousIndicateurs="+tousIndicateurs;
+
 		var link=document.createElement('a');
 		document.body.appendChild(link);
 		link.href=filePath ;
 		link.target="_blank";
 		link.click();
-		
+
+	}else{
+		//console.log('==> ny tay!');
+	}
+}
+
+
+function exportONGBaseCSV(){
+
+	var critere = getCritere();
+	var code = critere.code;
+	var typeLocalisation = critere.typeLocalisation;
+	var annee = critere.annee;
+
+	var tousIndicateurs = false;
+	var btnBody = document.getElementById("bouton-affiche-principale");
+	if(btnBody != null){
+		tousIndicateurs = true;
+	}
+
+	console.log('==> code:'+code+' type: '+typeLocalisation);
+	if(code!=""){
+		var filePath = "exportONGBaseCSV.do?code="+code+"&typeLocalisation="+typeLocalisation+"&annee="+annee+"&tousIndicateurs="+tousIndicateurs;
+
+		var link=document.createElement('a');
+		document.body.appendChild(link);
+		link.href=filePath ;
+		link.target="_blank";
+		link.click();
+
 	}else{
 		//console.log('==> ny tay!');
 	}

@@ -23,7 +23,7 @@ public class ExportController {
 	@Autowired
 	private ExportService exportService;
 
-	@RequestMapping(value = "exportSynthese.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
+	@RequestMapping(value = "exportSynthese.do", method = RequestMethod.GET, produces={"application/pdf; charset=UTF-8"})
 	public ModelAndView exportSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
 			@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("annee") String annee, @RequestParam("legende") String legende, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
 
@@ -32,14 +32,32 @@ public class ExportController {
 		return null;
 	}
 	
-	
-	@RequestMapping(value = "exportONGBase.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
-	public ModelAndView exportONGBase(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
-			@RequestParam("annee") String annee, @RequestParam("legende") String legende, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
+	@RequestMapping(value = "exportSyntheseCSV.do", method = RequestMethod.GET, produces={"text/csv; charset=UTF-8"})
+	public ModelAndView exportSyntheseCSV(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
+			@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("annee") String annee, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
 
-		exportService.exportONGBase(code, typeLocalisation, annee, legende, response, request);
+		exportService.exportSyntheseCSV(code, typeLocalisation, codeIntervenant, annee, response, request);
 		
 		return null;
 	}
 	
+	
+	@RequestMapping(value = "exportONGBase.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
+	public ModelAndView exportONGBase(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
+			@RequestParam("annee") String annee, @RequestParam("legende") String legende, @RequestParam("tousIndicateurs") String tousIndicateurs, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
+
+		exportService.exportONGBase(code, typeLocalisation, annee, legende, response, request, Boolean.valueOf(tousIndicateurs));
+		
+		return null;
+	}
+
+	
+	@RequestMapping(value = "exportONGBaseCSV.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
+	public ModelAndView exportONGBaseCSV(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
+			@RequestParam("annee") String annee, @RequestParam("tousIndicateurs") String tousIndicateurs, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
+
+		exportService.exportONGBaseCSV(code, typeLocalisation, annee, response, request, Boolean.valueOf(tousIndicateurs));
+		
+		return null;
+	}
 }

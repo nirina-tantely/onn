@@ -45,7 +45,8 @@
 		<div class="col-md-3">
 			<div class="box">
 				<div class="box-header">
-					<button class="synthese-print">Export PDF</button>
+					<img src="images/pdf.png" onclick="exportSynthese();" alt="Exporter en PDF" style="cursor:pointer;" />
+					<img src="images/csv.png" onclick="exportSyntheseCSV();" alt="Exporter en CSV" style="cursor:pointer;" />
 					<h3 class="box-title">Synthèse Intervenants</h3>
 					<div style="color: green; font: 'italic bold';">
 						National<span id="titre-activite-box"
@@ -75,8 +76,8 @@
 		<div class="col-md-4">
 			<div class="box">
 				<div class="box-header">
-					<button class="ongbase-print" onclick="exportONGBase();">Export
-						PDF</button>
+					<img src="images/pdf.png" onclick="exportONGBase();" alt="Exporter en PDF" style="cursor:pointer;" />
+					<img src="images/csv.png" onclick="exportONGBaseCSV();" alt="Exporter en CSV" style="cursor:pointer;" />
 					<h3 class="box-title">Synthèse ONG Base</h3>
 					<div style="color: green; font: 'italic bold';">
 						National<span id="titre-ongbase-box"

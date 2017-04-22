@@ -101,7 +101,7 @@ public class App
 		}
 	}
 	private void testONGbase(){
-		JSONArray s = activiteService.getONGBaseSyntese("0", TypeLocalisation.NATIONALE, 2017);
+		JSONArray s = activiteService.getONGBaseSyntese("0", TypeLocalisation.NATIONALE, 2017, true);
 		System.out.println("==> "+s);
 
 	}
