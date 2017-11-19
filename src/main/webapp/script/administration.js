@@ -353,6 +353,30 @@ function getCritere(){
 	return critere;
 }
 
+function exportSMSSynthese(){
+	var critere = getCritere();
+	var code = critere.code;
+	var typeLocalisation = critere.typeLocalisation;
+	var annee = critere.annee;
+
+	var legende = getCritereLegende();
+	console.log(legende.pays+" - "+legende.region+" - "+legende.commune+" - "+legende.fokontany+" - "+legende.annee);
+	var legendeContent = makeLegendeTableau(legende);
+
+	console.log('==> code:'+code+' type: '+typeLocalisation);
+	if(code!=""){
+		var filePath = "exportSMSSynthese.do?code="+code+"&typeLocalisation="+typeLocalisation+"&annee="+annee+"&legende="+legendeContent;
+
+		var link=document.createElement('a');
+		document.body.appendChild(link);
+		link.href=filePath ;
+		link.target="_blank";
+		link.click();
+
+	}else{
+		//console.log('==> ny tay!');
+	}
+}
 
 function exportSynthese(){
 	var critere = getCritere();
@@ -454,6 +478,28 @@ function exportONGBaseCSV(){
 	console.log('==> code:'+code+' type: '+typeLocalisation);
 	if(code!=""){
 		var filePath = "exportONGBaseCSV.do?code="+code+"&typeLocalisation="+typeLocalisation+"&annee="+annee+"&tousIndicateurs="+tousIndicateurs;
+
+		var link=document.createElement('a');
+		document.body.appendChild(link);
+		link.href=filePath ;
+		link.target="_blank";
+		link.click();
+
+	}else{
+		//console.log('==> ny tay!');
+	}
+}
+
+function exportSMSSyntheseCSV(){
+
+	var critere = getCritere();
+	var code = critere.code;
+	var typeLocalisation = critere.typeLocalisation;
+	var annee = critere.annee;
+
+	console.log('==> code:'+code+' type: '+typeLocalisation);
+	if(code!=""){
+		var filePath = "exportSMSSyntheseCSV.do?code="+code+"&typeLocalisation="+typeLocalisation+"&annee="+annee;
 
 		var link=document.createElement('a');
 		document.body.appendChild(link);

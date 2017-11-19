@@ -4,6 +4,7 @@ package org.onn.webportal.application.boot;
 import java.util.List;
 import org.json.simple.JSONArray;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
+import org.onn.webportal.application.utils.CSVUtils;
 import org.onn.webportal.application.utils.Config;
 import org.onn.webportal.domain.model.Intervenant;
 import org.onn.webportal.domain.model.Localisation;
@@ -61,9 +62,15 @@ public class App
 		
 		//System.out.println(Config.getInstance().getProperty("import.directory"));
 		
-		//testImport();
+		testImport();
 		
-		testGeoInterv();
+		//testGeoInterv();
+		
+		//testCSV();
+	}
+	
+	private void testCSV(){
+		CSVUtils.readLineCSV("/import/import_activite_test.csv");
 	}
 	
 	private void testGeoInterv(){
@@ -77,7 +84,7 @@ public class App
 	
 	private void testImport(){
 		try {
-			importService.importInterventionData("/Users/tantely/Documents/ETUDES/SOA/workspace/onn/src/main/webapp/import/import_activite_test.csv");
+			importService.importInterventionData("/import/import_activite_test.csv");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

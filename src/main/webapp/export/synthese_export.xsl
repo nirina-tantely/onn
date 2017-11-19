@@ -22,10 +22,24 @@
 			</fo:layout-master-set>
 			<fo:page-sequence master-reference="simpleA4">
 				<fo:flow flow-name="xsl-region-body">
+
+					<fo:block text-align="right" line-height="40pt">
+						<xsl:variable name="path" select="rootpath" />
+						<fo:external-graphic height="50mm" width="40mm"
+							content-height="auto" content-width="auto"
+							src="url('{$path}/images/logo_onn.jpg')">
+						</fo:external-graphic>
+						<fo:external-graphic height="5cm" width="4cm"
+							content-height="50mm" content-width="40mm"
+							src="url('{$path}/images/logo_secaline.png')">
+						</fo:external-graphic>
+					</fo:block>
+
 					<fo:block font-size="16pt" font-weight="bold" space-after="5mm">
-						Portail ONN
+						SYNTHESE INTERVENANTS
 						<xsl:value-of select="companyname" />
 					</fo:block>
+
 					<fo:block font-size="10pt" font-weight="bold" space-after="5mm">
 						<xsl:value-of select="legende" />
 					</fo:block>

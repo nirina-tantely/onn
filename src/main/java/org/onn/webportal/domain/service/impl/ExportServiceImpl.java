@@ -36,6 +36,9 @@ import org.onn.webportal.api.enumeration.TypeLocalisation;
 import org.onn.webportal.application.utils.CSVUtils;
 import org.onn.webportal.domain.model.ExportONGBase;
 import org.onn.webportal.domain.model.ExportONGBaseList;
+import org.onn.webportal.domain.model.ExportSMS;
+import org.onn.webportal.domain.model.ExportSMSList;
+import org.onn.webportal.domain.model.IndicateurSMS;
 import org.onn.webportal.domain.model.Synthese;
 import org.onn.webportal.domain.model.Syntheses;
 import org.onn.webportal.domain.service.ActiviteService;
@@ -77,6 +80,7 @@ public class ExportServiceImpl implements ExportService {
 			Syntheses syntheses = new Syntheses();
 			syntheses.setSyntheses(synthReses);
 			syntheses.setLegende(legende);
+			syntheses.setRootPath(request.getRealPath(""));
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			jaxbMarshaller.marshal(syntheses, baos);
 			//create input stream from baos
@@ -98,6 +102,81 @@ public class ExportServiceImpl implements ExportService {
 		return null;
 	}
 
+
+	public void exportSMSSynthese(String code, String typeLocalisation, String annee, String legende, HttpServletResponse response, HttpServletRequest request) {
+		if(code.equals("")) return ;
+
+		Integer anneeVal;
+		try{
+			anneeVal = Integer.valueOf(annee);
+		}catch (Exception e) {
+			anneeVal = Calendar.getInstance().get(Calendar.YEAR);
+		}
+
+
+		JSONArray indicateurs = activiteService.getSMSBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal);
+		List<ExportSMS> exportList = new ArrayList<ExportSMS>();
+		for (int i = 0; i < indicateurs.size(); i++) {
+			JSONObject jsonobject = (JSONObject) indicateurs.get(i);
+			String indicateur = (String) jsonobject.get("indicateur");
+			String m1 = String.valueOf(jsonobject.get("m1"));
+			String m2 = String.valueOf(jsonobject.get("m2"));
+			String m3 = String.valueOf(jsonobject.get("m3"));
+			String m4 = String.valueOf(jsonobject.get("m4"));
+			String m5 = String.valueOf(jsonobject.get("m5"));
+			String m6 = String.valueOf(jsonobject.get("m6"));
+			String m7 = String.valueOf(jsonobject.get("m7"));
+			String m8 = String.valueOf(jsonobject.get("m8"));
+			String m9 = String.valueOf(jsonobject.get("m9"));
+			String m10 = String.valueOf(jsonobject.get("m10"));
+			String m11 = String.valueOf(jsonobject.get("m11"));
+			String m12 = String.valueOf(jsonobject.get("m12"));
+			ExportSMS export = new ExportSMS();
+			export.setIndicateur(indicateur);
+			export.setM1(m1);
+			export.setM2(m2);
+			export.setM3(m3);
+			export.setM4(m4);
+			export.setM5(m5);
+			export.setM6(m6);
+			export.setM7(m7);
+			export.setM8(m8);
+			export.setM9(m9);
+			export.setM10(m10);
+			export.setM11(m11);
+			export.setM12(m12);
+			exportList.add(export);
+		}
+
+		JAXBContext jaxbContext;
+		try {
+			jaxbContext = JAXBContext.newInstance(ExportSMSList.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			// output pretty printed
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			ExportSMSList liste = new ExportSMSList();
+			liste.setExportSMS(exportList);
+			liste.setLegende(legende);
+			liste.setRootPath(request.getRealPath(""));
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			jaxbMarshaller.marshal(liste, baos);
+			//create input stream from baos
+			InputStream isFromFirstData = new ByteArrayInputStream(baos.toByteArray()); 
+			convertToPDF("export_sms", "sms_export.xsl", isFromFirstData, response, request);
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FOPException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void exportONGBase(String code, String typeLocalisation, String annee, String legende, HttpServletResponse response, HttpServletRequest request, boolean tousIndicateurs) {
 		if(code.equals("")) return ;
@@ -137,6 +216,7 @@ public class ExportServiceImpl implements ExportService {
 			ExportONGBaseList liste = new ExportONGBaseList();
 			liste.setExportONGBase(exportList);
 			liste.setLegende(legende);
+			liste.setRootPath(request.getRealPath(""));
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			jaxbMarshaller.marshal(liste, baos);
 			//create input stream from baos
@@ -156,6 +236,7 @@ public class ExportServiceImpl implements ExportService {
 			e.printStackTrace();
 		}
 	}
+
 
 	public void convertToPDF(String filename, String xslFile, InputStream inputStreamData, HttpServletResponse response, HttpServletRequest request)  throws IOException, FOPException, TransformerException {
 		// the XSL FO file
@@ -333,5 +414,122 @@ public class ExportServiceImpl implements ExportService {
 		}
 
 	}
+
+
+	public void exportSMSCSV(String code, String typeLocalisation, String annee, HttpServletResponse response, HttpServletRequest request) {
+		if(code.equals("")) return ;
+
+		Integer anneeVal;
+		try{
+			anneeVal = Integer.valueOf(annee);
+		}catch (Exception e) {
+			anneeVal = Calendar.getInstance().get(Calendar.YEAR);
+		}
+
+
+		JSONArray indicateurs = activiteService.getSMSBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal);
+
+		List<String> listeEntete = new ArrayList<String>();
+		listeEntete.add("Mois");
+		List<String> listeM1 = new ArrayList<String>();
+		List<String> listeM2 = new ArrayList<String>();
+		List<String> listeM3 = new ArrayList<String>();
+		List<String> listeM4 = new ArrayList<String>();
+		List<String> listeM5 = new ArrayList<String>();
+		List<String> listeM6 = new ArrayList<String>();
+		List<String> listeM7 = new ArrayList<String>();
+		List<String> listeM8 = new ArrayList<String>();
+		List<String> listeM9 = new ArrayList<String>();
+		List<String> listeM10 = new ArrayList<String>();
+		List<String> listeM11 = new ArrayList<String>();
+		List<String> listeM12 = new ArrayList<String>();
+		listeM1.add("J");
+		listeM2.add("F");
+		listeM3.add("M");
+		listeM4.add("A");
+		listeM5.add("M");
+		listeM6.add("J");
+		listeM7.add("J");
+		listeM8.add("A");
+		listeM9.add("S");
+		listeM10.add("O");
+		listeM11.add("N");
+		listeM12.add("D");
+		for (int i = 0; i < indicateurs.size(); i++) {
+			JSONObject jsonobject = (JSONObject) indicateurs.get(i);
+			String indicateur = (String) jsonobject.get("indicateur");
+			String m1 = String.valueOf(jsonobject.get("m1"));
+			String m2 = String.valueOf(jsonobject.get("m2"));
+			String m3 = String.valueOf(jsonobject.get("m3"));
+			String m4 = String.valueOf(jsonobject.get("m4"));
+			String m5 = String.valueOf(jsonobject.get("m5"));
+			String m6 = String.valueOf(jsonobject.get("m6"));
+			String m7 = String.valueOf(jsonobject.get("m7"));
+			String m8 = String.valueOf(jsonobject.get("m8"));
+			String m9 = String.valueOf(jsonobject.get("m9"));
+			String m10 = String.valueOf(jsonobject.get("m10"));
+			String m11 = String.valueOf(jsonobject.get("m11"));
+			String m12 = String.valueOf(jsonobject.get("m12"));
+			listeEntete.add(indicateur);
+			listeM1.add(m1);
+			listeM2.add(m2);
+			listeM3.add(m3);
+			listeM4.add(m4);
+			listeM5.add(m5);
+			listeM6.add(m6);
+			listeM7.add(m7);
+			listeM8.add(m8);
+			listeM9.add(m9);
+			listeM10.add(m10);
+			listeM11.add(m11);
+			listeM12.add(m12);
+		}
+
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		Writer writer = new BufferedWriter(new OutputStreamWriter(out));
+		try {
+			CSVUtils.writeLine(writer, listeEntete, ';');
+			CSVUtils.writeLine(writer, listeM1, ';');
+			CSVUtils.writeLine(writer, listeM2, ';');
+			CSVUtils.writeLine(writer, listeM3, ';');
+			CSVUtils.writeLine(writer, listeM4, ';');
+			CSVUtils.writeLine(writer, listeM5, ';');
+			CSVUtils.writeLine(writer, listeM6, ';');
+			CSVUtils.writeLine(writer, listeM7, ';');
+			CSVUtils.writeLine(writer, listeM8, ';');
+			CSVUtils.writeLine(writer, listeM9, ';');
+			CSVUtils.writeLine(writer, listeM10, ';');
+			CSVUtils.writeLine(writer, listeM11, ';');
+			CSVUtils.writeLine(writer, listeM12, ';');
+			writer.flush();
+		} catch (IOException e1) {
+			logger.error(e1.getMessage());
+		}
+
+		try {
+			//Prepare response
+			response.setContentType("text/csv");
+			String name = "SMS_export";
+			response.setHeader("Content-disposition", "attachment;filename=" + name + ".csv");
+			response.setHeader("Content-Type", "text/csv; charset=UTF-8");
+			response.setContentLength(out.size());
+
+			//System.out.println("==> "+out.toString());
+			//Send content to Browser
+			response.getOutputStream().write(out.toByteArray());
+			response.getOutputStream().flush();
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+		}finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 
 }

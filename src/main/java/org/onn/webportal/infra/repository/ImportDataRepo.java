@@ -8,4 +8,8 @@ public interface ImportDataRepo {
 
 	void importSMSFile(String fileName) throws Exception;
 
+	void cleanIntervenantData(int annee, int codeRegion, String codeIntervenant);
+
+	void cleanONGBaseData(int annee, int mois, int codeRegion);
+
 }

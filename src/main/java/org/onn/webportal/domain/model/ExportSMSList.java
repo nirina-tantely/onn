@@ -1,29 +1,25 @@
 package org.onn.webportal.domain.model;
 
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Syntheses {
+public class ExportSMSList {
 
-	private List<Synthese> syntheses = null;
+	private List<ExportSMS> exportSMS = null;
+	
 	private String legende;
+	
 	private String rootPath;
-	public List<Synthese> getSyntheses() {
-		return syntheses;
-	}
 
-	@XmlElement(name = "synthese")
-	public void setSyntheses(List<Synthese> syntheses) {
-		this.syntheses = syntheses;
-	}
 
 	public String getLegende() {
 		return legende;
 	}
 
-	@XmlElement(name = "legende")
+	@XmlElement
 	public void setLegende(String legende) {
 		this.legende = legende;
 	}
@@ -35,6 +31,15 @@ public class Syntheses {
 	@XmlElement(name = "rootpath")
 	public void setRootPath(String rootPath) {
 		this.rootPath = rootPath;
+	}
+
+	public List<ExportSMS> getExportSMS() {
+		return exportSMS;
+	}
+
+	@XmlElement
+	public void setExportSMS(List<ExportSMS> exportSMS) {
+		this.exportSMS = exportSMS;
 	}
 
 }

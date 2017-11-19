@@ -38,8 +38,11 @@
 			</div>
 			<button class="btn btn-primary btn-flat map-print"
 				style="font-weight: bold;">Exporter la carte</button>
-			<button class="btn btn-primary btn-flat json-download" onclick="downloadGeoJson();"
-				style="font-weight: bold;">Exporter en GEOJSON</button>
+			<c:if test="${currentuser.role.id == 1}">
+				<button class="btn btn-primary btn-flat json-download"
+					onclick="downloadGeoJson();" style="font-weight: bold;">Exporter
+					en GEOJSON</button>
+			</c:if>
 			<!-- /.box -->
 		</div>
 		<!-- /.col -->

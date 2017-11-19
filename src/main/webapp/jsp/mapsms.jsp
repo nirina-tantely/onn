@@ -11,9 +11,9 @@
 			<div class="box box-success">
 				<div class="box-header with-border">
 					<h3 class="box-title">
-					<b id="annee-box">${anneeCourante}</b>
-						<a href="" onclick="location.reload();">:National</a>
-						<i><b id="info-box" style="word-wrap: break-word;"></b></i>
+						<b id="annee-box">${anneeCourante}</b> <a href=""
+							onclick="location.reload();">:National</a> <i><b
+							id="info-box" style="word-wrap: break-word;"></b></i>
 					</h3>
 					<div class="box-tools pull-right">
 						<button type="button" class="btn btn-box-tool"
@@ -38,8 +38,15 @@
 		<div class="col-md-8">
 			<div class="box">
 				<div class="box-header">
+					<img src="images/pdf.png" onclick="exportSMSSynthese();"
+						alt="Exporter en PDF" style="cursor: pointer;" /> <img
+						src="images/csv.png" onclick="exportSMSSyntheseCSV();"
+						alt="Exporter en CSV" style="cursor: pointer;" />
 					<h3 class="box-title">Synthèse SMS</h3>
-					<div style="color: green;font: 'italic bold';">National<span id="titre-ongbase-box" style="word-wrap: break-word;"></span></div>
+					<div style="color: green; font: 'italic bold';">
+						National<span id="titre-ongbase-box"
+							style="word-wrap: break-word;"></span>
+					</div>
 				</div>
 				<!-- /.box-header -->
 				<div class="box-body">
@@ -144,7 +151,6 @@
 				onIntervenantSelect();
 			}
 		});
-		
 
 		var_map.data.setStyle(function(feature) {
 			return {

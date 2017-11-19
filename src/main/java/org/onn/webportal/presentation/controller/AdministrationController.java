@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.onn.webportal.api.enumeration.EnumRole;
@@ -166,6 +168,20 @@ public class AdministrationController {
 	    model.put("importResult", result);
 	    
 		return gestionAcces(model, session);
+	}
+	
+	@RequestMapping(value = "importSMSData.do", headers=("content-type=multipart/*"), method = RequestMethod.POST)
+	public void importerSMSData(Map<String, Object> model, @RequestParam("smsFile") MultipartFile fichier, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+		importerSMS(model, fichier, redirectAttributes, request, session);
+		ServletOutputStream out;
+		try {
+			out = response.getOutputStream();
+			out.print("File successfully uploaded!");
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

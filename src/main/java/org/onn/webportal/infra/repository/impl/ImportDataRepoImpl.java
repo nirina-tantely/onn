@@ -39,5 +39,17 @@ public class ImportDataRepoImpl implements ImportDataRepo {
 		StringBuilder requete = new StringBuilder().append("COPY donnees_sms (annee,mois,code_region,code_commune,code_fokontany,code_intervenant,indcsms1,indcsms2,indcsms3,indcsms4,indcsms5,indcsms6,indcsms7,indcsms8,indcsms9,indcsms10,indcsms11,indcsms12,indcsms13,indcsms14,indcsms15,indcsms16,indcsms17,indcsms18,indcsms19,indcsms20) FROM '"+fileName+"' WITH DELIMITER ';' CSV HEADER;");
 		jdbcTemplate.update(requete.toString());
 	}
+	
+	public void cleanIntervenantData(int annee, int codeRegion, String codeIntervenant) {
+		logger.info("Suppression des donnees "+annee+"  "+codeRegion+"  "+codeIntervenant);
+		StringBuilder requete = new StringBuilder().append("DELETE FROM activite WHERE annee = ? AND code_region = ? AND code_intervenant = ?;");
+		jdbcTemplate.update(requete.toString(), new Object[] {annee, codeRegion, codeIntervenant});
+	}
+	
+	public void cleanONGBaseData(int annee, int mois, int codeRegion) {
+		logger.info("Suppression des donnees "+annee+"  "+codeRegion+"  "+mois);
+		StringBuilder requete = new StringBuilder().append("DELETE FROM ongbase WHERE annee = ? AND mois = ? AND code_region = ?;");
+		jdbcTemplate.update(requete.toString(), new Object[] {annee, mois, codeRegion});
+	}
 
 }

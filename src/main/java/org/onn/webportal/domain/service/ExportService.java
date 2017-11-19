@@ -17,4 +17,10 @@ public interface ExportService {
 	void exportONGBaseCSV(String code, String typeLocalisation, String annee, HttpServletResponse response,
 			HttpServletRequest request, boolean tousIndicateurs);
 
+	void exportSMSSynthese(String code, String typeLocalisation, String annee, String legende,
+			HttpServletResponse response, HttpServletRequest request);
+
+	void exportSMSCSV(String code, String typeLocalisation, String annee, HttpServletResponse response,
+			HttpServletRequest request);
+
 }

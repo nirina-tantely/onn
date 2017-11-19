@@ -11,6 +11,8 @@ public class ExportONGBaseList {
 	private List<ExportONGBase> exportONGBase = null;
 	
 	private String legende;
+	
+	private String rootPath;
 
 
 	public List<ExportONGBase> getExportONGBase() {
@@ -29,6 +31,15 @@ public class ExportONGBaseList {
 	@XmlElement
 	public void setLegende(String legende) {
 		this.legende = legende;
+	}
+
+	public String getRootPath() {
+		return rootPath;
+	}
+
+	@XmlElement(name = "rootpath")
+	public void setRootPath(String rootPath) {
+		this.rootPath = rootPath;
 	}
 
 }

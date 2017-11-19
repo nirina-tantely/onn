@@ -5,8 +5,8 @@ import java.util.List;
 
 public enum EnumRole {
 	ADMIN("Administrateur", 1),
-	PTF_USER("Utilisateur TPF", 2),
-	ONN_USER("Utilisateur ONN", 3);
+	PTF_USER("ONN SIG", 2),
+	ONN_USER("DECIDEUR", 3);
 
 	private String nom;
 	private int id;

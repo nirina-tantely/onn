@@ -23,6 +23,25 @@ public class ExportController {
 	@Autowired
 	private ExportService exportService;
 
+	@RequestMapping(value = "exportSMSSynthese.do", method = RequestMethod.GET, produces={"application/pdf; charset=UTF-8"})
+	public ModelAndView exportSMSSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
+			@RequestParam("annee") String annee, @RequestParam("legende") String legende, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
+
+		exportService.exportSMSSynthese(code, typeLocalisation, annee, legende, response, request);
+		
+		return null;
+	}
+	
+	@RequestMapping(value = "exportSMSSyntheseCSV.do", method = RequestMethod.GET, produces={"text/csv; charset=UTF-8"})
+	public ModelAndView exportSMSSyntheseCSV(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
+			@RequestParam("annee") String annee, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
+
+		exportService.exportSMSCSV(code, typeLocalisation, annee, response, request);
+		
+		return null;
+	}
+
+	
 	@RequestMapping(value = "exportSynthese.do", method = RequestMethod.GET, produces={"application/pdf; charset=UTF-8"})
 	public ModelAndView exportSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
 			@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("annee") String annee, @RequestParam("legende") String legende, HttpServletResponse response, HttpSession session, HttpServletRequest request) {
