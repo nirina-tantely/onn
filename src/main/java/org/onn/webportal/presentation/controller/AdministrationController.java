@@ -2,6 +2,7 @@ package org.onn.webportal.presentation.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
@@ -173,9 +174,9 @@ public class AdministrationController {
 	@RequestMapping(value = "importSMSData.do", headers=("content-type=multipart/*"), method = RequestMethod.POST)
 	public void importerSMSData(Map<String, Object> model, @RequestParam("smsFile") MultipartFile fichier, RedirectAttributes redirectAttributes, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		importerSMS(model, fichier, redirectAttributes, request, session);
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print("File successfully uploaded!");
 			out.flush();
 			out.close();

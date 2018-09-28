@@ -1,6 +1,7 @@
 package org.onn.webportal.presentation.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -41,43 +42,48 @@ public class MAJSynthesesController {
 	private GeoService geoService;
 
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "updateSynthese.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
-	public ModelAndView updateSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
-			@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("annee") String annee, @RequestParam("afficherTousIndicateurs") String afficherTousIndicateurs,
-			Model model, HttpServletResponse response, HttpSession session) {
-		if(code.equals("")) return null;
-		
+	@RequestMapping(value = "updateSynthese.do", method = RequestMethod.GET, produces = {
+			"application/json; charset=UTF-8" })
+	public ModelAndView updateSynthese(@RequestParam("code") String code,
+			@RequestParam("typeLocalisation") String typeLocalisation,
+			@RequestParam("codeIntervenant") String codeIntervenant, @RequestParam("annee") String annee,
+			@RequestParam("afficherTousIndicateurs") String afficherTousIndicateurs, Model model,
+			HttpServletResponse response, HttpSession session) {
+		if (code.equals(""))
+			return null;
+
 		boolean tousIndicarteurs = Boolean.valueOf(afficherTousIndicateurs);
-		
+
 		Integer anneeVal;
-		try{
+		try {
 			anneeVal = Integer.valueOf(annee);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			anneeVal = Calendar.getInstance().get(Calendar.YEAR);
 		}
-		
-		List<Synthese> syntheses = activiteService.getActiviteSyntese(code, TypeLocalisation.getByValue(typeLocalisation), codeIntervenant, anneeVal);
+
+		List<Synthese> syntheses = activiteService.getActiviteSyntese(code,
+				TypeLocalisation.getByValue(typeLocalisation), codeIntervenant, anneeVal);
 		JSONArray liste = new JSONArray();
-		for(Synthese syn:syntheses){
+		for (Synthese syn : syntheses) {
 			JSONObject obj = new JSONObject();
-			obj.put("indicateur", syn.getDescription());
+			obj.put("indicateur", syn.getNom());
 			obj.put("valeur", syn.getValeur());
 			liste.add(obj);
 		}
 		JSONObject res = new JSONObject();
 		res.put("activites", liste);
 
-
-		JSONArray indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal, tousIndicarteurs);
+		JSONArray indicateurs = activiteService.getONGBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation),
+				anneeVal, tousIndicarteurs);
 		res.put("ongbase", indicateurs);
-		
+
 		res.put("afficherTousIndicateurs", tousIndicarteurs);
 
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(res.toJSONString());
 			out.flush();
 			out.close();
@@ -87,28 +93,31 @@ public class MAJSynthesesController {
 		return null;
 	}
 
-
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "updateSMSSynthese.do", method = RequestMethod.GET, produces={"application/json; charset=UTF-8"})
-	public ModelAndView updateSMSSynthese(@RequestParam("code") String code, @RequestParam("typeLocalisation") String typeLocalisation, 
-			@RequestParam("annee") String annee, HttpServletResponse response, HttpSession session) {
-		if(code.equals("")) return null;
+	@RequestMapping(value = "updateSMSSynthese.do", method = RequestMethod.GET, produces = {
+			"application/json; charset=UTF-8" })
+	public ModelAndView updateSMSSynthese(@RequestParam("code") String code,
+			@RequestParam("typeLocalisation") String typeLocalisation, @RequestParam("annee") String annee,
+			HttpServletResponse response, HttpSession session) {
+		if (code.equals(""))
+			return null;
 		Integer anneeVal;
-		try{
+		try {
 			anneeVal = Integer.valueOf(annee);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			anneeVal = Calendar.getInstance().get(Calendar.YEAR);
 		}
 
-		JSONArray indicateurs = activiteService.getSMSBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation), anneeVal);
+		JSONArray indicateurs = activiteService.getSMSBaseSyntese(code, TypeLocalisation.getByValue(typeLocalisation),
+				anneeVal);
 		JSONObject res = new JSONObject();
 		res.put("indicateurs", indicateurs);
 
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(res.toJSONString());
 			out.flush();
 			out.close();

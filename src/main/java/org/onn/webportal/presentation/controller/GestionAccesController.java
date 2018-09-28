@@ -1,6 +1,7 @@
 package org.onn.webportal.presentation.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -98,9 +99,9 @@ public class GestionAccesController {
 		}else{
 			obj.put("Error", "NON");
 		}
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(obj.toJSONString());
 			out.flush();
 			out.close();
@@ -123,9 +124,9 @@ public class GestionAccesController {
 			userJson.put("role", user.getRole().getId());
 			obj.put("utilisateur", userJson);
 		}
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(obj.toJSONString());
 			out.flush();
 			out.close();

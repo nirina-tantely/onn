@@ -29,6 +29,7 @@ public class ActiviteRowMapper implements RowMapper<ActiviteMetadata> {
 		syn.setIdIndicateur(rs.getString("indicateur"));
 		syn.setDescription(rs.getString("syndesc"));
 		syn.setNom(rs.getString("nom"));
+		syn.setIdCategorie(rs.getString("idcategorie"));
 		result.setSythese(syn);
 		return result;
 	}

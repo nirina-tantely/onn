@@ -35,7 +35,7 @@ public class MetadataRepoImpl implements MetadataRepo {
 
 	public List<ActiviteMetadata> loadActivityMetadata() {
 		StringBuilder requete = new StringBuilder().append(" SELECT am.idactivite, am.nomactivite,  am.description as amdesc,  am.axeid,  am.rangcolonne,  am.syntheseid,  axe.idaxe, axe.nomaxe, axe.description as axedesc");
-		requete.append(", axe.intervention,  synthese.indicateur, synthese.nom, synthese.description as syndesc");
+		requete.append(", axe.intervention,  synthese.indicateur, synthese.nom, synthese.description as syndesc, synthese.idcategorie");
 		requete.append(" FROM activite_metadata am , axe, synthese WHERE  am.axeid = axe.idaxe AND  am.syntheseid = synthese.indicateur;");
 		List<ActiviteMetadata> result = jdbcTemplate.query(requete.toString(), new ActiviteRowMapper());
 		return result;

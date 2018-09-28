@@ -1,6 +1,7 @@
 package org.onn.webportal.presentation.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
@@ -55,9 +56,9 @@ public class AuthentificationController {
 			obj.put("Result", "FAILURE");
 			obj.put("Message", "Echec! Compte inconnu!");
 		}
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(obj.toJSONString());
 			out.flush();
 			out.close();

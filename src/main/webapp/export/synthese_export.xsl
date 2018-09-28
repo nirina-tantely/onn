@@ -77,7 +77,7 @@
 		<fo:table-row>
 			<fo:table-cell>
 				<fo:block>
-					<xsl:value-of select="description" />
+					<xsl:value-of select="nom" />
 				</fo:block>
 			</fo:table-cell>
 

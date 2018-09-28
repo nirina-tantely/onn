@@ -19,8 +19,8 @@ public class ImportServiceImpl implements ImportService {
 		String codeIntervenant;
 		if(data != null){
 			annee = Integer.valueOf(data[0]);
-			codeRegion = Integer.valueOf(data[1]);
-			codeIntervenant = data[4];
+			codeRegion = Integer.valueOf(data[4]);
+			codeIntervenant = data[7];
 		}else{
 			throw new Exception("N'a pas pu lire le fichier CSV");
 		}
@@ -36,7 +36,7 @@ public class ImportServiceImpl implements ImportService {
 		if(data != null){
 			annee = Integer.valueOf(data[0]);
 			mois = Integer.valueOf(data[1]);
-			codeRegion = Integer.valueOf(data[3]);
+			codeRegion = Integer.valueOf(data[6]);
 		}else{
 			throw new Exception("N'a pas pu lire le fichier CSV");
 		}

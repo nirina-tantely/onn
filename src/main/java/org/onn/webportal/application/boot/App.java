@@ -1,8 +1,17 @@
 
 package org.onn.webportal.application.boot;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.onn.webportal.api.enumeration.TypeLocalisation;
 import org.onn.webportal.application.utils.CSVUtils;
 import org.onn.webportal.application.utils.Config;
@@ -55,6 +64,8 @@ public class App
 
 		//testActivieSertice();
 		
+		testImportONG();
+		
 		//testONGbase();
 		//testGeneral();
 		
@@ -62,7 +73,7 @@ public class App
 		
 		//System.out.println(Config.getInstance().getProperty("import.directory"));
 		
-		testImport();
+		//testImport();
 		
 		//testGeoInterv();
 		
@@ -84,12 +95,22 @@ public class App
 	
 	private void testImport(){
 		try {
-			importService.importInterventionData("/import/import_activite_test.csv");
+			importService.importInterventionData("/import/exemple_import_activite.csv");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	private void testImportONG(){
+		try {
+			importService.importONGBaseData("/import/import_ong_base_test.csv");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private void testSynthese(){
 		//exportService.updateSynthese("0", "nationale", "unicef", "2017");
 	}
@@ -109,10 +130,25 @@ public class App
 			activiteService.getCodesFokontanyByIntervenant(codeIntervenant, 2017);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void testActivieSertice(){
-			List<Synthese> liste = activiteService.getActiviteSyntese("0", TypeLocalisation.NATIONALE, "intv1", 2017);
-			for(Synthese syn: liste){
-				System.out.println("==>"+syn.getIdIndicateur()+"  "+syn.getValeur());
+			List<Synthese> liste = activiteService.getActiviteSyntese("0", TypeLocalisation.NATIONALE, "unicef", 2018);
+			JSONArray array = new JSONArray();
+			JSONObject obj;
+			//System.out.println(array.toJSONString());
+			try {
+				PrintWriter out = new PrintWriter(new File("coucou.txt"));
+				for(Synthese syn: liste){
+					 obj = new JSONObject();
+					 obj.put("nom", syn.getNom());
+					 array.add(obj);
+					 System.out.println(obj.toJSONString());
+					 out.print(obj.toJSONString());
+					//System.out.println("==>"+syn.getNom()+"  "+syn.getValeur());
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 	}
 	

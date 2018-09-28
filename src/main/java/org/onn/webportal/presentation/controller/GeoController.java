@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Calendar;
@@ -51,9 +52,9 @@ public class GeoController {
 		if(codeRegion.equals("")) return null;
 		String geoJson = geoService.getGeoRegionByCode(codeRegion); 
 		//System.out.println("==> "+codeRegion);
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(geoJson);
 			out.flush();
 			out.close();
@@ -93,9 +94,9 @@ public class GeoController {
 		}
 		JSONObject res = new JSONObject();
 		res.put("codes", codes);
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(res.toJSONString());
 			out.flush();
 			out.close();

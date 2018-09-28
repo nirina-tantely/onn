@@ -9,6 +9,7 @@ public class Synthese {
 	private String idIndicateur;
 	private String nom;
 	private String description;
+	private String idCategorie;
 
 	/**
 	 * Valeur pour la résultat d'une requete
@@ -27,6 +28,7 @@ public class Synthese {
 		return this.nom;
 	}
 
+	@XmlElement
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
@@ -35,7 +37,6 @@ public class Synthese {
 		return this.description;
 	}
 
-	@XmlElement
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -47,6 +48,14 @@ public class Synthese {
 	@XmlElement
 	public void setValeur(int valeur) {
 		this.valeur = valeur;
+	}
+
+	public String getIdCategorie() {
+		return idCategorie;
+	}
+
+	public void setIdCategorie(String idCategorie) {
+		this.idCategorie = idCategorie;
 	}
 
 	public Synthese copy(){

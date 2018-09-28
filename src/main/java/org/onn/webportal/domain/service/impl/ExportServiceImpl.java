@@ -300,7 +300,7 @@ public class ExportServiceImpl implements ExportService {
 		List<String> listeEntete = new ArrayList<String>();
 		List<String> listeValeur = new ArrayList<String>();
 		for (Synthese synthese : synthReses) {
-			listeEntete.add(synthese.getDescription());
+			listeEntete.add(synthese.getNom());
 			listeValeur.add(String.valueOf(synthese.getValeur()));
 		}
 

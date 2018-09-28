@@ -2,6 +2,7 @@
 package org.onn.webportal.presentation.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -74,9 +75,9 @@ public class MainMapController {
 		obj.put("liste", listeCommuneJson);
 		obj.put("goeJson", geoJson);
 		obj.put("chemin", "");
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(obj.toJSONString());
 			out.flush();
 			out.close();
@@ -98,9 +99,9 @@ public class MainMapController {
 		obj.put("liste", listeFktJson);
 		obj.put("goeJson", geoJson);
 		obj.put("chemin", "");
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(obj.toJSONString());
 			out.flush();
 			out.close();
@@ -117,9 +118,9 @@ public class MainMapController {
 		String geoJson = geoService.getGeoAllFkt();
 		//System.out.println("==> "+codeCommune);
 		obj.put("goeJson", geoJson);
-		ServletOutputStream out;
+		PrintWriter out;
 		try {
-			out = response.getOutputStream();
+			out = response.getWriter();
 			out.print(obj.toJSONString());
 			out.flush();
 			out.close();
